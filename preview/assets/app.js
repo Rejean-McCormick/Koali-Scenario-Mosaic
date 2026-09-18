@@ -14,6 +14,7 @@
   const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
 
   const txt=(q,v)=>{const e=root.querySelector(q);if(e){e.textContent=v;e.title=v}};
+  const lvl=(q,v)=>{const e=root.querySelector(q);if(e)e.dataset.level=String(v)};
   const list=(a,n=3)=>!a?.length?'—':a.length>n?`${a.slice(0,n).join(' · ')} +${a.length-n}`:a.join(' · ');
   function systems(items=[]){
     const box=root.querySelector('[data-preview-system-list]');
@@ -36,6 +37,7 @@
     txt('[data-preview-id]',s.id);txt('[data-preview-category]',s.family);txt('[data-preview-title]',s.title);txt('[data-preview-summary]',s.hook);txt('[data-preview-koali]',s.summary);
     const kw=root.querySelector('[data-preview-koali-wrap]');if(kw)kw.hidden=false;
     txt('[data-preview-scale]',s.scale);txt('[data-preview-urgency]',s.urgency);txt('[data-preview-gap]',s.coordinationGap);txt('[data-preview-stakes]',list(s.stakes));
+    lvl('[data-preview-scale-visual]',s.scaleLevel ?? 0);lvl('[data-preview-urgency-visual]',s.urgencyLevel ?? 0);lvl('[data-preview-gap-visual]',s.gapLevel ?? 0);
     txt('[data-preview-mechanism-summary]',list(s.mechanisms));txt('[data-preview-scale-profile]',s.scalePath);
     const urgency=root.querySelector('[data-preview-urgency-wrap]');if(urgency)urgency.dataset.urgency=s.urgencyKey;
     const im=root.querySelector('[data-preview-image]');if(im){im.src=s.image.src;im.alt=s.title;im.dataset.imageState='scenario'}

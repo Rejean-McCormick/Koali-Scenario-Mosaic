@@ -2,6 +2,7 @@
 import { getUi, type Locale } from '../i18n/ui';
 import { getScenarioPortal } from '../lib/scenario-portal';
 import { parseScale, localizeScale } from '../lib/scale';
+import { scaleVisualLevelFromKey, urgencyVisualLevel, coordinationGapVisualLevel } from '../lib/metric-visuals';
 import { localizeScaleValue, localizeUrgency, localizeCoordinationGap, localizeStake, localizeMechanism } from '../i18n/taxonomy';
 import { resolveScenarioPreviewImageSet } from '../lib/scenario-image';
 const { total=36, locale='en' as Locale, scenario=null }=Astro.props;
@@ -13,6 +14,12 @@ const portal=selected?getScenarioPortal(data,body,locale):null;
 const mechanisms=selected?(data.failure_mechanisms ?? []).map((x:string)=>localizeMechanism(locale,x)):[];
 const stakes=selected?(data.stakes ?? []).map((x:string)=>localizeStake(locale,x)):[];
 const image=selected?resolveScenarioPreviewImageSet(data.id,data.problem_family):null;
+const scaleExtent=selected?parseScale(data.scale).extent:'';
+const scaleLevel=selected?scaleVisualLevelFromKey(scaleExtent):0;
+const urgencyLevel=selected?urgencyVisualLevel(data.urgency):0;
+const gapLevel=selected?coordinationGapVisualLevel(data.coordination_gap):0;
+const steps=[1,2,3,4];
+const gapLinks=['top','right','bottom','left','diag'];
 ---
 <section class="scenario-preview" data-preview-swipe={!selected?'true':undefined} data-preview-selected={selected?'true':'false'}>
   <div class="preview-image-shell">
@@ -23,10 +30,35 @@ const image=selected?resolveScenarioPreviewImageSet(data.id,data.problem_family)
     <h1 data-preview-title>{selected?data.title:s.exploreWays(total)}</h1>
     <p class="preview-summary" data-preview-summary>{selected?data.hook:s.hoverIntro}</p>
     <div class="preview-metrics-row" data-preview-metrics-row hidden={!selected}>
-      <div class="preview-metric"><span>{s.scale}</span><strong data-preview-scale>{selected?localizeScaleValue(locale,parseScale(data.scale).extent):'—'}</strong></div>
-      <div class="preview-metric preview-metric-urgency" data-preview-urgency-wrap data-urgency={selected?data.urgency:undefined}><span>{s.urgency}</span><strong data-preview-urgency>{selected?localizeUrgency(locale,data.urgency):'—'}</strong></div>
-      <div class="preview-metric"><span>{s.coordinationGap}</span><strong data-preview-gap>{selected?localizeCoordinationGap(locale,data.coordination_gap):'—'}</strong></div>
-      <div class="preview-metric"><span>{s.stakes}</span><strong data-preview-stakes>{selected?stakes.slice(0,3).join(' · '):'—'}</strong></div>
+      <div class="preview-metric" data-preview-scale-wrap>
+        <span>{s.scale}</span>
+        <div class="preview-metric-visual preview-metric-visual--scale" data-preview-scale-visual data-level={String(scaleLevel)} aria-hidden="true">
+          {steps.map((step)=><span class={`metric-scale-ring metric-scale-ring--${step}`} data-step={String(step)}></span>)}
+        </div>
+        <strong data-preview-scale>{selected?localizeScaleValue(locale,scaleExtent):'—'}</strong>
+      </div>
+      <div class="preview-metric preview-metric-urgency" data-preview-urgency-wrap data-urgency={selected?data.urgency:undefined}>
+        <span>{s.urgency}</span>
+        <div class="preview-metric-visual preview-metric-visual--urgency" data-preview-urgency-visual data-level={String(urgencyLevel)} aria-hidden="true">
+          {steps.map((step)=><span class={`metric-segment metric-segment--${step}`} data-step={String(step)}></span>)}
+        </div>
+        <strong data-preview-urgency>{selected?localizeUrgency(locale,data.urgency):'—'}</strong>
+      </div>
+      <div class="preview-metric preview-metric-gap" data-preview-gap-wrap>
+        <span>{s.coordinationGap}</span>
+        <div class="preview-metric-visual preview-metric-visual--gap" data-preview-gap-visual data-level={String(gapLevel)} aria-hidden="true">
+          <span class="metric-gap-node metric-gap-node--tl"></span>
+          <span class="metric-gap-node metric-gap-node--tr"></span>
+          <span class="metric-gap-node metric-gap-node--bl"></span>
+          <span class="metric-gap-node metric-gap-node--br"></span>
+          {gapLinks.map((name)=><span class={`metric-gap-link metric-gap-link--${name}`} data-link={name}></span>)}
+        </div>
+        <strong data-preview-gap>{selected?localizeCoordinationGap(locale,data.coordination_gap):'—'}</strong>
+      </div>
+      <div class="preview-metric">
+        <span>{s.stakes}</span>
+        <strong data-preview-stakes>{selected?stakes.slice(0,3).join(' · '):'—'}</strong>
+      </div>
     </div>
     <div class="preview-mechanisms" data-preview-mechanisms>{selected?mechanisms.slice(0,4).map((m:string)=><span>{m}</span>):null}</div>
     <div class="preview-koali" data-preview-koali-wrap hidden={!selected}><span>{s.koaliResponse}</span><p data-preview-koali>{selected?portal!.koaliHelp:''}</p></div>

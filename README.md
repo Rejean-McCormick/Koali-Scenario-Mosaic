@@ -96,15 +96,39 @@ Real cases are analogues of the documented failure mechanism. They are **not cla
 
 ## Scenario images
 
-The V1 image-slot contract is restored. Final scenario artwork can be added progressively without changing the Markdown schema:
+V2.2 restores the V1 responsive image-preparation pipeline. Final source artwork is optional and can arrive progressively.
+
+Place a square master at exactly **1254×1254 PNG** here:
 
 ```text
-public/scenarios/images/SCN-001.png
+src/assets/scenario-images/SCN-001.png
 ...
-public/scenarios/images/SCN-036.png
+src/assets/scenario-images/SCN-036.png
 ```
 
-When a scenario-specific PNG is absent, the interface uses one of eight family-level SVG illustrations from `public/scenarios/fallback/`. This guarantees that the preview always retains its visual image area while final artwork can be replaced progressively.
+`npm run images:build` uses Sharp + Lanczos3 to generate:
+
+```text
+public/scenarios/images/SCN-001-418.png
+public/scenarios/images/SCN-001.png      # 627×627 default
+```
+
+The browser receives a `srcset` containing 418w and 627w plus the existing `sizes` contract. If a master is absent but a usable public PNG already exists, the production build can regenerate the responsive set from that public file. If no final PNG exists at all, the existing family-level SVG fallback remains active.
+
+The normal commands run the preparation automatically:
+
+```bash
+npm run dev
+npm run build
+npm run preview:offline
+```
+
+To inspect the image pipeline directly:
+
+```bash
+npm run images:build
+npm run images:validate
+```
 
 ## French public taxonomy
 

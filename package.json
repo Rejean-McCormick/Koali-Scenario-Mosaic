@@ -4,15 +4,18 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "astro dev",
-    "build": "npm run validate && astro build",
+    "dev": "npm run images:build && astro dev",
+    "build": "npm run images:build && npm run validate && npm run images:validate && astro build",
     "validate": "python scripts/validate-v2.py",
-    "preview:offline": "python scripts/build-offline-preview.py",
-    "check": "astro check"
+    "preview:offline": "npm run images:build && python scripts/build-offline-preview.py",
+    "check": "astro check",
+    "images:build": "node scripts/build-scenario-images.mjs",
+    "images:validate": "python scripts/validate-images.py"
   },
   "dependencies": {
     "astro": "7.2.9",
-    "gsap": "3.13.0"
+    "gsap": "3.13.0",
+    "sharp": "0.35.4"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",

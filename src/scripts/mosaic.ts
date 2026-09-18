@@ -12,6 +12,7 @@ if(root){
   const touchPreviewMode=window.matchMedia('(hover: none), (pointer: coarse)').matches;
 
   const setText=(query:string,value:string)=>{const el=root.querySelector<HTMLElement>(query);if(el){el.textContent=value;el.title=value;}};
+  const setLevel=(query:string, level:number|string)=>{const el=root.querySelector<HTMLElement>(query);if(el)el.dataset.level=String(level);};
   const humanList=(items:string[],limit=3)=>items?.length?(items.length>limit?`${items.slice(0,limit).join(' · ')} +${items.length-limit}`:items.join(' · ')):'—';
 
   function renderSystems(systems:Array<{key:string;label:string;description:string}> = []){
@@ -29,6 +30,7 @@ if(root){
     setText('[data-preview-id]',s.id);setText('[data-preview-category]',s.family);setText('[data-preview-title]',s.title);setText('[data-preview-summary]',s.hook);setText('[data-preview-koali]',s.summary);
     const kw=root.querySelector<HTMLElement>('[data-preview-koali-wrap]');if(kw)kw.hidden=false;
     setText('[data-preview-scale]',s.scale);setText('[data-preview-urgency]',s.urgency);setText('[data-preview-gap]',s.coordinationGap);setText('[data-preview-stakes]',humanList(s.stakes,3));
+    setLevel('[data-preview-scale-visual]', s.scaleLevel ?? 0);setLevel('[data-preview-urgency-visual]', s.urgencyLevel ?? 0);setLevel('[data-preview-gap-visual]', s.gapLevel ?? 0);
     const image=root.querySelector<HTMLImageElement>('[data-preview-image]');if(image){image.src=s.image.src;image.srcset=s.image.srcset??'';image.sizes=s.image.sizes??'';image.alt=s.title;image.dataset.imageState='scenario';}
     const metricsRow=root.querySelector<HTMLElement>('[data-preview-metrics-row]');if(metricsRow)metricsRow.hidden=false;
     setText('[data-preview-mechanism-summary]',humanList(s.mechanisms,3));setText('[data-preview-stakes-profile]',humanList(s.stakes,4));setText('[data-preview-scale-profile]',s.scalePath);

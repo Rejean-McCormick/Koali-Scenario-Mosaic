@@ -23,6 +23,20 @@ def loc(group,lang,v):
     return {'scale':FR_SCALE,'urgency':FR_URGENCY,'gap':FR_GAP,'stakes':FR_STAKES,'mechanisms':FR_MECH}[group].get(v,en_label(v))
 def parse_scale(v):
     p=[x.strip() for x in v.split('→')];return p[0],p[-1]
+SCALE_LEVELS={'individual':1,'team':1,'organization':2,'institution':2,'community':3,'city':3,'network':3,'sector':3,'regional':4,'national':4,'global':4}
+URGENCY_LEVELS={'low':1,'moderate':2,'significant':2,'high':3,'critical':4,'immediate':4}
+GAP_LEVELS={'low':1,'medium':2,'high':3,'extreme':4}
+def scale_level(extent): return SCALE_LEVELS.get(extent,2)
+def urgency_level(value): return URGENCY_LEVELS.get(value,2)
+def gap_level(value): return GAP_LEVELS.get(value,2)
+def scale_visual(level):
+    return '<div class="preview-metric-visual preview-metric-visual--scale" data-preview-scale-visual data-level="%s" aria-hidden="true">%s</div>'%(level,''.join(f'<span class="metric-scale-ring metric-scale-ring--{i}" data-step="{i}"></span>' for i in range(1,5)))
+def urgency_visual(level):
+    return '<div class="preview-metric-visual preview-metric-visual--urgency" data-preview-urgency-visual data-level="%s" aria-hidden="true">%s</div>'%(level,''.join(f'<span class="metric-segment metric-segment--{i}" data-step="{i}"></span>' for i in range(1,5)))
+def gap_visual(level):
+    links=''.join(f'<span class="metric-gap-link metric-gap-link--{name}" data-link="{name}"></span>' for name in ['top','right','bottom','left','diag'])
+    nodes=''.join(f'<span class="metric-gap-node metric-gap-node--{pos}"></span>' for pos in ['tl','tr','bl','br'])
+    return f'<div class="preview-metric-visual preview-metric-visual--gap" data-preview-gap-visual data-level="{level}" aria-hidden="true">{nodes}{links}</div>'
 def split_file(p):
     t=p.read_text(encoding='utf-8');m=re.match(r'^---\r?\n(.*?)\r?\n---\r?\n([\s\S]*)$',t,re.S);return parse_frontmatter(m.group(1)),m.group(2)
 def sec(body,head):
@@ -65,11 +79,24 @@ def markdown_basic(body):
             out.append(f'<p>{inline(s)}</p>')
     if in_list: out.append('</ul>')
     return ''.join(out)
-def image_rel(d,detail=False):
-    png=ROOT/'public/scenarios/images'/f"{d['id']}.png"
+SCENARIO_IMAGE_SIZES='(min-width: 901px) 292px, (min-width: 721px) 220px, (min-width: 363px) 210px, 58vw'
+def image_set(d,detail=False):
+    sid=d['id']; png=ROOT/'public/scenarios/images'/f"{sid}.png"
     base='../../../assets/scenarios' if detail else '../assets/scenarios'
-    if png.exists(): return f"{base}/images/{d['id']}.png"
-    return f"{base}/fallback/{d['problem_family']}.svg"
+    if not png.exists():
+        return {'src':f"{base}/fallback/{d['problem_family']}.svg",'srcset':'','sizes':''}
+    candidates=[]
+    for width,name in ((418,f'{sid}-418.png'),(627,f'{sid}.png')):
+        if (ROOT/'public/scenarios/images'/name).exists(): candidates.append(f'{base}/images/{name} {width}w')
+    srcset=', '.join(candidates) if len(candidates)>1 else ''
+    return {'src':f'{base}/images/{sid}.png','srcset':srcset,'sizes':SCENARIO_IMAGE_SIZES if srcset else ''}
+def image_rel(d,detail=False):
+    return image_set(d,detail)['src']
+def image_attrs(d,detail=False):
+    image=image_set(d,detail)
+    srcset=f' srcset="{esc(image["srcset"])}"' if image['srcset'] else ''
+    sizes=f' sizes="{esc(image["sizes"])}"' if image['sizes'] else ''
+    return f'src="{esc(image["src"])}"{srcset}{sizes}'
 def load(lang):
     result=[]
     for p in sorted((ROOT/'src/content/scenarios'/lang).glob('SCN-*.md')):
@@ -83,8 +110,10 @@ def header(lang):
     u=UI[lang];return f'<header class="site-header"><a class="brand" href="./index.html"><img class="brand-mark" src="../assets/brand/koali-mark.svg" alt=""><span class="brand-copy"><span class="brand-product"><strong>Koali</strong><span>{u["title"]}</span></span><small>the Sociotechnical Operating System</small></span></a><nav class="language-switcher"><a class="{"active" if lang=="en" else ""}" href="../en/index.html">EN</a><span>/</span><a class="{"active" if lang=="fr" else ""}" href="../fr/index.html">FR</a></nav></header>'
 def metric_row(lang,d=None):
     u=UI[lang]
-    if not d:return f'<div class="preview-metrics-row" data-preview-metrics-row hidden><div class="preview-metric"><span>{u["scale"]}</span><strong data-preview-scale>—</strong></div><div class="preview-metric preview-metric-urgency" data-preview-urgency-wrap><span>{u["urgency"]}</span><strong data-preview-urgency>—</strong></div><div class="preview-metric"><span>{u["gap"]}</span><strong data-preview-gap>—</strong></div><div class="preview-metric"><span>{u["stakes"]}</span><strong data-preview-stakes>—</strong></div></div>'
-    return f'<div class="preview-metrics-row"><div class="preview-metric"><span>{u["scale"]}</span><strong>{esc(loc("scale",lang,d["_extent"]))}</strong></div><div class="preview-metric preview-metric-urgency" data-urgency="{d["urgency"]}"><span>{u["urgency"]}</span><strong>{esc(loc("urgency",lang,d["urgency"]))}</strong></div><div class="preview-metric"><span>{u["gap"]}</span><strong>{esc(loc("gap",lang,d["coordination_gap"]))}</strong></div><div class="preview-metric"><span>{u["stakes"]}</span><strong>{esc(" · ".join(loc("stakes",lang,x) for x in d["stakes"][:3]))}</strong></div></div>'
+    if not d:
+        return f'<div class="preview-metrics-row" data-preview-metrics-row hidden><div class="preview-metric" data-preview-scale-wrap><span>{u["scale"]}</span>{scale_visual(0)}<strong data-preview-scale>—</strong></div><div class="preview-metric preview-metric-urgency" data-preview-urgency-wrap><span>{u["urgency"]}</span>{urgency_visual(0)}<strong data-preview-urgency>—</strong></div><div class="preview-metric preview-metric-gap" data-preview-gap-wrap><span>{u["gap"]}</span>{gap_visual(0)}<strong data-preview-gap>—</strong></div><div class="preview-metric"><span>{u["stakes"]}</span><strong data-preview-stakes>—</strong></div></div>'
+    sl,ul,gl=scale_level(d['_extent']),urgency_level(d['urgency']),gap_level(d['coordination_gap'])
+    return f'<div class="preview-metrics-row"><div class="preview-metric" data-preview-scale-wrap><span>{u["scale"]}</span>{scale_visual(sl)}<strong>{esc(loc("scale",lang,d["_extent"]))}</strong></div><div class="preview-metric preview-metric-urgency" data-preview-urgency-wrap data-urgency="{d["urgency"]}"><span>{u["urgency"]}</span>{urgency_visual(ul)}<strong>{esc(loc("urgency",lang,d["urgency"]))}</strong></div><div class="preview-metric preview-metric-gap" data-preview-gap-wrap><span>{u["gap"]}</span>{gap_visual(gl)}<strong>{esc(loc("gap",lang,d["coordination_gap"]))}</strong></div><div class="preview-metric"><span>{u["stakes"]}</span><strong>{esc(" · ".join(loc("stakes",lang,x) for x in d["stakes"][:3]))}</strong></div></div>'
 def preview_empty(lang):
     u=UI[lang]
     return f'''<section class="scenario-preview" data-preview-selected="false" data-preview-swipe="true"><div class="preview-image-shell"><img data-preview-image data-image-state="cover" src="../assets/brand/koali-mark.svg" alt="Koali"></div><div class="preview-copy"><p class="preview-eyebrow"><span data-preview-id>{u['title']}</span> · <span data-preview-category>36 {u['examples']}</span></p><h1 data-preview-title>{u['explore']}</h1><p class="preview-summary" data-preview-summary>{u['intro']}</p>{metric_row(lang)}<div class="preview-mechanisms" data-preview-mechanisms></div><div class="preview-koali" data-preview-koali-wrap hidden><span>{u['koali']}</span><p data-preview-koali></p></div><a class="preview-cta" data-preview-link hidden>{u['open']} →</a></div><aside class="preview-profile" data-preview-profile><div class="profile-heading"><span class="profile-title">{u['inside']}</span><span class="profile-section-label">{u['path']}</span></div><div class="profile-systems"><div class="system-route-list" data-preview-system-list></div></div><div class="profile-context"><div><span>{u['mechanisms']}</span><strong data-preview-mechanism-summary>—</strong></div><div><span>{u['scale']}</span><strong data-preview-scale-profile>—</strong></div></div></aside></section>'''
@@ -97,12 +126,12 @@ def main_html(lang,items):
     by={d['id']:d for d in items};cells='';pdata={}
     for sid,pos in LAYOUT['positions'].items():
         d=by[sid];cells+=f'<a class="mosaic-cell family-{d["problem_family"]}" data-scenario-id="{sid}" href="./uses/{sid}/index.html" tabindex="0"><polygon points="{polygon(pos["x"],pos["y"],pos["size"])}"></polygon><text x="{pos["x"]}" y="{pos["y"]+3}" text-anchor="middle">{sid[-3:]}</text></a>'
-        pdata[sid]=dict(id=sid,title=d['title'],family=d['problem_family_label'],familyId=d['problem_family'],hook=d['hook'],summary=d['_koali'],systems=d['_systems'],mechanisms=[loc('mechanisms',lang,x) for x in d['failure_mechanisms']],scale=loc('scale',lang,d['_extent']),scaleKey=d['_extent'],scalePath=f"{loc('scale',lang,d['_origin'])} → {loc('scale',lang,d['_extent'])}",urgency=loc('urgency',lang,d['urgency']),urgencyKey=d['urgency'],stakes=[loc('stakes',lang,x) for x in d['stakes']],stakesKeys=d['stakes'],coordinationGap=loc('gap',lang,d['coordination_gap']),href=f'./uses/{sid}/index.html',search=d['_search'],image={'src':image_rel(d,False)})
+        pdata[sid]=dict(id=sid,title=d['title'],family=d['problem_family_label'],familyId=d['problem_family'],hook=d['hook'],summary=d['_koali'],systems=d['_systems'],mechanisms=[loc('mechanisms',lang,x) for x in d['failure_mechanisms']],scale=loc('scale',lang,d['_extent']),scaleKey=d['_extent'],scaleLevel=scale_level(d['_extent']),scalePath=f"{loc('scale',lang,d['_origin'])} → {loc('scale',lang,d['_extent'])}",urgency=loc('urgency',lang,d['urgency']),urgencyKey=d['urgency'],urgencyLevel=urgency_level(d['urgency']),stakes=[loc('stakes',lang,x) for x in d['stakes']],stakesKeys=d['stakes'],coordinationGap=loc('gap',lang,d['coordination_gap']),gapLevel=gap_level(d['coordination_gap']),href=f'./uses/{sid}/index.html',search=d['_search'],image=image_set(d,False))
     labels=''.join(f'<div class="territory-label" data-territory-id="{fid}" style="--territory-x:{meta["x"]*100}%;--territory-y:{meta["y"]*100}%;--territory-w:{meta.get("width",.16)*100}%"><span>{esc(next((d["problem_family_label"] for d in items if d["problem_family"]==fid),fid))}</span></div>' for fid,meta in LAYOUT['territoryLabels'].items())
     return f'''<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../assets/styles.css"><title>{u['title']}</title></head><body>{header(lang)}<main><div class="mosaic-experience" data-mosaic-root>{preview_empty(lang)}{ctrls}<div class="mosaic-stage"><div class="mosaic-scroll"><div class="mosaic-canvas" data-mosaic-canvas><svg class="mosaic" viewBox="{' '.join(map(str,LAYOUT['viewBox']))}">{cells}</svg><div class="territory-label-layer">{labels}</div></div></div></div><script type="application/json" data-mosaic-data>{html.escape(json.dumps(pdata,ensure_ascii=False))}</script><script type="application/json" data-mosaic-i18n>{json.dumps({'scenarios':u['scenarios'],'scenarioSingular':'scenario' if lang=='en' else 'scénario'})}</script></div></main><script src="../assets/app.js"></script><script src="../assets/preview-layout.js"></script></body></html>'''
 def selected_preview(lang,d):
     u=UI[lang];mech=[loc('mechanisms',lang,x) for x in d['failure_mechanisms']];system_html=''.join(f'<span class="system-route"><strong>{esc(x["label"])}</strong><small>{esc(x["description"])}</small></span>' for x in d['_systems'])
-    return f'''<section class="scenario-preview" data-preview-selected="true"><div class="preview-image-shell"><img data-image-state="scenario" src="{image_rel(d,True)}" alt="{esc(d['title'])}"></div><div class="preview-copy"><p class="preview-eyebrow">{d['id']} · {esc(d['problem_family_label'])}</p><h1>{esc(d['title'])}</h1><p class="preview-summary">{esc(d['hook'])}</p>{metric_row(lang,d)}<div class="preview-mechanisms">{''.join(f'<span>{esc(x)}</span>' for x in mech[:4])}</div><div class="preview-koali"><span>{u['koali']}</span><p>{esc(d['_koali'])}</p></div><a class="preview-cta" href="../../index.html">← {u['back']}</a></div><aside class="preview-profile" data-family="{d['problem_family']}"><div class="profile-heading"><span class="profile-title">{u['inside']}</span><span class="profile-section-label">{u['path']}</span></div><div class="profile-systems"><div class="system-route-list">{system_html}</div></div><div class="profile-context"><div><span>{u['mechanisms']}</span><strong>{' · '.join(mech[:3])}</strong></div><div><span>{u['scale']}</span><strong>{loc('scale',lang,d['_origin'])} → {loc('scale',lang,d['_extent'])}</strong></div></div></aside></section>'''
+    return f'''<section class="scenario-preview" data-preview-selected="true"><div class="preview-image-shell"><img data-image-state="scenario" {image_attrs(d,True)} alt="{esc(d['title'])}"></div><div class="preview-copy"><p class="preview-eyebrow">{d['id']} · {esc(d['problem_family_label'])}</p><h1>{esc(d['title'])}</h1><p class="preview-summary">{esc(d['hook'])}</p>{metric_row(lang,d)}<div class="preview-mechanisms">{''.join(f'<span>{esc(x)}</span>' for x in mech[:4])}</div><div class="preview-koali"><span>{u['koali']}</span><p>{esc(d['_koali'])}</p></div><a class="preview-cta" href="../../index.html">← {u['back']}</a></div><aside class="preview-profile" data-family="{d['problem_family']}"><div class="profile-heading"><span class="profile-title">{u['inside']}</span><span class="profile-section-label">{u['path']}</span></div><div class="profile-systems"><div class="system-route-list">{system_html}</div></div><div class="profile-context"><div><span>{u['mechanisms']}</span><strong>{' · '.join(mech[:3])}</strong></div><div><span>{u['scale']}</span><strong>{loc('scale',lang,d['_origin'])} → {loc('scale',lang,d['_extent'])}</strong></div></div></aside></section>'''
 def detail_html(lang,d):
     u=UI[lang];mech=' · '.join(loc('mechanisms',lang,x) for x in d['failure_mechanisms'][:4]);holders=' • '.join(d['_holders'][:3]);success=' • '.join(d['_success'][:2]);cases=d['_cases'][:3]
     case_list=''.join(f'<li>{esc(x)}</li>' for x in cases)
@@ -130,6 +159,7 @@ def write():
   const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
 
   const txt=(q,v)=>{const e=root.querySelector(q);if(e){e.textContent=v;e.title=v}};
+  const lvl=(q,v)=>{const e=root.querySelector(q);if(e)e.dataset.level=String(v)};
   const list=(a,n=3)=>!a?.length?'—':a.length>n?`${a.slice(0,n).join(' · ')} +${a.length-n}`:a.join(' · ');
   function systems(items=[]){
     const box=root.querySelector('[data-preview-system-list]');
@@ -152,9 +182,10 @@ def write():
     txt('[data-preview-id]',s.id);txt('[data-preview-category]',s.family);txt('[data-preview-title]',s.title);txt('[data-preview-summary]',s.hook);txt('[data-preview-koali]',s.summary);
     const kw=root.querySelector('[data-preview-koali-wrap]');if(kw)kw.hidden=false;
     txt('[data-preview-scale]',s.scale);txt('[data-preview-urgency]',s.urgency);txt('[data-preview-gap]',s.coordinationGap);txt('[data-preview-stakes]',list(s.stakes));
+    lvl('[data-preview-scale-visual]',s.scaleLevel ?? 0);lvl('[data-preview-urgency-visual]',s.urgencyLevel ?? 0);lvl('[data-preview-gap-visual]',s.gapLevel ?? 0);
     txt('[data-preview-mechanism-summary]',list(s.mechanisms));txt('[data-preview-scale-profile]',s.scalePath);
     const urgency=root.querySelector('[data-preview-urgency-wrap]');if(urgency)urgency.dataset.urgency=s.urgencyKey;
-    const im=root.querySelector('[data-preview-image]');if(im){im.src=s.image.src;im.alt=s.title;im.dataset.imageState='scenario'}
+    const im=root.querySelector('[data-preview-image]');if(im){im.src=s.image.src;im.srcset=s.image.srcset||'';im.sizes=s.image.sizes||'';im.alt=s.title;im.dataset.imageState='scenario'}
     const metrics=root.querySelector('[data-preview-metrics-row]');if(metrics)metrics.hidden=false;
     mechanisms(s.mechanisms);systems(s.systems);
     const link=root.querySelector('[data-preview-link]');if(link){link.href=s.href;link.hidden=false}

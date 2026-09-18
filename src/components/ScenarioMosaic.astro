@@ -10,6 +10,7 @@ import { localizeScaleValue, localizeUrgency, localizeCoordinationGap, localizeS
 import { resolveScenarioPreviewImageSet } from '../lib/scenario-image';
 import { getScenarioPortal } from '../lib/scenario-portal';
 import { parseScale, localizeScale } from '../lib/scale';
+import { scaleVisualLevelFromKey, urgencyVisualLevel, coordinationGapVisualLevel } from '../lib/metric-visuals';
 
 const { scenarios, locale='en' as Locale }=Astro.props;
 const strings=getUi(locale);
@@ -30,13 +31,14 @@ const previewData=Object.fromEntries(scenarios.map((entry:any)=>{
   const portal=getScenarioPortal(data,entry.entry.body ?? '',locale);
   const mechanisms=(data.failure_mechanisms ?? []).map((x:string)=>localizeMechanism(locale,x));
   const image=resolveScenarioPreviewImageSet(data.id,data.problem_family);
+  const scaleExtent=parseScale(data.scale).extent;
   return [data.id,{
     id:data.id,title:data.title,family:data.problem_family_label,familyId:data.problem_family,hook:data.hook,
     summary:portal.koaliHelp,systems:portal.systems,mechanisms,
-    scale:localizeScaleValue(locale,parseScale(data.scale).extent),scaleKey:parseScale(data.scale).extent,scalePath:localizeScale(locale,data.scale),
-    urgency:localizeUrgency(locale,data.urgency),urgencyKey:data.urgency,
+    scale:localizeScaleValue(locale,scaleExtent),scaleKey:scaleExtent,scaleLevel:scaleVisualLevelFromKey(scaleExtent),scalePath:localizeScale(locale,data.scale),
+    urgency:localizeUrgency(locale,data.urgency),urgencyKey:data.urgency,urgencyLevel:urgencyVisualLevel(data.urgency),
     stakes:(data.stakes ?? []).map((x:string)=>localizeStake(locale,x)),stakesKeys:data.stakes ?? [],
-    coordinationGap:localizeCoordinationGap(locale,data.coordination_gap),
+    coordinationGap:localizeCoordinationGap(locale,data.coordination_gap),gapLevel:coordinationGapVisualLevel(data.coordination_gap),
     image,
     domains:(data.domains ?? []).map((x:string)=>humanizeTag(locale,x)),
     realCases:portal.realCases,
