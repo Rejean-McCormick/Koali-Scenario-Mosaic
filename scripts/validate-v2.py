@@ -1,5 +1,6 @@
+from frontmatter_stdlib import parse_frontmatter
 from pathlib import Path
-import re, sys, yaml, json
+import re, sys, json
 ROOT=Path(__file__).resolve().parents[1]
 langs=['en','fr']
 expected_families={
@@ -16,7 +17,7 @@ for lang in langs:
         text=p.read_text(encoding='utf-8')
         m=re.match(r'^---\n(.*?)\n---\n',text,re.S)
         if not m: errors.append(f'{p}: missing frontmatter'); continue
-        data=yaml.safe_load(m.group(1))
+        data=parse_frontmatter(m.group(1))
         missing=required-set(data)
         if missing: errors.append(f'{p}: missing {sorted(missing)}')
         if data.get('locale')!=lang: errors.append(f'{p}: locale mismatch')
@@ -43,7 +44,7 @@ for p in sorted((ROOT/'src/content/scenarios/fr').glob('SCN-*.md')):
     if section and re.search(r'\b[a-z]+_[a-z_]+\b',section.group(1)): errors.append(f'{p}: internal mechanism id exposed in French body')
     fm=re.match(r'^---\n(.*?)\n---\n',text,re.S)
     if fm:
-        data=yaml.safe_load(fm.group(1)); block=re.search(r'## Cas réels semblables\n\n([\s\S]*?)(?=\n## Limites)',text)
+        data=parse_frontmatter(fm.group(1)); block=re.search(r'## Cas réels semblables\n\n([\s\S]*?)(?=\n## Limites)',text)
         headings=re.findall(r'^###\s+(.+)$',block.group(1),re.M) if block else []
         expected=[real_cases[c]['fr'] for c in data.get('real_case_ids',[]) if c in real_cases]
         if headings!=expected: errors.append(f'{p}: real-case display titles differ from registry')

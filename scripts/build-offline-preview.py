@@ -1,5 +1,6 @@
+from frontmatter_stdlib import parse_frontmatter
 from pathlib import Path
-import json,re,html,shutil,yaml,math
+import json, re, html, shutil, math
 ROOT=Path(__file__).resolve().parents[1]
 PREVIEW=ROOT/'preview'
 FAMILIES=json.loads((ROOT/'src/data/problem-families.json').read_text(encoding='utf-8'))
@@ -23,7 +24,7 @@ def loc(group,lang,v):
 def parse_scale(v):
     p=[x.strip() for x in v.split('→')];return p[0],p[-1]
 def split_file(p):
-    t=p.read_text(encoding='utf-8');m=re.match(r'^---\r?\n(.*?)\r?\n---\r?\n([\s\S]*)$',t,re.S);return yaml.safe_load(m.group(1)),m.group(2)
+    t=p.read_text(encoding='utf-8');m=re.match(r'^---\r?\n(.*?)\r?\n---\r?\n([\s\S]*)$',t,re.S);return parse_frontmatter(m.group(1)),m.group(2)
 def sec(body,head):
     m=re.search(rf'^## {re.escape(head)}\s*$([\s\S]*?)(?=^## |\Z)',body,re.M);return m.group(1).strip() if m else ''
 def bullets(raw): return [re.sub(r'[`*_]','',x[2:].strip()) for x in raw.splitlines() if x.strip().startswith('- ')]
