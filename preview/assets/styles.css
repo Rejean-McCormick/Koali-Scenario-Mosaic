@@ -43,6 +43,31 @@ a{color:inherit}
   .brand-product span{font-size:.84rem}
 }
 
+/* ==============================
+   V2.3 readability / contrast overlay
+   Reference: normal desktop browser UI density, without changing layout.
+   ============================== */
+:root{
+  --ui-text-primary:#f3f7fb;
+  --ui-text-secondary:#cbd6e1;
+  --ui-text-muted:#9eafc0;
+  --ui-text-label:#afbdcb;
+  --ui-border:#334357;
+  --ui-border-strong:#405168;
+}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{color:var(--ui-text-primary)}
+.site-header{border-bottom-color:#2b394b}
+.brand-product strong{font-size:1.12rem;line-height:1.05}
+.brand-product span{font-size:.96rem;line-height:1.1;color:var(--ui-text-primary);font-weight:760}
+.brand-copy small{font-size:.72rem;line-height:1.22;color:var(--ui-text-muted);letter-spacing:.02em}
+.language-switcher{font-size:.82rem;color:var(--ui-text-muted);letter-spacing:.045em}
+
+@media(max-width:620px){
+  .brand-product strong{font-size:1.06rem}
+  .brand-product span{font-size:.9rem}
+  .language-switcher{font-size:.82rem}
+}
 .mosaic-experience{max-width:1360px;margin:auto;padding:.75rem 1.25rem 1rem;container-type:inline-size;container-name:scenario-layout}
 
 /* Compact, layout-stable preview: the panorama remains visible below on a laptop viewport. */
@@ -1445,6 +1470,205 @@ a{color:inherit}
   .preview-image-shell{width:min(168px,52vw)}
 }
 
+/* ==============================
+   V2.3 Chrome-scale readability / contrast
+   IMPORTANT: does not alter the V2.2 stable-height or smartphone ordering
+   contracts. It only raises text size/contrast inside the existing geometry.
+   ============================== */
+.scenario-preview{border-color:var(--ui-border,#334357)}
+.preview-eyebrow{
+  font-size:.78rem;
+  line-height:1.22;
+  color:#9fb0c2;
+  font-weight:520;
+}
+.preview-copy h1{
+  color:#f7f9fc;
+  font-weight:780;
+  letter-spacing:-.018em;
+}
+.preview-summary{
+  color:#d7e0ea;
+  font-size:.98rem;
+  line-height:1.42;
+}
+.preview-cta{font-size:.92rem;font-weight:650;color:#cbd7e3}
+
+.preview-metrics-row{
+  border-color:#34465b;
+  background:#0b121c;
+  padding:.48rem .58rem;
+}
+.preview-metric{border-right-color:#34465b;gap:.16rem}
+.preview-metric span{
+  font-size:.64rem;
+  line-height:1.08;
+  color:#a5b4c4;
+  letter-spacing:.045em;
+  font-weight:580;
+}
+.preview-metric strong{
+  font-size:.82rem;
+  line-height:1.18;
+  color:#f0f4f8;
+  font-weight:700;
+}
+
+.preview-mechanisms{gap:.34rem;margin-top:.08rem}
+.preview-mechanisms span{
+  font-size:.7rem;
+  line-height:1.08;
+  padding:.36rem .56rem;
+  border-color:#3a4a5f;
+  color:#c4d0dc;
+  background:#0d151f;
+  font-weight:540;
+}
+
+.preview-koali{
+  border-left-width:2px;
+  background:rgba(255,255,255,.026);
+  padding:.56rem .68rem;
+}
+.preview-koali>span{
+  font-size:.64rem;
+  color:#a6b5c4;
+  letter-spacing:.045em;
+  font-weight:600;
+}
+.preview-koali p{
+  color:#d6e0ea;
+  font-size:.82rem;
+  line-height:1.38;
+}
+
+.preview-profile{
+  border-color:#34455a;
+}
+.profile-heading{
+  font-size:.78rem;
+  color:#b6c3d0;
+}
+.profile-title,
+.profile-section-label,
+.profile-pattern>span,
+.profile-context span{
+  font-size:.66rem;
+  color:#a7b6c6;
+  letter-spacing:.03em;
+  font-weight:570;
+}
+.system-route{
+  border-color:color-mix(in srgb,var(--a) 38%,#344357);
+  background:color-mix(in srgb,var(--a) 7%,#0d151f);
+}
+.system-route strong{
+  color:#edf4f4;
+  font-size:.82rem;
+  line-height:1.2;
+  font-weight:750;
+}
+.system-route small{
+  color:#b6c3d1;
+  font-size:.76rem;
+  line-height:1.3;
+}
+.system-route-empty{color:#aab7c6;font-size:.78rem}
+.preview-profile .profile-context{border-color:#344357}
+.preview-profile .profile-context strong{
+  color:#edf2f7;
+  font-size:.76rem;
+  line-height:1.22;
+  font-weight:690;
+}
+
+.search-box input,
+.ghost-button,
+.filter-box select{
+  min-height:38px;
+  border-color:#34455a;
+  font-size:.82rem;
+  line-height:1.15;
+}
+.search-box input{font-size:.84rem;color:#eef4f9}
+.search-box input::placeholder{color:#91a2b4;opacity:1}
+.ghost-button{font-weight:680;padding-inline:.8rem}
+.filter-box{gap:.18rem}
+.filter-box span{
+  font-size:.63rem;
+  line-height:1.1;
+  color:#9fb0c2;
+  letter-spacing:.035em;
+  font-weight:600;
+}
+.filter-box select{height:38px;color:#f2f6fa;font-weight:590}
+.mosaic-controls output{
+  color:#9eafc0;
+  font-size:.8rem;
+  line-height:1.2;
+}
+
+.territory-label{
+  font-size:clamp(.78rem,1vw,1.08rem);
+  line-height:.96;
+  opacity:.72;
+  color:#c8d8d7;
+  letter-spacing:.035em;
+  font-weight:800;
+  text-shadow:0 1px 3px rgba(0,0,0,.55);
+}
+.mosaic-canvas[data-active-territory="coordination_breakdown"] .territory-label[data-territory-id="coordination_breakdown"],
+.mosaic-canvas[data-active-territory="signal_context_loss"] .territory-label[data-territory-id="signal_context_loss"],
+.mosaic-canvas[data-active-territory="knowledge_attrition"] .territory-label[data-territory-id="knowledge_attrition"],
+.mosaic-canvas[data-active-territory="distributed_intelligence"] .territory-label[data-territory-id="distributed_intelligence"],
+.mosaic-canvas[data-active-territory="evidence_vs_noise"] .territory-label[data-territory-id="evidence_vs_noise"],
+.mosaic-canvas[data-active-territory="decision_traceability"] .territory-label[data-territory-id="decision_traceability"],
+.mosaic-canvas[data-active-territory="action_learning_loops"] .territory-label[data-territory-id="action_learning_loops"],
+.mosaic-canvas[data-active-territory="capacity_sovereignty"] .territory-label[data-territory-id="capacity_sovereignty"]{opacity:.96}
+.mosaic-hint{
+  color:#91a4b7;
+  font-size:.78rem;
+  line-height:1.35;
+  margin-top:.28rem;
+}
+.mosaic-cell polygon{stroke:rgba(255,255,255,.24)}
+
+/* Protect the V2.2 fixed preview from the larger type on fine-pointer layouts. */
+@container scenario-layout (min-width:1120px){
+  .preview-eyebrow{font-size:.74rem}
+  .preview-summary{font-size:.94rem}
+  .preview-metric span{font-size:.6rem}
+  .preview-metric strong{font-size:.78rem}
+  .preview-mechanisms span{font-size:.66rem;padding:.32rem .5rem}
+  .preview-koali>span{font-size:.6rem}
+  .preview-koali p{font-size:.78rem;line-height:1.34}
+  .system-route strong{font-size:.78rem}
+  .system-route small{font-size:.72rem}
+}
+
+@container scenario-layout (min-width:721px) and (max-width:1119px){
+  .system-route strong{font-size:.8rem}
+  .system-route small{font-size:.74rem;line-height:1.26}
+  .preview-profile .profile-context strong{font-size:.74rem}
+}
+
+@container scenario-layout (max-width:720px){
+  .preview-eyebrow{font-size:.78rem}
+  .preview-summary{font-size:.96rem;line-height:1.46}
+  .preview-metric span{font-size:.66rem}
+  .preview-metric strong{font-size:.84rem}
+  .preview-mechanisms span{font-size:.72rem}
+  .preview-koali>span{font-size:.66rem}
+  .preview-koali p{font-size:.88rem;line-height:1.45}
+  .profile-title,.profile-section-label,.profile-context span{font-size:.68rem}
+  .system-route strong{font-size:.86rem}
+  .system-route small{font-size:.8rem;line-height:1.34}
+  .preview-profile .profile-context strong{font-size:.8rem;line-height:1.3}
+  .filter-box span{font-size:.66rem}
+  .filter-box select,.search-box input,.ghost-button{font-size:.86rem;min-height:40px}
+  .mosaic-controls output{font-size:.82rem}
+  .mosaic-hint{font-size:.8rem}
+}
 /* Public scenario pages reuse the exact same preview panel as the main Mosaic.
    Only the lower honeycomb changes: it becomes a compact set of public facts. */
 .scenario-detail-experience{padding-bottom:1.4rem}
@@ -1628,3 +1852,47 @@ a{color:inherit}
 
 .detail-case-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:.42rem;width:100%}.detail-case-list li{max-width:28ch;color:#e7edf3;font-size:.78rem;line-height:1.24;font-weight:680}.detail-case-list li+li{padding-top:.38rem;border-top:1px solid color-mix(in srgb,var(--detail-accent) 22%,#273244)}
 @media(max-width:720px){.detail-case-list{align-items:flex-start}.detail-case-list li{max-width:none}}
+
+/* ==============================
+   V2.3 detail-page readability / contrast
+   ============================== */
+.detail-hex-inner>span{
+  color:color-mix(in srgb,var(--detail-accent) 60%,#d9e4ee 40%);
+  font-size:.76rem;
+  letter-spacing:.05em;
+  font-weight:650;
+}
+.detail-hex-inner>strong,
+.detail-hex-inner>p{
+  color:#edf2f7;
+  font-size:.94rem;
+  line-height:1.42;
+}
+.detail-hex-inner>strong{font-size:1.04rem}
+.detail-system-list strong,
+.detail-case-list li{
+  color:#e9eff5;
+  font-size:.84rem;
+  line-height:1.32;
+}
+.evidence-note{
+  color:#9fafbf;
+  font-size:.8rem;
+  line-height:1.5;
+}
+.scenario-article{
+  color:#d3dde7;
+  font-size:.98rem;
+  line-height:1.68;
+  border-color:#334357;
+}
+.scenario-article h2{font-size:1.2rem;color:#f2f6fa}
+.scenario-article h3{font-size:1.02rem;color:#e2eaf2}
+
+@media(max-width:720px){
+  .detail-hex-inner>span{font-size:.74rem}
+  .detail-hex-inner>strong,.detail-hex-inner>p{font-size:.92rem}
+  .detail-system-list strong,.detail-case-list li{font-size:.86rem}
+  .evidence-note{font-size:.82rem}
+  .scenario-article{font-size:1rem;line-height:1.7}
+}

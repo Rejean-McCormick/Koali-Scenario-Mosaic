@@ -42,3 +42,29 @@ a{color:inherit}
 @media(max-width:620px){
   .brand-product span{font-size:.84rem}
 }
+
+/* ==============================
+   V2.3 readability / contrast overlay
+   Reference: normal desktop browser UI density, without changing layout.
+   ============================== */
+:root{
+  --ui-text-primary:#f3f7fb;
+  --ui-text-secondary:#cbd6e1;
+  --ui-text-muted:#9eafc0;
+  --ui-text-label:#afbdcb;
+  --ui-border:#334357;
+  --ui-border-strong:#405168;
+}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{color:var(--ui-text-primary)}
+.site-header{border-bottom-color:#2b394b}
+.brand-product strong{font-size:1.12rem;line-height:1.05}
+.brand-product span{font-size:.96rem;line-height:1.1;color:var(--ui-text-primary);font-weight:760}
+.brand-copy small{font-size:.72rem;line-height:1.22;color:var(--ui-text-muted);letter-spacing:.02em}
+.language-switcher{font-size:.82rem;color:var(--ui-text-muted);letter-spacing:.045em}
+
+@media(max-width:620px){
+  .brand-product strong{font-size:1.06rem}
+  .brand-product span{font-size:.9rem}
+  .language-switcher{font-size:.82rem}
+}

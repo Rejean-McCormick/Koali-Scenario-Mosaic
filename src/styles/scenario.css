@@ -181,3 +181,47 @@
 
 .detail-case-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:.42rem;width:100%}.detail-case-list li{max-width:28ch;color:#e7edf3;font-size:.78rem;line-height:1.24;font-weight:680}.detail-case-list li+li{padding-top:.38rem;border-top:1px solid color-mix(in srgb,var(--detail-accent) 22%,#273244)}
 @media(max-width:720px){.detail-case-list{align-items:flex-start}.detail-case-list li{max-width:none}}
+
+/* ==============================
+   V2.3 detail-page readability / contrast
+   ============================== */
+.detail-hex-inner>span{
+  color:color-mix(in srgb,var(--detail-accent) 60%,#d9e4ee 40%);
+  font-size:.76rem;
+  letter-spacing:.05em;
+  font-weight:650;
+}
+.detail-hex-inner>strong,
+.detail-hex-inner>p{
+  color:#edf2f7;
+  font-size:.94rem;
+  line-height:1.42;
+}
+.detail-hex-inner>strong{font-size:1.04rem}
+.detail-system-list strong,
+.detail-case-list li{
+  color:#e9eff5;
+  font-size:.84rem;
+  line-height:1.32;
+}
+.evidence-note{
+  color:#9fafbf;
+  font-size:.8rem;
+  line-height:1.5;
+}
+.scenario-article{
+  color:#d3dde7;
+  font-size:.98rem;
+  line-height:1.68;
+  border-color:#334357;
+}
+.scenario-article h2{font-size:1.2rem;color:#f2f6fa}
+.scenario-article h3{font-size:1.02rem;color:#e2eaf2}
+
+@media(max-width:720px){
+  .detail-hex-inner>span{font-size:.74rem}
+  .detail-hex-inner>strong,.detail-hex-inner>p{font-size:.92rem}
+  .detail-system-list strong,.detail-case-list li{font-size:.86rem}
+  .evidence-note{font-size:.82rem}
+  .scenario-article{font-size:1rem;line-height:1.7}
+}
