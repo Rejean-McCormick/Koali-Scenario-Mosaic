@@ -1,4 +1,27 @@
 ---
-import { getLocalizedScenarios } from '../../lib/scenarios';
-export async function getStaticPaths(){const scenarios=await getLocalizedScenarios('en');return scenarios.map(s=>({params:{id:s.data.id}}));}
-return Astro.redirect(`/en/uses/${Astro.params.id}/`);
+export function getStaticPaths() {
+  return Array.from({ length: 36 }, (_, index) => {
+    const id = `SCN-${String(index + 1).padStart(3, '0')}`;
+    return { params: { id } };
+  });
+}
+
+const id = Astro.params.id ?? 'SCN-001';
+const target = `/en/uses/${id}/`;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={target} />
+    <title>Redirecting…</title>
+  </head>
+  <body>
+    <p><a href={target}>Continue to the English scenario</a></p>
+    <script is:inline define:vars={{ target }}>
+      window.location.replace(target);
+    </script>
+  </body>
+</html>
