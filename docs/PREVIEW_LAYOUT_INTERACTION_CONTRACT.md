@@ -156,3 +156,18 @@ titleDensity(title)
 14. Le titre est recalculé après redimensionnement, zoom et chargement des polices.
 15. Entre 721 et 1119 px, le profil occupe une rangée complète sous l’image et le bloc 2.
 16. Les pages de détail et l’aperçu hors ligne utilisent le même contrôleur de layout que la mosaïque.
+
+## Addendum V2.2 — stabilité problem-first
+
+La V2 ajoute des indicateurs, des mécanismes et un résumé de réponse Koali dans le bloc central. Ces nouvelles données **ne doivent jamais redevenir une source de variation verticale sur un appareil à pointeur fin**.
+
+Invariants V2.2 :
+
+- `>= 1120 px` : la carte `.scenario-preview` conserve une hauteur fixe pendant tous les changements de scénario;
+- `721–1119 px` : la preview à deux rangées conserve elle aussi une hauteur totale fixe;
+- `<= 720 px` : la contrainte de hauteur fixe est levée, car il n'y a pas de hover à protéger; la hauteur redevient déterminée par le contenu;
+- smartphone : ordre de lecture **`.preview-copy` → `.preview-profile` → `.preview-image-shell`**;
+- smartphone : le hook et le texte « Ce que Koali change » ne sont pas tronqués pour satisfaire une hauteur artificielle;
+- l'aperçu offline doit conserver le même délai d'intention de 140 ms et la même logique tactile que la version Astro.
+
+Le validateur V2 vérifie désormais explicitement ces invariants.

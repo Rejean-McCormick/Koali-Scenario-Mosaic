@@ -1,243 +1,153 @@
-# Koali Scenario Mosaic — v4.3.4 Two-tone Brand Checker + Magnetic Territories
+# Koali Scenario Mosaic V2
 
 **Koali, the Sociotechnical Operating System**
 
-Koali Scenario Mosaic is a public-facing panorama of **120 stable scenario identities**, now available in **English and French** without duplicating the Mosaic geometry or machine-facing scenario metadata.
+Scenario Mosaic V2 is a bilingual, static-first atlas of **36 canonical sociotechnical problems**. The public experience now starts from problems people recognize, then exposes failure mechanisms, scale, urgency, stakes, real-world parallels, and the Koali response path.
 
+## What changed from V1
 
-## v4.3.4 — two-tone Koali brand checker
+V1 organized 120 examples into eight equal capability territories. V2 intentionally removes that symmetry.
 
-The eight category hues have been replaced by a **two-tone checker derived from Koali green**. The top territories alternate A/B/A/B and the lower row alternates B/A/B/A, so neighboring territories remain distinct without the former rainbow palette. Magnetic territory labels are also brighter at rest and on hover for stronger contrast. See [`docs/47_TWO_TONE_BRAND_CHECKER.md`](docs/47_TWO_TONE_BRAND_CHECKER.md).
+- **36 canonical scenarios**, not 120 filler-balanced examples;
+- **8 problem families** with variable scenario counts;
+- **problem-first navigation**, not capability-first navigation;
+- facets for **problem family, scale, urgency, and stakes**;
+- explicit **failure mechanisms** and **coordination gap**;
+- documented **real-world parallels** in every scenario;
+- selected scenario pages now expose problem anatomy and the full sourced editorial scenario;
+- the 24 Koali response patterns remain embedded in scenario metadata;
+- Astro remains **static-first, bilingual, responsive, keyboard/touch accessible, and deployable on Netlify**.
 
-## v4.3.2 — refreshed scenarios integrated into the magnetic interface
+## Content source of truth
 
-The **v4.3.1 scenario corpus is the new editorial source of truth** in this repository. All 120 English and all 120 French scenario documents, plus their shared public metadata and French tag vocabulary, are carried over exactly from the supplied v4.3.1 refresh.
+The localized Markdown files are the source of truth:
 
-The magnetic Mosaic remains the interaction shell:
+```text
+src/content/scenarios/en/SCN-001.md ... SCN-036.md
+src/content/scenarios/fr/SCN-001.md ... SCN-036.md
+```
 
-- the same 20 × 6 geometry and 8 category territories;
-- the same embedded magnetic territory labels;
-- the same public selected-scenario layout;
-- the same EN/FR route continuity;
-- refreshed titles, summaries, contexts, domains, flows, and transferable domains everywhere the interface reads scenario data.
+Each file contains both the localized narrative and the V2 metadata used by the interface:
 
-Because the refreshed corpus contains longer, more narrative titles, the preview now uses an **adaptive three-line title box** with short / medium / long density states. Hovering a new scenario updates this density without changing the Mosaic geometry.
+- `problem_family`
+- `failure_mechanisms`
+- `scale`
+- `urgency`
+- `stakes`
+- `coordination_gap`
+- `domains`
+- `koali_patterns`
+- `koali_components`
+- `real_case_ids`
+- evidence/runtime status
 
-See [`docs/45_SCENARIO_EDITORIAL_REFRESH.md`](docs/45_SCENARIO_EDITORIAL_REFRESH.md) and [`docs/46_REFRESHED_SCENARIOS_MAGNETIC_INTEGRATION.md`](docs/46_REFRESHED_SCENARIOS_MAGNETIC_INTEGRATION.md).
-
-## Open immediately
-
-Double-click `START.html`.
-
-The zero-install preview detects the browser language:
-
-- French browser → French Mosaic;
-- otherwise → English Mosaic.
-
-The **EN / FR** switch is always visible and keeps the current scenario when changing language.
+No separate 120-entry scenario metadata file remains.
 
 ## Public routes
 
 ```text
 /                  → browser-language choice
 /en/uses/          → English Mosaic
-/fr/uses/          → Mosaïque française
-/en/uses/SCN-061/  → English scenario
-/fr/uses/SCN-061/  → French scenario
+/fr/uses/          → French Mosaic
+/en/uses/SCN-001/  → English scenario
+/fr/uses/SCN-001/  → French scenario
 ```
 
-Legacy `/uses/` links continue to redirect to English for compatibility.
+Legacy `/uses/` routes still redirect to English.
 
-## One scenario identity, two editorial languages
+## Mosaic interface
 
-The v4 architecture separates stable scenario structure from translated editorial text:
+The interaction shell retained from V1 includes:
 
-```text
-src/data/scenarios.json
-    120 shared scenario identities
-    IDs, categories, patterns, palette keys, scales,
-    settings, properties, domains, component data,
-    evidence status, image identity, layout continuity
+- hexagonal Mosaic identity;
+- hover/focus selection;
+- touch preview rather than accidental navigation;
+- swipe next/previous on coarse-pointer devices;
+- magnetic family labels in the production Astro build;
+- responsive selected-scenario preview;
+- `Surprise me` and reset;
+- EN/FR route continuity.
 
-src/content/scenarios/en/
-    120 English editorial scenario documents
+V2 adds multi-axis filtering:
 
-src/content/scenarios/fr/
-    120 French editorial scenario documents
+- problem family;
+- scale;
+- urgency;
+- stakes;
+- free-text search across titles, mechanisms, domains, Koali patterns/components, real cases and response copy.
 
-src/data/mosaic-layout.json
-    one shared 20 × 6 geography for both languages
-```
+## Selected scenario page
 
-`SCN-061` therefore occupies the **same hexagon, color family, image, pattern family, and semantic profile** in both languages. Only the human-readable editorial layer changes.
+A selected scenario shows:
 
-## French coverage
+1. a scenario image, followed by a compact scale / urgency / coordination-gap / stakes row;
+2. problem family, hook and failure mechanisms;
+3. Koali system path;
+4. five problem-anatomy hexagons:
+   - what breaks;
+   - who holds part of the picture;
+   - Koali response;
+   - real-world parallels;
+   - what success looks like;
+5. the complete sourced scenario document.
 
-The French edition includes:
+Real cases are analogues of the documented failure mechanism. They are **not claims that Koali would have prevented a specific event or guaranteed a different outcome**.
 
-- all **120 titles**;
-- all **120 preview summaries**;
-- all **24 recurring pattern names and descriptions**;
-- all **8 public category names**;
-- localized scale, context, domain, property, and palette labels;
-- complete French editorial scenario sources;
-- French search, legend, controls, profile labels, accessibility text, and cover;
-- French offline pages under `preview/fr/`.
-
-Translations are versioned source content. There is **no runtime machine translation**.
-
-## Interaction design retained
-
-- 20 × 6 panoramic honeycomb;
-- 8 contiguous category territories;
-- eight territory names embedded directly over their color regions;
-- one highlighted hexagon at a time;
-- stable fixed-height preview;
-- adaptive three-line title box for the refreshed, longer scenario hooks;
-- public-language scenario profile;
-- automatic PNG scenario image loading with SVG fallback;
-- two-tone Koali brand checker (`#1e6864` / `#4a9690`) and supplied SVG logo.
-
-
-## Responsive preview behavior
-
-The v4.1 preview explicitly separates the **initial cover** from **scenario images**:
-
-- the initial cover is a text-free abstract territory graphic and uses `object-fit: contain`;
-- scenario PNG/SVG images switch to `object-fit: cover` after hover/focus;
-- at tablet widths the preview uses a bounded two-column top row and a full-width profile strip;
-- below 720 px the preview becomes a single-column stack;
-- the legend no longer forces a 760 px page width;
-- only the Mosaic itself becomes horizontally scrollable on narrow screens.
-
-This prevents the preview panel from spilling outside the viewport and prevents the cover branding from being cropped.
-
-
-## Scenario pages: selected Mosaic state
-
-A public scenario page is no longer a separate article layout. It reuses the **same Koali header and the same scenario-preview panel** as the main Mosaic. The only major visual change is the lower honeycomb.
-
-On the main page, that honeycomb contains the 120 scenarios. On a selected scenario page, it becomes five public information hexagons:
-
-- **Starts with / Point de départ**;
-- **What can get lost / Ce qui peut se perdre**;
-- **Koali keeps connected / Koali maintient le lien**;
-- **Flow / Déroulé**;
-- **Transferable to / Transposable à**.
-
-The public route intentionally does **not render the full editorial Markdown**. Internal architecture and claim-governance material such as component scores, `PAT-*`, `SIG-*`, `POS-*`, derivation states, and runtime-evidence states remain in the repository source for editorial/governance use, but are not part of the general-public reading experience.
-
-This makes a scenario feel like a **selected state of the Mosaic**, not a jump into a different documentation system.
-
-## Magnetic territory labels — retained in v4.3.2
-
-The detached visual color legend has been replaced by **eight localized territory names embedded directly over the honeycomb**. On desktop/fine-pointer devices, individual letters are repelled by pointer proximity and return with a short spring/bounce.
-
-The governing invariant remains:
-
-> **The map stays still. Meaning becomes alive.**
-
-Implementation details:
-
-- production: pinned **GSAP 3.13.0 + SplitText** with a custom proximity/spring controller;
-- exactly eight versioned normalized anchors in `mosaic-layout.json`;
-- letters only move by `transform`; hexagon geometry never changes;
-- active scenario hover/focus raises only the matching territory-label opacity;
-- touch/coarse-pointer and `prefers-reduced-motion` receive complete static labels;
-- the former category legend remains as a screen-reader-only semantic list;
-- offline `START.html` preview mirrors the effect with a dependency-free `requestAnimationFrame` implementation so it also works under `file://`.
-
-See [`docs/43_MAGNETIC_TERRITORY_LABELS_TECHNICAL_SPEC.md`](docs/43_MAGNETIC_TERRITORY_LABELS_TECHNICAL_SPEC.md) and [`docs/44_MAGNETIC_TERRITORY_LABELS_IMPLEMENTATION.md`](docs/44_MAGNETIC_TERRITORY_LABELS_IMPLEMENTATION.md).
-
-## Develop locally
-
-Use Node **24.20.0** when possible. Astro requires Node `>=22.12.0`.
-
-```bash
-npm install
-npm run build
-npx astro preview
-```
-
-Then open the local URL printed by Astro, normally `http://localhost:4321`.
-
-The production build intentionally does **not** run the Python offline-preview generator.
-
-## Regenerate the zero-install bilingual preview
-
-The offline generator uses Python and PyYAML:
-
-```bash
-python -m pip install PyYAML
-npm run preview:offline
-```
-
-It produces:
-
-```text
-preview/index.html          language chooser
-preview/en/index.html       English Mosaic
-preview/fr/index.html       French Mosaic
-preview/en/uses/...         120 English detail pages
-preview/fr/uses/...         120 French detail pages
-```
-
-## Validation
-
-```bash
-npm run validate
-```
-
-The validation contract checks:
-
-- 120 shared scenario identities;
-- 120 EN + 120 FR editorial documents;
-- matching EN/FR scenario IDs;
-- no duplicated shared metadata inside localized files;
-- no title repetition in preview summaries;
-- complete French public metadata vocabulary;
-- bilingual routes and language switch;
-- both offline previews;
-- 20 × 6 Mosaic geometry and category territories;
-- PNG/SVG image resolution;
-- canonical Koali branding;
-- eight territory anchors and localized map labels;
-- GSAP/SplitText magnetic-label lifecycle, reduced-motion, fine-pointer, and observer contracts.
-
-## Netlify
-
-The included `netlify.toml` uses:
-
-```text
-Build command: npm run build
-Publish directory: dist
-Node: 24.20.0
-```
-
-A push to the connected GitHub repository can redeploy directly on Netlify.
 
 ## Scenario images
 
-PNG convention remains unchanged:
+The V1 image-slot contract is restored. Final scenario artwork can be added progressively without changing the Markdown schema:
 
 ```text
-public/scenarios/images/scenario_001.png
+public/scenarios/images/SCN-001.png
 ...
-public/scenarios/images/scenario_120.png
+public/scenarios/images/SCN-036.png
 ```
 
-Both languages share the same scenario image. Missing PNGs automatically use the scenario SVG placeholder.
+When a scenario-specific PNG is absent, the interface uses one of eight family-level SVG illustrations from `public/scenarios/fallback/`. This guarantees that the preview always retains its visual image area while final artwork can be replaced progressively.
 
-## Canonical naming
+## French public taxonomy
 
-- brand: **Koali**;
-- positioning: **Koali, the Sociotechnical Operating System**;
-- English interface: **Koali Scenario Mosaic**;
-- French interface: **Mosaïque de scénarios Koali**;
-- npm package: `koali-scenario-mosaic`.
+Internal metadata remains language-neutral (`critical`, `context_loss`, `high`, etc.). Public French UI uses context-aware localization so grammatical values remain correct: for example `Urgence: Critique`, `Déficit de coordination: Élevé`, and `Perte de contexte · Dilution du signal · Absence d’escalade · Fausse certitude`. Real-world case names also use localized display titles while retaining original source links.
 
-See [`docs/40_BILINGUAL_ARCHITECTURE.md`](docs/40_BILINGUAL_ARCHITECTURE.md) for the v4 language architecture, [`docs/41_RESPONSIVE_PREVIEW_AND_COVER.md`](docs/41_RESPONSIVE_PREVIEW_AND_COVER.md) for the responsive-preview contract, [`docs/42_PUBLIC_SCENARIO_SELECTED_STATE.md`](docs/42_PUBLIC_SCENARIO_SELECTED_STATE.md) for the public scenario-page model, and [`docs/44_MAGNETIC_TERRITORY_LABELS_IMPLEMENTATION.md`](docs/44_MAGNETIC_TERRITORY_LABELS_IMPLEMENTATION.md) for v4.3.2.
+## Develop
 
-## v4.3.5 — softer magnetic motion
+Node `>=22.12.0` is required.
 
-Territory labels keep their pointer-repulsion behavior, but the spring is now strongly damped to avoid repeated bounce / visual flicker. The field is broader, displacement is shorter, pointer input is smoothed, and character velocity is capped. See `docs/48_SOFT_MAGNETIC_MOTION.md`.
+```bash
+npm install
+npm run validate
+npm run dev
+npm run build
+```
+
+The V2 validator checks the bilingual 36-scenario contract, source/evidence minimums, localized real-case registry, French public labels, and family image fallbacks.
+
+## Zero-install preview
+
+```bash
+npm run preview:offline
+```
+
+Then open `START.html` or `preview/index.html` directly. The offline preview contains both Mosaic languages and all 72 localized scenario pages.
+
+## Deployment
+
+`netlify.toml` retains the static Astro deployment model. Production output is `dist/`.
+
+## Historical documentation
+
+The `docs/` folder contains substantial V1 design history. It remains useful as rationale for the interaction shell, responsive preview, bilingual architecture and magnetic labels, but the V2 source of truth is this README plus `docs/60_V2_PROBLEM_FIRST_ARCHITECTURE.md` and the scenario Markdown corpus.
+
+## Preview stability and smartphone behavior
+
+V2.2 explicitly preserves the V1 interaction contract:
+
+- desktop/laptop hover updates content **without changing the preview height or moving the Mosaic**;
+- fine-pointer hover uses a 140 ms intent delay;
+- smartphone taps preview a scenario instead of navigating accidentally;
+- horizontal swipe moves to the previous/next visible scenario;
+- smartphone reading order is **scenario copy → Koali path/context → image**;
+- mobile editorial copy uses content-driven height rather than fixed rows that clip text.
+
+These rules are validated by `scripts/validate-v2.py` and documented historically in `docs/PREVIEW_LAYOUT_INTERACTION_CONTRACT.md`.

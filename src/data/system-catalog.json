@@ -96,5 +96,33 @@
       "en": "Learning and dissemination formats when structured knowledge must reach a broader audience.",
       "fr": "Formats d’apprentissage et de diffusion lorsque la connaissance structurée doit rejoindre un public plus large."
     }
+  },
+  "konnaxion": {
+    "label": "Konnaxion",
+    "description": {
+      "en": "Public coordination layer connecting people, projects, contributions and collective work.",
+      "fr": "Couche de coordination publique reliant personnes, projets, contributions et travail collectif."
+    }
+  },
+  "sentient": {
+    "label": "SenTient",
+    "description": {
+      "en": "Semantic reconciliation of ambiguous, partial or conflicting inputs.",
+      "fr": "Réconciliation sémantique des entrées ambiguës, partielles ou contradictoires."
+    }
+  },
+  "semantik-architect": {
+    "label": "SemantiK Architect",
+    "description": {
+      "en": "Governed meaning structures, concepts, relations and multilingual mappings.",
+      "fr": "Structures de sens gouvernées, concepts, relations et correspondances multilingues."
+    }
+  },
+  "kreative": {
+    "label": "Kreative / Konservation",
+    "description": {
+      "en": "Cultural preservation with provenance, rights, authority and community context.",
+      "fr": "Préservation culturelle avec provenance, droits, autorité et contexte communautaire."
+    }
   }
 }

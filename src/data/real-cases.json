@@ -1,0 +1,122 @@
+{
+  "ARRIVECAN": {
+    "en": "ArriveCAN — Auditor General of Canada",
+    "fr": "ArriveCAN — Bureau du vérificateur général du Canada"
+  },
+  "BC_HEAT": {
+    "en": "2021 heat dome — BC Coroners Service",
+    "fr": "Dôme de chaleur de 2021 — Service des coroners de la Colombie-Britannique"
+  },
+  "CHANGE_HEALTH": {
+    "en": "Change Healthcare cyberattack — U.S. HHS",
+    "fr": "Cyberattaque contre Change Healthcare — Département américain de la Santé et des Services sociaux"
+  },
+  "COLUMBIA": {
+    "en": "Space Shuttle Columbia accident — Investigation Board report",
+    "fr": "Accident de la navette Columbia — Rapport de la commission d’enquête"
+  },
+  "FDA_AIDS": {
+    "en": "HIV/AIDS — History of the FDA’s role",
+    "fr": "VIH/sida — Histoire du rôle de la FDA"
+  },
+  "FERC_2011": {
+    "en": "2011 Southwest cold-weather event — FERC/NERC",
+    "fr": "Vague de froid de 2011 dans le sud-ouest des États-Unis — FERC/NERC"
+  },
+  "FLINT": {
+    "en": "Flint water crisis — EPA Inspector General",
+    "fr": "Crise de l’eau de Flint — Rapport de l’inspecteur général de l’EPA"
+  },
+  "GAO_LEGACY": {
+    "en": "Critical federal legacy systems — U.S. GAO",
+    "fr": "Systèmes informatiques patrimoniaux critiques — U.S. GAO"
+  },
+  "GRENFELL": {
+    "en": "Grenfell Tower fire — Phase 2 Inquiry",
+    "fr": "Incendie de la tour Grenfell — Enquête publique, phase 2"
+  },
+  "HORIZON": {
+    "en": "Post Office Horizon scandal — Statutory Inquiry",
+    "fr": "Scandale Horizon du Post Office — Enquête publique"
+  },
+  "IAEA_KM": {
+    "en": "Nuclear knowledge management — IAEA",
+    "fr": "Gestion des connaissances nucléaires — AIEA"
+  },
+  "IPCC": {
+    "en": "IPCC Sixth Assessment Report — Summary for Policymakers",
+    "fr": "Sixième rapport d’évaluation du GIEC — Résumé à l’intention des décideurs"
+  },
+  "LOCAL_CONTEXTS": {
+    "en": "Local Contexts — Traditional Knowledge Labels",
+    "fr": "Local Contexts — Étiquettes de savoir traditionnel"
+  },
+  "MAELYNE": {
+    "en": "Death of Maëlyne Lugez — Québec coroner public inquiry",
+    "fr": "Décès de Maëlyne Lugez — Enquête publique du coroner du Québec"
+  },
+  "MARTHA": {
+    "en": "Martha’s Rule — NHS England",
+    "fr": "Règle de Martha — NHS England"
+  },
+  "MCC": {
+    "en": "2020 Nova Scotia mass casualty — Mass Casualty Commission",
+    "fr": "Tuerie de masse de 2020 en Nouvelle-Écosse — Commission sur les pertes massives"
+  },
+  "MIT_OCW": {
+    "en": "MIT OpenCourseWare",
+    "fr": "MIT OpenCourseWare"
+  },
+  "NACI_2026": {
+    "en": "COVID-19 vaccine guidance for fall 2026 — NACI",
+    "fr": "Vaccins contre la COVID-19 à partir de l’automne 2026 — CCNI"
+  },
+  "NINE_ELEVEN": {
+    "en": "September 11, 2001 attacks — 9/11 Commission Report",
+    "fr": "Attentats du 11 septembre 2001 — Rapport de la Commission sur le 11-Septembre"
+  },
+  "PHOENIX": {
+    "en": "Phoenix pay system — Auditor General of Canada",
+    "fr": "Système de paie Phénix — Bureau du vérificateur général du Canada"
+  },
+  "PROTECTEUR_RESOURCE": {
+    "en": "Québec Ombudsperson — 2024–2025 annual report",
+    "fr": "Protecteur du citoyen — Rapport annuel d’activités 2024-2025"
+  },
+  "PUB_BIAS": {
+    "en": "Publication bias in clinical trials — systematic review",
+    "fr": "Biais de publication dans les essais cliniques — revue systématique"
+  },
+  "RESEARCH_WASTE": {
+    "en": "Research waste in randomized clinical trials",
+    "fr": "Gaspillage de recherche dans les essais cliniques randomisés"
+  },
+  "SAAQ": {
+    "en": "CASA/SAAQclic — Auditor General of Québec",
+    "fr": "CASA/SAAQclic — Vérificatrice générale du Québec"
+  },
+  "TOBACCO": {
+    "en": "Smoking and health — U.S. Surgeon General reports",
+    "fr": "Tabagisme et santé — Rapports du Surgeon General des États-Unis"
+  },
+  "UNESCO_OER": {
+    "en": "UNESCO Recommendation on Open Educational Resources",
+    "fr": "Recommandation de l’UNESCO sur les ressources éducatives libres"
+  },
+  "VACCINE_AUTISM": {
+    "en": "Vaccines and autism — National Academies safety review",
+    "fr": "Vaccins et autisme — Revue de sécurité vaccinale des National Academies"
+  },
+  "WALKERTON": {
+    "en": "Walkerton tragedy — Commission of Inquiry",
+    "fr": "Tragédie de Walkerton — Commission d’enquête"
+  },
+  "WHO_HCQ": {
+    "en": "Hydroxychloroquine and COVID-19 — World Health Organization",
+    "fr": "Hydroxychloroquine et COVID-19 — Organisation mondiale de la Santé"
+  },
+  "WIPO_CULTURE": {
+    "en": "Intellectual property and cultural institutions — WIPO",
+    "fr": "Propriété intellectuelle et institutions culturelles — OMPI"
+  }
+}

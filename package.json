@@ -1,27 +1,18 @@
 {
   "name": "koali-scenario-mosaic",
-  "version": "4.4.11",
+  "version": "5.0.2",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "npm run images:build && astro dev",
+    "dev": "astro dev",
     "build": "npm run validate && astro build",
-    "validate:mosaic": "node scripts/validate-mosaic.mjs",
-    "validate:repo": "python scripts/validate-repo.py",
-    "validate": "npm run validate:mosaic && npm run validate:territory-labels && npm run validate:repo && npm run validate:images && npm run validate:copy && npm run validate:editorial && npm run validate:i18n && npm run validate:name",
-    "preview:offline": "npm run images:build && python scripts/build-offline-preview.py",
-    "validate:images": "npm run images:build && python scripts/validate-images.py",
-    "validate:name": "node scripts/validate-name.mjs",
-    "validate:copy": "python scripts/validate-copy.py",
-    "validate:editorial": "python scripts/validate-editorial-variety.py",
-    "validate:i18n": "python scripts/validate-i18n.py",
-    "validate:territory-labels": "node scripts/validate-territory-labels.mjs",
-    "images:build": "node scripts/build-scenario-images.mjs"
+    "validate": "python scripts/validate-v2.py",
+    "preview:offline": "python scripts/build-offline-preview.py",
+    "check": "astro check"
   },
   "dependencies": {
     "astro": "7.2.9",
-    "gsap": "3.13.0",
-    "sharp": "0.34.3"
+    "gsap": "3.13.0"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",

@@ -1,119 +1,45 @@
 ---
-import { getUi, humanizeTag, type Locale } from '../i18n/ui';
-import { resolveScenarioPreviewImageSet } from '../lib/scenario-image';
-import { paletteBacklightGroups } from '../lib/palette-icons';
+import { getUi, type Locale } from '../i18n/ui';
 import { getScenarioPortal } from '../lib/scenario-portal';
-
-const {
-  total = 120,
-  locale = 'en' as Locale,
-  scenario = null,
-} = Astro.props;
-
-const s = getUi(locale);
-const selected = Boolean(scenario);
-const data = scenario?.data;
-const body = scenario?.entry?.body ?? '';
-const portal = selected ? getScenarioPortal(data, body, locale) : null;
-const scales = selected ? (data.scales ?? []).map((x:string) => humanizeTag(locale, x)) : [];
-const contexts = selected ? [...new Set([
-  ...(data.settings ?? []),
-  ...(data.domains ?? []),
-])].map((x:string) => humanizeTag(locale, x)).slice(0, 3) : [];
-const properties = selected ? (data.properties ?? []).map((x:string) => humanizeTag(locale, x)) : [];
-const image = selected ? resolveScenarioPreviewImageSet(data.id, data.preview_image) : null;
-const paletteKeys = selected ? (data.palette ?? []) : [];
-const paletteBacklights = paletteBacklightGroups.map((group) => ({
-  ...group,
-  active: selected && group.palette.some((key) => paletteKeys.includes(key)),
-  label: group.label[locale],
-  iconPath: `/icons/palette/${group.icon}`,
-  architectureLabel: group.architecture.join(' · '),
-}));
-const titleText = selected ? portal!.capabilityTitle : s.exploreWays(total);
+import { parseScale, localizeScale } from '../lib/scale';
+import { localizeScaleValue, localizeUrgency, localizeCoordinationGap, localizeStake, localizeMechanism } from '../i18n/taxonomy';
+import { resolveScenarioPreviewImageSet } from '../lib/scenario-image';
+const { total=36, locale='en' as Locale, scenario=null }=Astro.props;
+const s=getUi(locale);
+const selected=Boolean(scenario);
+const data=scenario?.data;
+const body=scenario?.entry?.body ?? '';
+const portal=selected?getScenarioPortal(data,body,locale):null;
+const mechanisms=selected?(data.failure_mechanisms ?? []).map((x:string)=>localizeMechanism(locale,x)):[];
+const stakes=selected?(data.stakes ?? []).map((x:string)=>localizeStake(locale,x)):[];
+const image=selected?resolveScenarioPreviewImageSet(data.id,data.problem_family):null;
 ---
-<section class="scenario-preview" data-preview-swipe={!selected ? 'true' : undefined} data-preview-selected={selected ? 'true' : 'false'}>
-  <div class="preview-image-shell" data-preview-media>
-    <img
-      class="preview-home-logo"
-      data-preview-prompt
-      src="/brand/koali-mark.svg"
-      alt="Koali"
-      style="width:72%;height:72%;object-fit:contain;place-self:center"
-      hidden={selected}
-    />
-    <img
-      data-preview-image
-      data-image-state={selected ? 'scenario' : 'empty'}
-      src={image?.src ?? undefined}
-      srcset={image?.srcset}
-      sizes={image?.sizes}
-      alt={selected ? data.preview_image_alt : ''}
-      hidden={!selected}
-    />
+<section class="scenario-preview" data-preview-swipe={!selected?'true':undefined} data-preview-selected={selected?'true':'false'}>
+  <div class="preview-image-shell">
+    <img data-preview-image data-image-state={selected?'scenario':'cover'} src={selected?image!.src:'/brand/koali-mark.svg'} srcset={selected?image!.srcset:undefined} sizes={selected?image!.sizes:undefined} alt={selected?data.title:'Koali'}/>
   </div>
-
   <div class="preview-copy">
-    <p class="preview-eyebrow">
-      <span data-preview-id>{selected ? data.id : (locale === 'fr' ? 'Mosaïque de scénarios Koali' : 'Koali Scenario Mosaic')}</span>
-      <span aria-hidden="true"> · </span>
-      <span data-preview-category>{selected ? data.category_label : `${total} ${s.examples}`}</span>
-    </p>
-
-    <h1 data-preview-title>{titleText}</h1>
-    <p class="preview-summary" data-preview-summary>{selected ? portal!.koaliHelp : s.hoverIntro}</p>
-
-    <p class="preview-example" data-preview-example-wrap hidden={!selected}>
-      <span>{s.exampleLabel}</span>
-      <strong data-preview-example>{selected ? portal!.exampleTitle : ''}</strong>
-    </p>
-
-    <div class="preview-tags preview-backlights" data-preview-palette>
-      {paletteBacklights.map((item) => (
-        <span
-          class:list={['tag', 'tag-backlight', {'is-active': item.active}]}
-          data-backlight-key={item.key}
-          data-architecture={item.architectureLabel}
-          title={`${item.label} — ${s.usuallyVia}: ${item.architectureLabel}`}
-          aria-label={`${item.label}: ${item.active ? (locale === 'fr' ? 'actif' : 'active') : (locale === 'fr' ? 'inactif' : 'inactive')}. ${s.usuallyVia}: ${item.architectureLabel}`}
-        >
-          <img class="tag-icon" src={item.iconPath} alt="" aria-hidden="true" />
-          <span class="tag-label">{item.label}</span>
-        </span>
-      ))}
+    <p class="preview-eyebrow"><span data-preview-id>{selected?data.id:(locale==='fr'?'Mosaïque de scénarios Koali':'Koali Scenario Mosaic')}</span><span aria-hidden="true"> · </span><span data-preview-category>{selected?data.problem_family_label:`${total} ${s.examples}`}</span></p>
+    <h1 data-preview-title>{selected?data.title:s.exploreWays(total)}</h1>
+    <p class="preview-summary" data-preview-summary>{selected?data.hook:s.hoverIntro}</p>
+    <div class="preview-metrics-row" data-preview-metrics-row hidden={!selected}>
+      <div class="preview-metric"><span>{s.scale}</span><strong data-preview-scale>{selected?localizeScaleValue(locale,parseScale(data.scale).extent):'—'}</strong></div>
+      <div class="preview-metric preview-metric-urgency" data-preview-urgency-wrap data-urgency={selected?data.urgency:undefined}><span>{s.urgency}</span><strong data-preview-urgency>{selected?localizeUrgency(locale,data.urgency):'—'}</strong></div>
+      <div class="preview-metric"><span>{s.coordinationGap}</span><strong data-preview-gap>{selected?localizeCoordinationGap(locale,data.coordination_gap):'—'}</strong></div>
+      <div class="preview-metric"><span>{s.stakes}</span><strong data-preview-stakes>{selected?stakes.slice(0,3).join(' · '):'—'}</strong></div>
     </div>
-
-    {selected
-      ? <a class="preview-cta" href={`/${locale}/uses/`}>← {s.detailBack}</a>
-      : <a class="preview-cta touch-full-link" data-preview-link hidden>
-          {s.openExample}
-          <span aria-hidden="true"> →</span>
-        </a>}
+    <div class="preview-mechanisms" data-preview-mechanisms>{selected?mechanisms.slice(0,4).map((m:string)=><span>{m}</span>):null}</div>
+    <div class="preview-koali" data-preview-koali-wrap hidden={!selected}><span>{s.koaliResponse}</span><p data-preview-koali>{selected?portal!.koaliHelp:''}</p></div>
+    {selected?<a class="preview-cta" href={`/${locale}/uses/`}>← {s.detailBack}</a>:<a class="preview-cta touch-full-link" data-preview-link hidden>{s.openExample}<span aria-hidden="true"> →</span></a>}
   </div>
-
-  <aside class="preview-profile" data-preview-profile data-category={selected ? data.primary_category : undefined}>
-    <div class="profile-heading">
-      <span class="profile-title">{s.insideKoali}</span>
-      <span class="profile-section-label">{s.systemPath}</span>
-    </div>
-
-    <div class="profile-systems" data-preview-systems>
-      <div class="system-route-list" data-preview-system-list>
-        {selected
-          ? portal!.systems.map((system) => (
-              <span class="system-route" title={system.description} data-system-key={system.key}>
-                <strong>{system.label}</strong>
-                <small>{system.description}</small>
-              </span>
-            ))
-          : <span class="system-route-empty">{s.selectSystemHint}</span>}
-      </div>
-    </div>
-
+  <aside class="preview-profile" data-preview-profile data-family={selected?data.problem_family:undefined}>
+    <div class="profile-heading"><span class="profile-title">{s.insideKoali}</span><span class="profile-section-label">{s.systemPath}</span></div>
+    <div class="profile-systems"><div class="system-route-list" data-preview-system-list>
+      {selected?portal!.systems.map((system)=><span class="system-route" title={system.description} data-system-key={system.key}><strong>{system.label}</strong><small>{system.description}</small></span>):<span class="system-route-empty">{s.selectSystemHint}</span>}
+    </div></div>
     <div class="profile-context">
-      <div><span>{s.scale}</span><strong data-preview-scales>{selected ? scales.join(' · ') : '—'}</strong></div>
-      <div><span>{s.context}</span><strong data-preview-context>{selected ? contexts.join(' · ') : '—'}</strong></div>
-      <div><span>{s.specialConditions}</span><strong data-preview-properties>{selected ? (properties.join(' · ') || s.noneHighlighted) : s.noneHighlighted}</strong></div>
+      <div><span>{s.mechanisms}</span><strong data-preview-mechanism-summary>{selected?mechanisms.slice(0,3).join(' · '):'—'}</strong></div>
+      <div><span>{s.scale}</span><strong data-preview-scale-profile>{selected?localizeScale(locale,data.scale):'—'}</strong></div>
     </div>
   </aside>
 </section>

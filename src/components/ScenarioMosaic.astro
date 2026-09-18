@@ -5,109 +5,68 @@ import MosaicControls from './MosaicControls.astro';
 import MosaicLegend from './MosaicLegend.astro';
 import MosaicTerritoryLabels from './MosaicTerritoryLabels.astro';
 import layout from '../data/mosaic-layout.json';
+import { getUi, humanizeTag, type Locale } from '../i18n/ui';
+import { localizeScaleValue, localizeUrgency, localizeCoordinationGap, localizeStake, localizeMechanism } from '../i18n/taxonomy';
 import { resolveScenarioPreviewImageSet } from '../lib/scenario-image';
-import { getUi, humanizeTag, localizePalette, type Locale } from '../i18n/ui';
 import { getScenarioPortal } from '../lib/scenario-portal';
+import { parseScale, localizeScale } from '../lib/scale';
 
-const { scenarios, locale = 'en' as Locale } = Astro.props;
-const strings = getUi(locale);
-const byId = Object.fromEntries(scenarios.map((entry:any) => [entry.data.id, entry]));
-
-const categories = [...new Map(
-  scenarios.map((entry:any) => [
-    entry.data.primary_category,
-    { id: entry.data.primary_category, label: entry.data.category_label },
-  ]),
-).values()].sort((a:any,b:any) => a.id.localeCompare(b.id));
-
-const previewData = Object.fromEntries(scenarios.map((entry:any) => {
-  const scales = (entry.data.scales ?? []).map((x:string) => humanizeTag(locale, x));
-  const contexts = [...new Set([
-    ...(entry.data.settings ?? []),
-    ...(entry.data.domains ?? []),
-  ])].map((x:string) => humanizeTag(locale, x)).slice(0, 3);
-
-  const portal = getScenarioPortal(entry.data, entry.entry.body ?? '', locale);
-  const previewImage = resolveScenarioPreviewImageSet(entry.data.id, entry.data.preview_image);
-
-  return [entry.data.id, {
-    id: entry.data.id,
-    title: portal.capabilityTitle,
-    example: portal.exampleTitle,
-    exampleLead: portal.exampleLead,
-    category: entry.data.category_label,
-    categoryId: entry.data.primary_category,
-    pattern: entry.data.pattern_label,
-    summary: portal.koaliHelp,
-    systems: portal.systems,
-    paletteKeys: entry.data.palette,
-    palette: entry.data.palette.map((x:string) => localizePalette(locale, x)),
-    scales,
-    contexts,
-    properties: (entry.data.properties ?? []).map((x:string) => humanizeTag(locale, x)),
-    image: previewImage.src,
-    imageSrcSet: previewImage.srcset ?? '',
-    imageSizes: previewImage.sizes ?? '',
-    imageAlt: entry.data.preview_image_alt,
-    href: `/${locale}/uses/${entry.data.id}/`,
-    search: [
-      entry.data.title,
-      entry.data.category_label,
-      entry.data.pattern_label,
-      ...entry.data.palette,
-      ...entry.data.scales,
-      ...entry.data.settings,
-      ...entry.data.properties,
-      ...entry.data.domains,
-      portal.capabilityTitle,
-      portal.exampleTitle,
-      portal.exampleLead,
-      portal.koaliHelp,
-      ...portal.systems.flatMap((system:any) => [system.label, system.description]),
-      ...(entry.data.domains ?? []).map((x:string) => humanizeTag(locale,x)),
-    ].join(' ').toLowerCase(),
+const { scenarios, locale='en' as Locale }=Astro.props;
+const strings=getUi(locale);
+const byId=Object.fromEntries(scenarios.map((entry:any)=>[entry.data.id,entry]));
+const positions=(layout as any).positions ?? {};
+const families=[...new Map(scenarios.map((entry:any)=>[entry.data.problem_family,{id:entry.data.problem_family,label:entry.data.problem_family_label}])).values()]
+  .sort((a:any,b:any)=>((layout as any).familyOrder.indexOf(a.id)-(layout as any).familyOrder.indexOf(b.id)));
+const uniq=(values:string[])=>[...new Set(values)].sort((a,b)=>a.localeCompare(b));
+const urgencyOrder=['low','significant','moderate','high','critical','immediate'];
+const facets={
+  families:families.map((x:any)=>({value:x.id,label:x.label})),
+  scales:uniq(scenarios.map((x:any)=>parseScale(x.data.scale).extent)),
+  urgencies:uniq(scenarios.map((x:any)=>x.data.urgency)).sort((a,b)=>urgencyOrder.indexOf(a)-urgencyOrder.indexOf(b)),
+  stakes:uniq(scenarios.flatMap((x:any)=>x.data.stakes)),
+};
+const previewData=Object.fromEntries(scenarios.map((entry:any)=>{
+  const data=entry.data;
+  const portal=getScenarioPortal(data,entry.entry.body ?? '',locale);
+  const mechanisms=(data.failure_mechanisms ?? []).map((x:string)=>localizeMechanism(locale,x));
+  const image=resolveScenarioPreviewImageSet(data.id,data.problem_family);
+  return [data.id,{
+    id:data.id,title:data.title,family:data.problem_family_label,familyId:data.problem_family,hook:data.hook,
+    summary:portal.koaliHelp,systems:portal.systems,mechanisms,
+    scale:localizeScaleValue(locale,parseScale(data.scale).extent),scaleKey:parseScale(data.scale).extent,scalePath:localizeScale(locale,data.scale),
+    urgency:localizeUrgency(locale,data.urgency),urgencyKey:data.urgency,
+    stakes:(data.stakes ?? []).map((x:string)=>localizeStake(locale,x)),stakesKeys:data.stakes ?? [],
+    coordinationGap:localizeCoordinationGap(locale,data.coordination_gap),
+    image,
+    domains:(data.domains ?? []).map((x:string)=>humanizeTag(locale,x)),
+    realCases:portal.realCases,
+    href:`/${locale}/uses/${data.id}/`,
+    search:[data.title,data.hook,data.problem_family_label,...data.failure_mechanisms,...data.stakes,...data.domains,...data.koali_patterns,...data.koali_components,...portal.realCases,portal.koaliHelp].join(' ').toLowerCase(),
   }];
 }));
 ---
 <div class="mosaic-experience" data-mosaic-root>
-  <ScenarioPreview total={scenarios.length} locale={locale} />
-  <MosaicControls total={scenarios.length} locale={locale} />
-  <MosaicLegend categories={categories} locale={locale} />
-
+  <ScenarioPreview total={scenarios.length} locale={locale}/>
+  <MosaicControls total={scenarios.length} locale={locale} facets={facets}/>
+  <MosaicLegend families={families} locale={locale}/>
   <div class="mosaic-stage" data-mosaic-stage>
     <div class="mosaic-scroll">
       <div class="mosaic-canvas" data-mosaic-canvas>
-        <svg class="mosaic" viewBox={layout.viewBox.join(' ')} role="group" aria-labelledby="mosaic-title mosaic-description" preserveAspectRatio="xMidYMid meet">
-      <title id="mosaic-title">{strings.mosaicTitle}</title>
-      <desc id="mosaic-description">{strings.mosaicDescription}</desc>
-      {Object.entries(layout.assignments).map(([scenarioId, slotId]) => {
-        const entry:any = byId[scenarioId];
-        const slot:any = (layout.slots as any)[slotId];
-        return <ScenarioCell
-          id={scenarioId}
-          title={entry.data.title}
-          category={entry.data.primary_category}
-          href={`/${locale}/uses/${scenarioId}/`}
-          x={slot.x}
-          y={slot.y}
-          size={slot.size}
-        />;
-      })}
+        <svg class="mosaic" viewBox={(layout as any).viewBox.join(' ')} role="group" aria-labelledby="mosaic-title mosaic-description" preserveAspectRatio="xMidYMid meet">
+          <title id="mosaic-title">{strings.mosaicTitle}</title>
+          <desc id="mosaic-description">{strings.mosaicDescription}</desc>
+          {Object.entries(positions).map(([scenarioId,pos]:any)=>{
+            const entry:any=byId[scenarioId];
+            return <ScenarioCell id={scenarioId} title={entry.data.title} family={entry.data.problem_family} href={`/${locale}/uses/${scenarioId}/`} x={pos.x} y={pos.y} size={pos.size}/>;
+          })}
         </svg>
-        <MosaicTerritoryLabels locale={locale} />
+        <MosaicTerritoryLabels locale={locale}/>
       </div>
     </div>
     <p class="mosaic-hint">{strings.mosaicHint}</p>
   </div>
-
-  <script type="application/json" data-mosaic-data set:html={JSON.stringify(previewData).replace(/</g, '\u003c')}></script>
-  <script type="application/json" data-mosaic-i18n set:html={JSON.stringify({
-    noneHighlighted: strings.noneHighlighted,
-    scenarios: strings.scenarios,
-    scenarioSingular: locale === 'fr' ? 'scénario' : 'scenario',
-    involved: locale === 'fr' ? 'impliqué' : 'involved',
-    notCentral: locale === 'fr' ? 'non central' : 'not central',
-  }).replace(/</g, '\u003c')}></script>
+  <script type="application/json" data-mosaic-data set:html={JSON.stringify(previewData).replace(/</g,'\\u003c')}></script>
+  <script type="application/json" data-mosaic-i18n set:html={JSON.stringify({scenarios:strings.scenarios,scenarioSingular:locale==='fr'?'scénario':'scenario'}).replace(/</g,'\\u003c')}></script>
 </div>
 <script>
   import '../scripts/mosaic.ts';

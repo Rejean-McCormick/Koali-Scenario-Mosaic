@@ -6,8 +6,8 @@ const {
   locale = 'en' as Locale,
   title = locale === 'fr' ? 'Mosaïque de scénarios Koali' : 'Koali Scenario Mosaic',
   description = locale === 'fr'
-    ? 'Explorez 120 scénarios pour Koali, the Sociotechnical Operating System'
-    : 'Explore 120 scenarios for Koali, the Sociotechnical Operating System',
+    ? 'Explorez 36 problèmes sociotechniques canoniques et la réponse Koali'
+    : 'Explore 36 canonical sociotechnical problems and the Koali response',
 } = Astro.props;
 const strings = getUi(locale);
 const alternate: Locale = locale === 'en' ? 'fr' : 'en';

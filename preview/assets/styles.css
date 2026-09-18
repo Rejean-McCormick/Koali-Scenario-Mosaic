@@ -42,6 +42,7 @@ a{color:inherit}
 @media(max-width:620px){
   .brand-product span{font-size:.84rem}
 }
+
 .mosaic-experience{max-width:1360px;margin:auto;padding:.75rem 1.25rem 1rem;container-type:inline-size;container-name:scenario-layout}
 
 /* Compact, layout-stable preview: the panorama remains visible below on a laptop viewport. */
@@ -1174,6 +1175,276 @@ a{color:inherit}
     -webkit-line-clamp:4;
   }
 }
+
+/* ==============================
+   V2 problem-first interface
+   ============================== */
+.preview-metrics-row{display:grid;grid-template-columns:.72fr .72fr 1.08fr 1.48fr;gap:.45rem;margin:.02rem 0 .42rem;padding:.42rem .5rem;border:1px solid #273244;border-radius:11px;background:#0b1018;min-width:0}.preview-metrics-row[hidden]{display:none!important}.preview-metric{display:flex;flex-direction:column;gap:.12rem;min-width:0;padding-right:.4rem;border-right:1px solid #273244}.preview-metric:last-child{border-right:0;padding-right:0}.preview-metric span{font-size:.49rem;line-height:1;text-transform:uppercase;letter-spacing:.055em;color:#7f8b9e;white-space:nowrap}.preview-metric strong{font-size:.68rem;line-height:1.15;color:#e8eef5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.preview-metric-urgency[data-urgency="critical"] strong,.preview-metric-urgency[data-urgency="immediate"] strong{color:#e8b98d}
+.preview-mechanisms{display:flex;flex-wrap:wrap;gap:.28rem;margin:.05rem 0 .42rem;min-height:0}.preview-mechanisms span{font-size:.58rem;line-height:1;padding:.3rem .48rem;border:1px solid #344055;border-radius:999px;color:#9faabd;background:#0d141e}
+.preview-koali{margin:.05rem 0 .25rem;padding:.5rem .62rem;border-left:2px solid var(--territory-tone-a);background:rgba(255,255,255,.018);border-radius:0 9px 9px 0;overflow:hidden}.preview-koali[hidden]{display:none!important}.preview-koali>span{display:block;font-size:.55rem;color:#7f8b9e;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.18rem}.preview-koali p{margin:0;color:#cbd3df;font-size:.76rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+
+.filter-box{display:flex;flex-direction:column;gap:.1rem;min-width:124px}.filter-box span{font-size:.5rem;color:#738096;text-transform:uppercase;letter-spacing:.04em;padding-left:.12rem}.filter-box select{height:36px;max-width:180px;border:1px solid var(--line);background:#101722;color:#fff;border-radius:9px;padding:0 1.8rem 0 .55rem;font-size:.72rem}
+.mosaic-controls{align-items:end}.search-box{align-self:end}
+
+.mosaic-canvas{height:clamp(230px,30vh,300px);aspect-ratio:1000/340}
+.family-coordination_breakdown,.family-knowledge_attrition,.family-decision_traceability,.family-capacity_sovereignty{--cell:var(--territory-tone-a)}
+.family-signal_context_loss,.family-distributed_intelligence,.family-evidence_vs_noise,.family-action_learning_loops{--cell:var(--territory-tone-b)}
+.mosaic-canvas[data-active-territory="coordination_breakdown"] .territory-label[data-territory-id="coordination_breakdown"],
+.mosaic-canvas[data-active-territory="signal_context_loss"] .territory-label[data-territory-id="signal_context_loss"],
+.mosaic-canvas[data-active-territory="knowledge_attrition"] .territory-label[data-territory-id="knowledge_attrition"],
+.mosaic-canvas[data-active-territory="distributed_intelligence"] .territory-label[data-territory-id="distributed_intelligence"],
+.mosaic-canvas[data-active-territory="evidence_vs_noise"] .territory-label[data-territory-id="evidence_vs_noise"],
+.mosaic-canvas[data-active-territory="decision_traceability"] .territory-label[data-territory-id="decision_traceability"],
+.mosaic-canvas[data-active-territory="action_learning_loops"] .territory-label[data-territory-id="action_learning_loops"],
+.mosaic-canvas[data-active-territory="capacity_sovereignty"] .territory-label[data-territory-id="capacity_sovereignty"]{opacity:.9}
+.territory-label{font-size:clamp(.68rem,.92vw,1rem);line-height:.92;opacity:.52}
+.preview-profile[data-family="coordination_breakdown"],.preview-profile[data-family="knowledge_attrition"],.preview-profile[data-family="decision_traceability"],.preview-profile[data-family="capacity_sovereignty"]{--a:var(--territory-tone-a)}
+.preview-profile[data-family="signal_context_loss"],.preview-profile[data-family="distributed_intelligence"],.preview-profile[data-family="evidence_vs_noise"],.preview-profile[data-family="action_learning_loops"]{--a:var(--territory-tone-b)}
+
+@media(max-width:900px){
+  .mosaic-canvas{height:235px}
+  .filter-box{min-width:112px;flex:1}.filter-box select{width:100%;max-width:none}
+}
+@media(max-width:720px){
+  .scenario-preview{grid-template-rows:150px 260px 182px;height:616px}
+  .preview-copy{grid-column:1;grid-row:2}
+  .preview-profile{grid-column:1;grid-row:3}
+  .mosaic-canvas{height:235px;min-width:900px}
+  .filter-box{min-width:46%;flex:1 1 46%}
+}
+@media(max-width:480px){
+  .scenario-preview{grid-template-rows:145px 294px 194px;height:656px}
+  .preview-koali p{-webkit-line-clamp:4}
+  .mosaic-canvas{min-width:860px}
+}
+
+@media(max-width:900px){.preview-metrics-row{grid-template-columns:repeat(4,minmax(0,1fr));gap:.35rem}.preview-metric strong{font-size:.64rem}}
+@media(max-width:480px){.preview-metrics-row{grid-template-columns:1fr 1fr;row-gap:.38rem}.preview-metric:nth-child(2){border-right:0}.preview-metric:nth-child(3),.preview-metric:nth-child(4){padding-top:.1rem}.preview-metric strong{font-size:.66rem}}
+
+/* ==============================
+   V2.2 preview stability + smartphone parity with V1
+   ==============================
+   Regression contract:
+   - On fine-pointer layouts (>720px), changing the hovered scenario MUST NOT
+     change the preview card height. This keeps the Mosaic under a stationary
+     pointer while the content above updates.
+   - On smartphone/coarse-pointer layouts (<=720px), retain the V1 reading
+     order: copy -> Koali path/context -> image, and allow editorial copy to
+     grow naturally instead of clipping it into fixed-height rows.
+*/
+
+/* Desktop / laptop: one stable preview box. The new V2 metadata must fit
+   inside the box rather than becoming part of its intrinsic height. */
+@container scenario-layout (min-width:1120px){
+  .scenario-preview{
+    height:318px;
+    min-height:318px;
+    max-height:318px;
+    grid-template-rows:minmax(0,1fr);
+  }
+  .preview-image-shell{
+    width:100%;
+    height:100%;
+    max-width:288px;
+    max-height:288px;
+    aspect-ratio:1/1;
+  }
+  .preview-copy,
+  .preview-profile{
+    height:100%;
+    min-height:0;
+    overflow:hidden;
+  }
+  .preview-summary{-webkit-line-clamp:3;max-height:4.15em}
+  .preview-mechanisms{max-height:2.15rem;overflow:hidden;flex:0 0 auto}
+  .preview-koali{flex:0 0 auto}
+  .preview-koali p{-webkit-line-clamp:2}
+  .preview-cta{margin-top:auto}
+}
+
+/* Tablet / narrow desktop: also keep the full top region stationary while
+   hovering the panorama. The first row is deliberately fixed and the system
+   path receives a stable second row. */
+@container scenario-layout (min-width:721px) and (max-width:1119px){
+  .scenario-preview{
+    height:466px;
+    min-height:466px;
+    max-height:466px;
+    grid-template-rows:292px 148px;
+    overflow:hidden;
+  }
+  .preview-image-shell{
+    width:min(276px,100%);
+    height:min(276px,100%);
+    max-width:276px;
+    max-height:276px;
+    aspect-ratio:1/1;
+  }
+  .preview-copy{
+    height:292px;
+    min-height:0;
+    overflow:hidden;
+  }
+  .preview-summary{-webkit-line-clamp:3;max-height:4.3em}
+  .preview-mechanisms{max-height:2.15rem;overflow:hidden}
+  .preview-koali p{-webkit-line-clamp:2}
+  .preview-profile{
+    height:148px;
+    min-height:148px;
+    max-height:148px;
+    overflow:hidden;
+  }
+}
+
+/* Smartphone: restore the V1 reading order and content-driven height.
+   No hover-stability constraint is necessary on touch-only layouts. */
+@container scenario-layout (max-width:720px){
+  .scenario-preview{
+    grid-template-columns:1fr;
+    grid-template-rows:auto auto auto;
+    height:auto;
+    min-height:0;
+    max-height:none;
+    gap:.85rem;
+    overflow:visible;
+    align-items:start;
+    touch-action:pan-y;
+  }
+
+  .preview-copy{
+    grid-column:1;
+    grid-row:1;
+    width:100%;
+    height:auto;
+    min-height:0;
+    overflow:visible;
+  }
+
+  .preview-summary{
+    min-height:0;
+    max-height:none;
+    overflow:visible;
+    display:block;
+    -webkit-line-clamp:unset;
+  }
+
+  .preview-metrics-row{
+    grid-template-columns:1fr 1fr;
+    row-gap:.38rem;
+  }
+
+  .preview-mechanisms{
+    max-height:none;
+    overflow:visible;
+  }
+
+  .preview-koali{
+    overflow:visible;
+  }
+
+  .preview-koali p{
+    display:block;
+    max-height:none;
+    overflow:visible;
+    -webkit-line-clamp:unset;
+  }
+
+  .preview-profile{
+    grid-column:1;
+    grid-row:2;
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    height:auto;
+    min-height:0;
+    max-height:none;
+    gap:.72rem;
+    overflow:visible;
+  }
+
+  .system-route-list,
+  .profile-systems{
+    overflow:visible;
+  }
+
+  .system-route small{
+    -webkit-line-clamp:3;
+  }
+
+  .preview-profile .profile-context{
+    margin-top:0;
+    border-top:1px solid #273244;
+    border-left:0;
+    padding:.48rem 0 0;
+    align-self:stretch;
+  }
+
+  .preview-profile .profile-context>div{
+    grid-template-columns:minmax(0,1fr);
+    gap:.12rem;
+    align-items:start;
+  }
+
+  .preview-profile .profile-context strong{
+    white-space:normal;
+    overflow:visible;
+    text-overflow:clip;
+    line-height:1.24;
+  }
+
+  .preview-image-shell{
+    grid-column:1;
+    grid-row:3;
+    width:min(176px,52vw);
+    height:auto;
+    max-height:none;
+    aspect-ratio:1/1;
+    justify-self:center;
+    align-self:start;
+    margin-top:.1rem;
+  }
+
+  .touch-full-link:not([hidden]){
+    margin-top:.75rem;
+  }
+}
+
+@container scenario-layout (max-width:480px){
+  .scenario-preview{
+    grid-template-rows:auto auto auto;
+    height:auto;
+    min-height:0;
+    max-height:none;
+    padding:.62rem;
+    border-radius:16px;
+  }
+  .preview-image-shell{width:min(168px,52vw);height:auto}
+  .preview-eyebrow{font-size:.72rem}
+  .preview-summary{font-size:.9rem}
+}
+
+/* The legacy @media rules at the end of the V2 block used fixed mobile rows
+   (616/656px) and image-first ordering. Keep this final override last so the
+   V1 smartphone contract wins regardless of viewport/container rule order. */
+@media(max-width:720px){
+  .scenario-preview{
+    grid-template-columns:1fr;
+    grid-template-rows:auto auto auto;
+    height:auto;
+    min-height:0;
+    max-height:none;
+  }
+  .preview-copy{grid-column:1;grid-row:1;height:auto;overflow:visible}
+  .preview-profile{grid-column:1;grid-row:2;height:auto;min-height:0;max-height:none;overflow:visible}
+  .preview-image-shell{grid-column:1;grid-row:3;width:min(176px,52vw);height:auto;max-height:none}
+  .preview-summary,.preview-koali p{max-height:none;overflow:visible;display:block;-webkit-line-clamp:unset}
+  .preview-mechanisms{max-height:none;overflow:visible}
+}
+@media(max-width:480px){
+  .scenario-preview{grid-template-rows:auto auto auto;height:auto;min-height:0;max-height:none}
+  .preview-image-shell{width:min(168px,52vw)}
+}
+
 /* Public scenario pages reuse the exact same preview panel as the main Mosaic.
    Only the lower honeycomb changes: it becomes a compact set of public facts. */
 .scenario-detail-experience{padding-bottom:1.4rem}
@@ -1343,3 +1614,17 @@ a{color:inherit}
   .detail-system-list{align-items:flex-start}
   .detail-system-list strong{max-width:none}
 }
+
+/* ==============================
+   V2 problem anatomy
+   ============================== */
+.scenario-info-mosaic[data-family="coordination_breakdown"],.scenario-info-mosaic[data-family="knowledge_attrition"],.scenario-info-mosaic[data-family="decision_traceability"],.scenario-info-mosaic[data-family="capacity_sovereignty"]{--detail-accent:var(--territory-tone-a)}
+.scenario-info-mosaic[data-family="signal_context_loss"],.scenario-info-mosaic[data-family="distributed_intelligence"],.scenario-info-mosaic[data-family="evidence_vs_noise"],.scenario-info-mosaic[data-family="action_learning_loops"]{--detail-accent:var(--territory-tone-b)}
+.evidence-note{max-width:980px;margin:-.2rem auto 1rem;color:#7f8b9e;font-size:.72rem;line-height:1.4;text-align:center}
+.scenario-article{max-width:920px;margin:1.2rem auto 2.5rem;padding:1.2rem 1.35rem;border:1px solid #273244;border-radius:18px;background:#0d141e;color:#cbd3df;line-height:1.62}
+.scenario-article>h1:first-child{display:none}.scenario-article>blockquote:first-of-type{display:none}
+.scenario-article h2{margin:1.65rem 0 .55rem;color:#eef3f9;font-size:1.15rem}.scenario-article h3{margin:1.2rem 0 .35rem;color:#dce5ef;font-size:.98rem}.scenario-article p{margin:.45rem 0}.scenario-article ul{padding-left:1.25rem}.scenario-article li{margin:.28rem 0}.scenario-article code{padding:.08rem .28rem;border-radius:5px;background:#141e2a;color:#b7d9d5}.scenario-article a{color:#82c8c1;overflow-wrap:anywhere}.scenario-article hr{border:0;border-top:1px solid #273244;margin:1.7rem 0}.scenario-article strong{color:#e9eff5}
+@media(max-width:720px){.scenario-article{padding:1rem;margin-top:.8rem;border-radius:14px}.evidence-note{text-align:left;padding:0 .25rem}}
+
+.detail-case-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:.42rem;width:100%}.detail-case-list li{max-width:28ch;color:#e7edf3;font-size:.78rem;line-height:1.24;font-weight:680}.detail-case-list li+li{padding-top:.38rem;border-top:1px solid color-mix(in srgb,var(--detail-accent) 22%,#273244)}
+@media(max-width:720px){.detail-case-list{align-items:flex-start}.detail-case-list li{max-width:none}}

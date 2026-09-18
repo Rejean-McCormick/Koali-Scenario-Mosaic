@@ -1,94 +1,40 @@
 import type { Locale } from '../i18n/ui';
 import systemCatalogJson from '../data/system-catalog.json';
-import scenarioSystemRoutesJson from '../data/scenario-system-routes.json';
-import scenarioCapabilityTitlesJson from '../data/scenario-capability-titles.json';
 import { extractScenarioPublicDetails } from './scenario-public';
 
-export type SystemRouteKey = keyof typeof systemCatalogJson;
-export type SystemRoute = {
-  key: SystemRouteKey;
-  label: string;
-  description: string;
+export type SystemRoute = { key:string; label:string; description:string };
+const systemCatalog = systemCatalogJson as Record<string,{label:string;description:Record<Locale,string>}>;
+
+const componentKey:Record<string,string> = {
+  'Kristal':'kristal',
+  'Konnaxion':'konnaxion',
+  'Orgo':'orgo',
+  'Smart Vote':'smart-vote',
+  'EkoH':'ekoh',
+  'SenTient':'sentient',
+  'SemantiK Architect':'semantik-architect',
+  'Kreative/Konservation':'kreative',
 };
 
-const systemCatalog = systemCatalogJson as Record<SystemRouteKey,{
-  label:string;
-  description:Record<Locale,string>;
-}>;
-const scenarioSystemRoutes = scenarioSystemRoutesJson as Record<string,SystemRouteKey[]>;
-const scenarioCapabilityTitles = scenarioCapabilityTitlesJson as Record<string,Record<Locale,string>>;
-
-function lowerFirst(value:string) {
-  return value ? value[0].toLocaleLowerCase() + value.slice(1) : value;
-}
-
-function stripTerminalPunctuation(value:string) {
-  return value.trim().replace(/[.!?;:]+$/u, '');
-}
-
-function extractExampleLead(summary:string) {
-  const marker = summary.search(/\bKoali\b/u);
-  return marker > 0 ? summary.slice(0, marker).trim() : '';
-}
-
-function flowEndpoints(body:string, locale:Locale) {
-  const flow = extractScenarioPublicDetails(body, locale).flow;
-  const steps = flow
-    .split('→')
-    .map((step) => stripTerminalPunctuation(step))
-    .filter(Boolean);
-
-  return {
-    flow,
-    start: steps[0] ?? '',
-    end: steps.length > 1 ? steps[steps.length - 1] : '',
-  };
-}
-
-/** Fallback for legacy scenarios that do not yet have authored public impact copy. */
-export function buildKoaliContinuityCopy(body:string, continuityGap:string, locale:Locale) {
-  const { start, end } = flowEndpoints(body, locale);
-  const gap = stripTerminalPunctuation(continuityGap ?? '');
-
-  const continuitySentence = start && end
-    ? (locale === 'fr'
-      ? `Dans Koali, le même contexte passe d’une capacité spécialisée à l’autre sans être recréé, du point de départ « ${start} » jusqu’à « ${end} ».`
-      : `In Koali, the same context moves across specialized capabilities without being recreated, from “${start}” through “${end}”.`)
-    : (locale === 'fr'
-      ? 'Dans Koali, le même contexte passe d’une capacité spécialisée à l’autre sans être recréé.'
-      : 'In Koali, the same context moves across specialized capabilities without being recreated.');
-
-  if (!gap) return continuitySentence;
-
-  const gapSentence = locale === 'fr'
-    ? `Sans ce fil commun, ${lowerFirst(gap)}.`
-    : `Without that shared thread, ${lowerFirst(gap)}.`;
-
-  return `${continuitySentence} ${gapSentence}`;
-}
-
-export function getScenarioSystemRoutes(data:any, _body:string, locale:Locale): SystemRoute[] {
-  return (scenarioSystemRoutes[data?.id] ?? []).map((key) => {
+export function getScenarioSystemRoutes(data:any, locale:Locale):SystemRoute[] {
+  return (data?.koali_components ?? []).map((label:string) => {
+    const key = componentKey[label] ?? label.toLowerCase().replace(/\s+/g,'-');
     const item = systemCatalog[key];
-    return {
-      key,
-      label: item.label,
-      description: item.description[locale],
-    };
+    return item ? {key,label:item.label,description:item.description[locale]} : {key,label,description:''};
   });
 }
 
 export function getScenarioPortal(data:any, body:string, locale:Locale) {
-  const systems = getScenarioSystemRoutes(data, body, locale);
-  const publicSummary = data.preview_summary?.trim() ?? '';
+  const details = extractScenarioPublicDetails(body, locale);
   return {
-    capabilityTitle: scenarioCapabilityTitles[data.id]?.[locale] ?? data.pattern_label,
-    patternFamily: data.pattern_label,
-    koaliHelp: publicSummary
-      ? publicSummary
-      : buildKoaliContinuityCopy(body, data.continuity_gap, locale),
-    exampleTitle: data.title,
-    exampleLead: extractExampleLead(publicSummary),
-    systems,
+    title: data.title,
+    family: data.problem_family_label,
+    hook: data.hook,
+    koaliHelp: details.koali || data.hook,
+    systems: getScenarioSystemRoutes(data, locale),
+    mechanisms: data.failure_mechanisms ?? [],
+    success: details.success,
+    holders: details.holders,
+    realCases: details.realCases,
   };
 }

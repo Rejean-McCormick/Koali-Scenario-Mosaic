@@ -1,52 +1,21 @@
 ---
-import { getUi, humanizeTag, localizeEntryTrigger, type Locale } from '../i18n/ui';
+import { getUi, type Locale } from '../i18n/ui';
+import { localizeMechanism } from '../i18n/taxonomy';
 import { extractScenarioPublicDetails } from '../lib/scenario-public';
 import { getScenarioPortal } from '../lib/scenario-portal';
-
-const { scenario, locale = 'en' as Locale } = Astro.props;
-const s = getUi(locale);
-const details = extractScenarioPublicDetails(scenario.entry.body ?? '', locale);
-const portal = getScenarioPortal(scenario.data, scenario.entry.body ?? '', locale);
-const transfer = (scenario.data.transfer_domains ?? []).map((x:string) => humanizeTag(locale, x));
-const flowFallback = scenario.data.pattern;
+import realCases from '../data/real-cases.json';
+const { scenario, locale='en' as Locale }=Astro.props;
+const s=getUi(locale);
+const details=extractScenarioPublicDetails(scenario.entry.body ?? '',locale);
+const portal=getScenarioPortal(scenario.data,scenario.entry.body ?? '',locale);
+const mechanisms=(scenario.data.failure_mechanisms ?? []).slice(0,4).map((x:string)=>localizeMechanism(locale,x));
+const caseTitles=(scenario.data.real_case_ids ?? []).slice(0,3).map((id:string)=>((realCases as any)[id]?.[locale] ?? id));
 ---
-<section class="scenario-info-mosaic" data-category={scenario.data.primary_category} aria-label={locale === 'fr' ? 'Fonctionnement public de Koali dans cet exemple' : 'How Koali works in this example'}>
-  <article class="detail-hex detail-hex--trigger">
-    <div class="detail-hex-inner">
-      <span>{s.detailStartsWith}</span>
-      <strong>{localizeEntryTrigger(locale, scenario.data.entry_trigger)}</strong>
-    </div>
-  </article>
-
-  <article class="detail-hex detail-hex--mechanism">
-    <div class="detail-hex-inner">
-      <span>{s.detailWhatGetsLost}</span>
-      <p>{scenario.data.continuity_gap}</p>
-    </div>
-  </article>
-
-  <article class="detail-hex detail-hex--systems">
-    <div class="detail-hex-inner">
-      <span>{s.detailKoaliContinuity}</span>
-      <div class="detail-system-list">
-        {portal.systems.map((system) => (
-          <strong title={system.description}>{system.label}</strong>
-        ))}
-      </div>
-    </div>
-  </article>
-
-  <article class="detail-hex detail-hex--flow">
-    <div class="detail-hex-inner">
-      <span>{s.detailFlow}</span>
-      <p class="detail-flow">{details.flow || flowFallback}</p>
-    </div>
-  </article>
-
-  <article class="detail-hex detail-hex--transfer">
-    <div class="detail-hex-inner">
-      <span>{s.detailTransferable}</span>
-      <strong>{transfer.join(' · ')}</strong>
-    </div>
-  </article>
+<section class="scenario-info-mosaic" data-family={scenario.data.problem_family} aria-label={locale==='fr'?'Anatomie du problème et réponse Koali':'Problem anatomy and Koali response'}>
+  <article class="detail-hex detail-hex--trigger"><div class="detail-hex-inner"><span>{s.detailWhatBreaks}</span><strong>{mechanisms.join(' · ')}</strong></div></article>
+  <article class="detail-hex detail-hex--mechanism"><div class="detail-hex-inner"><span>{s.detailWhoKnows}</span><p>{details.holders.slice(0,3).join(' • ')}</p></div></article>
+  <article class="detail-hex detail-hex--flow"><div class="detail-hex-inner"><span>{s.detailKoaliResponse}</span><p>{details.koali}</p></div></article>
+  <article class="detail-hex detail-hex--systems"><div class="detail-hex-inner"><span>{s.detailRealCases}</span><ul class="detail-case-list">{caseTitles.map((name:string)=><li>{name}</li>)}</ul></div></article>
+  <article class="detail-hex detail-hex--transfer"><div class="detail-hex-inner"><span>{s.detailSuccess}</span><p>{details.success.slice(0,2).join(' • ')}</p></div></article>
 </section>
+<p class="evidence-note">{s.evidenceNote}</p>

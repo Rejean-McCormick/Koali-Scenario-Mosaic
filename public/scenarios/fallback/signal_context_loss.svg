@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 627 627" role="img" aria-label="Scenario illustration fallback">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b1018"/><stop offset="1" stop-color="#121e29"/></linearGradient><radialGradient id="glow"><stop stop-color="#5fb4aa" stop-opacity=".18"/><stop offset="1" stop-color="#5fb4aa" stop-opacity="0"/></radialGradient></defs>
+<rect width="627" height="627" rx="36" fill="url(#bg)"/><circle cx="313" cy="313" r="285" fill="url(#glow)"/>
+<g fill="none" stroke="#76c7bd" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" opacity=".9"><path d="M92 392 C180 230 240 470 318 306 S465 165 538 270"/><path class="ghost" d="M92 450 C190 305 250 530 340 355 S480 220 548 318"/><circle cx="318" cy="306" r="28"/><path d="M294 282 342 330M342 282 294 330"/></g>
+<style>.ghost{opacity:.28}</style></svg>

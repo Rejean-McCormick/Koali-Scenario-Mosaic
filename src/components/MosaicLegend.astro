@@ -1,13 +1,8 @@
 ---
 import { getUi, type Locale } from '../i18n/ui';
-const { categories = [], locale = 'en' as Locale } = Astro.props;
-const s = getUi(locale);
+const { families=[], locale='en' as Locale }=Astro.props;
+const s=getUi(locale);
 ---
 <div class="territory-legend sr-only" aria-label={s.colorLegend}>
-  {categories.map((category:any) => (
-    <span class={`legend-item ${category.id.toLowerCase()}`}>
-      <i aria-hidden="true"></i>
-      <span>{category.label}</span>
-    </span>
-  ))}
+  {families.map((family:any)=><span class={`legend-item family-${family.id}`}><i aria-hidden="true"></i><span>{family.label}</span></span>)}
 </div>

@@ -167,3 +167,17 @@
   .detail-system-list{align-items:flex-start}
   .detail-system-list strong{max-width:none}
 }
+
+/* ==============================
+   V2 problem anatomy
+   ============================== */
+.scenario-info-mosaic[data-family="coordination_breakdown"],.scenario-info-mosaic[data-family="knowledge_attrition"],.scenario-info-mosaic[data-family="decision_traceability"],.scenario-info-mosaic[data-family="capacity_sovereignty"]{--detail-accent:var(--territory-tone-a)}
+.scenario-info-mosaic[data-family="signal_context_loss"],.scenario-info-mosaic[data-family="distributed_intelligence"],.scenario-info-mosaic[data-family="evidence_vs_noise"],.scenario-info-mosaic[data-family="action_learning_loops"]{--detail-accent:var(--territory-tone-b)}
+.evidence-note{max-width:980px;margin:-.2rem auto 1rem;color:#7f8b9e;font-size:.72rem;line-height:1.4;text-align:center}
+.scenario-article{max-width:920px;margin:1.2rem auto 2.5rem;padding:1.2rem 1.35rem;border:1px solid #273244;border-radius:18px;background:#0d141e;color:#cbd3df;line-height:1.62}
+.scenario-article>h1:first-child{display:none}.scenario-article>blockquote:first-of-type{display:none}
+.scenario-article h2{margin:1.65rem 0 .55rem;color:#eef3f9;font-size:1.15rem}.scenario-article h3{margin:1.2rem 0 .35rem;color:#dce5ef;font-size:.98rem}.scenario-article p{margin:.45rem 0}.scenario-article ul{padding-left:1.25rem}.scenario-article li{margin:.28rem 0}.scenario-article code{padding:.08rem .28rem;border-radius:5px;background:#141e2a;color:#b7d9d5}.scenario-article a{color:#82c8c1;overflow-wrap:anywhere}.scenario-article hr{border:0;border-top:1px solid #273244;margin:1.7rem 0}.scenario-article strong{color:#e9eff5}
+@media(max-width:720px){.scenario-article{padding:1rem;margin-top:.8rem;border-radius:14px}.evidence-note{text-align:left;padding:0 .25rem}}
+
+.detail-case-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:.42rem;width:100%}.detail-case-list li{max-width:28ch;color:#e7edf3;font-size:.78rem;line-height:1.24;font-weight:680}.detail-case-list li+li{padding-top:.38rem;border-top:1px solid color-mix(in srgb,var(--detail-accent) 22%,#273244)}
+@media(max-width:720px){.detail-case-list{align-items:flex-start}.detail-case-list li{max-width:none}}

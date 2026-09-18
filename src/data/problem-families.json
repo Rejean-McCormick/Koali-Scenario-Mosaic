@@ -1,0 +1,10 @@
+{
+  "coordination_breakdown": {"tone":"a","en":["Coordination","breakdown"],"fr":["Rupture de","coordination"]},
+  "signal_context_loss": {"tone":"b","en":["Signal &","context loss"],"fr":["Perte de signal","et contexte"]},
+  "knowledge_attrition": {"tone":"a","en":["Knowledge","attrition"],"fr":["Érosion du","savoir"]},
+  "distributed_intelligence": {"tone":"b","en":["Distributed","intelligence"],"fr":["Intelligence","distribuée"]},
+  "evidence_vs_noise": {"tone":"b","en":["Evidence vs","noise"],"fr":["Preuves vs","bruit"]},
+  "decision_traceability": {"tone":"a","en":["Decision","traceability"],"fr":["Traçabilité des","décisions"]},
+  "action_learning_loops": {"tone":"b","en":["Action &","learning loops"],"fr":["Boucles action-","apprentissage"]},
+  "capacity_sovereignty": {"tone":"a","en":["Capacity &","sovereignty"],"fr":["Capacité &","souveraineté"]}
+}

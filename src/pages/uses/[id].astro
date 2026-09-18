@@ -1,5 +1,4 @@
 ---
-import metadata from '../../data/scenarios.json';
-export function getStaticPaths(){ return Object.keys(metadata).map((id) => ({ params:{id} })); }
+import { getLocalizedScenarios } from '../../lib/scenarios';
+export async function getStaticPaths(){const scenarios=await getLocalizedScenarios('en');return scenarios.map(s=>({params:{id:s.data.id}}));}
 return Astro.redirect(`/en/uses/${Astro.params.id}/`);
----

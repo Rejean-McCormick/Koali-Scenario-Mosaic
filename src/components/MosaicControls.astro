@@ -1,10 +1,15 @@
 ---
 import { getUi, type Locale } from '../i18n/ui';
-const { total = 120, locale = 'en' as Locale } = Astro.props;
-const s = getUi(locale);
+import { localizeScaleValue, localizeUrgency, localizeStake } from '../i18n/taxonomy';
+const { total=36, locale='en' as Locale, facets }=Astro.props;
+const s=getUi(locale);
 ---
 <div class="mosaic-controls">
-  <label class="search-box"><span class="sr-only">{s.searchScenarios}</span><input data-mosaic-search type="search" placeholder={s.searchPlaceholder} /></label>
+  <label class="search-box"><span class="sr-only">{s.searchScenarios}</span><input data-mosaic-search type="search" placeholder={s.searchPlaceholder}/></label>
+  <label class="filter-box"><span>{s.familyFilter}</span><select data-mosaic-filter="family"><option value="">{s.allFamilies}</option>{facets.families.map((x:any)=><option value={x.value}>{x.label}</option>)}</select></label>
+  <label class="filter-box"><span>{s.scaleFilter}</span><select data-mosaic-filter="scale"><option value="">{s.allScales}</option>{facets.scales.map((x:string)=><option value={x}>{localizeScaleValue(locale,x)}</option>)}</select></label>
+  <label class="filter-box"><span>{s.urgencyFilter}</span><select data-mosaic-filter="urgency"><option value="">{s.allUrgencies}</option>{facets.urgencies.map((x:string)=><option value={x}>{localizeUrgency(locale,x)}</option>)}</select></label>
+  <label class="filter-box"><span>{s.stakesFilter}</span><select data-mosaic-filter="stakes"><option value="">{s.allStakes}</option>{facets.stakes.map((x:string)=><option value={x}>{localizeStake(locale,x)}</option>)}</select></label>
   <button class="ghost-button" data-mosaic-surprise>{s.surprise}</button>
   <button class="ghost-button" data-mosaic-reset>{s.reset}</button>
   <output data-mosaic-result-count>{total} {s.scenarios}</output>

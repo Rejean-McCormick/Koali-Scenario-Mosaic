@@ -1,24 +1,17 @@
 ---
 import layout from '../data/mosaic-layout.json';
-import { getUi, type Locale } from '../i18n/ui';
-
-const { locale = 'en' as Locale } = Astro.props;
-const strings = getUi(locale);
-const anchors = (layout as any).territoryLabels ?? {};
-const ids = Object.keys(anchors).sort();
+import families from '../data/problem-families.json';
+import type { Locale } from '../i18n/ui';
+const { locale='en' as Locale }=Astro.props;
+const anchors=(layout as any).territoryLabels ?? {};
+const ids=(layout as any).familyOrder ?? Object.keys(anchors);
 ---
 <div class="territory-label-layer" aria-hidden="true" data-territory-label-layer>
-  {ids.map((id) => {
-    const anchor = anchors[id];
-    const lines = (strings.territoryMapLabels as Record<string, readonly string[]>)[id] ?? [id];
-    return (
-      <div
-        class={`territory-label ${id.toLowerCase()}`}
-        data-territory-id={id}
-        style={`--territory-x:${anchor.x * 100}%;--territory-y:${anchor.y * 100}%;--territory-w:${anchor.width * 100}%;`}
-      >
-        {lines.map((line) => <span class="territory-label__line" data-territory-line>{line}</span>)}
-      </div>
-    );
+  {ids.map((id:string)=>{
+    const anchor=(anchors as any)[id];
+    const lines=((families as any)[id]?.[locale] ?? [id]) as string[];
+    return <div class={`territory-label family-${id}`} data-territory-id={id} style={`--territory-x:${anchor.x*100}%;--territory-y:${anchor.y*100}%;--territory-w:${anchor.width*100}%;`}>
+      {lines.map((line)=><span class="territory-label__line" data-territory-line>{line}</span>)}
+    </div>;
   })}
 </div>

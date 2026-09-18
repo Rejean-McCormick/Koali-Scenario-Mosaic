@@ -1,5 +1,5 @@
 ---
-const {id,title,category,href,x,y,size}=Astro.props;
+const {id,title,family,href,x,y,size}=Astro.props;
 const pts=Array.from({length:6},(_,i)=>{const a=Math.PI/3*i-Math.PI/6;return `${x+size*Math.cos(a)},${y+size*Math.sin(a)}`}).join(' ');
 ---
-<a class={`mosaic-cell ${category.toLowerCase()}`} href={href} data-scenario-id={id} aria-label={`${id}: ${title}`} tabindex="0"><polygon points={pts}/><title>{`${id}: ${title}`}</title></a>
+<a class={`mosaic-cell family-${family}`} href={href} data-scenario-id={id} data-family={family} aria-label={`${id}: ${title}`} tabindex="0"><polygon points={pts}/><title>{`${id}: ${title}`}</title></a>

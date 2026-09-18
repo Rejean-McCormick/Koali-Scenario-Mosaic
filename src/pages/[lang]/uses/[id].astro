@@ -1,34 +1,28 @@
 ---
+import { render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ScenarioPreview from '../../../components/ScenarioPreview.astro';
 import ScenarioInfoMosaic from '../../../components/ScenarioInfoMosaic.astro';
 import { getLocalizedScenarios } from '../../../lib/scenarios';
 import { locales, type Locale } from '../../../i18n/ui';
-import { getScenarioPortal } from '../../../lib/scenario-portal';
 import '../../../styles/mosaic.css';
 import '../../../styles/scenario.css';
 
-export async function getStaticPaths() {
-  const paths = [];
-  for (const lang of locales) {
-    const scenarios = await getLocalizedScenarios(lang);
-    for (const scenario of scenarios) {
-      paths.push({ params: { lang, id: scenario.data.id }, props: { locale: lang, scenario } });
-    }
+export async function getStaticPaths(){
+  const paths=[];
+  for(const lang of locales){
+    const scenarios=await getLocalizedScenarios(lang);
+    for(const scenario of scenarios) paths.push({params:{lang,id:scenario.data.id},props:{locale:lang,scenario,total:scenarios.length}});
   }
   return paths;
 }
-
-const { locale, scenario } = Astro.props as { locale: Locale; scenario: any };
-const portal = getScenarioPortal(scenario.data, scenario.entry.body ?? '', locale);
+const {locale,scenario,total}=Astro.props as {locale:Locale;scenario:any;total:number};
+const {Content}=await render(scenario.entry);
 ---
-<BaseLayout
-  locale={locale}
-  title={`${portal.capabilityTitle} — ${scenario.data.title} | ${locale === 'fr' ? 'Mosaïque de scénarios Koali' : 'Koali Scenario Mosaic'}`}
-  description={portal.koaliHelp}
->
+<BaseLayout locale={locale} title={`${scenario.data.title} | ${locale==='fr'?'Mosaïque de scénarios Koali':'Koali Scenario Mosaic'}`} description={scenario.data.hook}>
   <div class="mosaic-experience scenario-detail-experience">
-    <ScenarioPreview locale={locale} scenario={scenario} total={120} />
-    <ScenarioInfoMosaic locale={locale} scenario={scenario} />
+    <ScenarioPreview locale={locale} scenario={scenario} total={total}/>
+    <ScenarioInfoMosaic locale={locale} scenario={scenario}/>
+    <article class="scenario-article"><Content /></article>
   </div>
 </BaseLayout>

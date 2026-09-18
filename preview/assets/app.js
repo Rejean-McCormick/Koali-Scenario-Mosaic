@@ -1,64 +1,81 @@
 (() => {
-  const root = document.querySelector('[data-mosaic-root]');
-  if (!root) return;
-  const data = JSON.parse(root.querySelector('[data-mosaic-data]')?.textContent || '{}');
-  const tr = JSON.parse(root.querySelector('[data-mosaic-i18n]')?.textContent || '{}');
-  const cells = [...root.querySelectorAll('[data-scenario-id]')];
-  const search = root.querySelector('[data-mosaic-search]');
-  const count = root.querySelector('[data-mosaic-result-count]');
-  const canvas = root.querySelector('[data-mosaic-canvas]');
-  const setText = (q,v) => { const e=root.querySelector(q); if(e){e.textContent=v;e.title=v;} };
-  const compact = (a,empty='—',limit=3) => !a||!a.length ? empty : (a.length>limit ? `${a.slice(0,limit).join(' · ')} +${a.length-limit}` : a.join(' · '));
-  const renderSystems = systems => { const list=root.querySelector('[data-preview-system-list]'); if(!list)return; list.replaceChildren(); (systems||[]).forEach(system=>{const item=document.createElement('span');item.className='system-route';item.dataset.systemKey=system.key;item.title=system.description;const name=document.createElement('strong');name.textContent=system.label;const detail=document.createElement('small');detail.textContent=system.description;item.append(name,detail);list.append(item);}); };
-  const selectOnly = id => cells.forEach(c => c.classList.toggle('is-active',c.dataset.scenarioId===id));
-  function show(id){
-    const s=data[id]; if(!s) return;
-    selectOnly(id);
-    if(preview) preview.dataset.previewSelected='true';
-    if(canvas) canvas.dataset.activeTerritory=s.categoryId;
-    setText('[data-preview-id]',s.id);setText('[data-preview-category]',s.category);setText('[data-preview-title]',s.title);setText('[data-preview-summary]',s.summary);setText('[data-preview-example]',s.example);const ew=root.querySelector('[data-preview-example-wrap]');if(ew)ew.hidden=false;renderSystems(s.systems||[]);setText('[data-preview-scales]',compact(s.scales));setText('[data-preview-context]',compact(s.contexts));setText('[data-preview-properties]',compact(s.properties,tr.noneHighlighted,2));
-    const p=root.querySelector('[data-preview-profile]');if(p)p.dataset.category=s.categoryId;
-    const prompt=root.querySelector('[data-preview-prompt]');if(prompt)prompt.hidden=true;
-    const img=root.querySelector('[data-preview-image]');if(img){if(s.imageSrcSet){img.sizes=s.imageSizes||'100vw';img.srcset=s.imageSrcSet;}else{img.removeAttribute('srcset');img.removeAttribute('sizes');}img.src=s.image;img.alt=s.imageAlt;img.dataset.imageState='scenario';img.hidden=false;}
-    const link=root.querySelector('[data-preview-link]');if(link){link.href=s.href;link.hidden=false;}
-    const activePalette=new Set(s.paletteKeys||[]);
-    const backlightGroups=[{"key":"find","palette":["find","verify"],"architecture":"Kristal · Konnaxion"},{"key":"understand","palette":["understand"],"architecture":"Kristal · SemantiK"},{"key":"learn","palette":["learn","teach-share"],"architecture":"Konnaxion · UCKK"},{"key":"collaborate","palette":["collaborate","create"],"architecture":"Konnaxion"},{"key":"choose","palette":["deliberate","choose"],"architecture":"Konnaxion · Smart Vote · EkoH"},{"key":"act","palette":["organize","act"],"architecture":"Orgo"},{"key":"respond","palette":["respond","coordinate"],"architecture":"Orgo · Konnaxion"},{"key":"remember","palette":["remember","disseminate"],"architecture":"Kristal · UCKK"}];
-    root.querySelectorAll('[data-backlight-key]').forEach(el=>{const g=backlightGroups.find(x=>x.key===el.dataset.backlightKey);const on=!!g&&g.palette.some(k=>activePalette.has(k));el.classList.toggle('is-active',on);const label=el.querySelector('.tag-label')?.textContent||'';el.setAttribute('aria-label',`${label}: ${on?tr.involved:tr.notCentral}. Architecture: ${g?.architecture||''}`);});
-    preview?.dispatchEvent(new CustomEvent('preview:contentchange'));
-  }
+  const root=document.querySelector('[data-mosaic-root]');
+  if(!root)return;
+  const raw=root.querySelector('[data-mosaic-data]').textContent;
+  const data=JSON.parse(raw.replace(/&quot;/g,'\"').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>'));
+  const i18n=JSON.parse(root.querySelector('[data-mosaic-i18n]').textContent);
+  const cells=[...root.querySelectorAll('[data-scenario-id]')];
+  const search=root.querySelector('[data-mosaic-search]');
+  const filters=[...root.querySelectorAll('[data-mosaic-filter]')];
+  const count=root.querySelector('[data-mosaic-result-count]');
+  const canvas=root.querySelector('[data-mosaic-canvas]');
+  const preview=root.querySelector('.scenario-preview');
   const touchPreviewMode=matchMedia('(hover: none), (pointer: coarse)').matches;
   const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
-  const preview=root.querySelector('.scenario-preview');
-  /* Hover remains intent-delayed. Shared title and palette sizing comes from
-     preview-layout.js on both the Mosaic and the static detail pages. */
-  const hoverPreviewDelayMs=140;
-  let hoverPreviewTimer,pendingHoverId=null;
-  const cancelScheduledPreview=id=>{if(id&&pendingHoverId!==id)return;if(hoverPreviewTimer!==undefined)clearTimeout(hoverPreviewTimer);hoverPreviewTimer=undefined;pendingHoverId=null;};
-  const schedulePreview=id=>{cancelScheduledPreview();pendingHoverId=id;hoverPreviewTimer=setTimeout(()=>{hoverPreviewTimer=undefined;pendingHoverId=null;show(id);},hoverPreviewDelayMs);};
-  const availableScenarioCells=()=>cells.filter(c=>!c.classList.contains('is-filtered-out')).sort((a,b)=>(a.dataset.scenarioId||'').localeCompare(b.dataset.scenarioId||'',undefined,{numeric:true}));
-  const stepScenario=direction=>{const available=availableScenarioCells();if(!available.length)return;const activeId=cells.find(c=>c.classList.contains('is-active'))?.dataset.scenarioId;let index=available.findIndex(c=>c.dataset.scenarioId===activeId);if(index<0)index=direction>0?-1:0;const next=available[(index+direction+available.length)%available.length];if(next)show(next.dataset.scenarioId);};
-  if(touchPreviewMode&&preview){let start=null;preview.addEventListener('touchstart',e=>{if(e.touches.length!==1){start=null;return;}const t=e.touches[0];start={x:t.clientX,y:t.clientY,time:performance.now()};},{passive:true});preview.addEventListener('touchend',e=>{if(!start||e.changedTouches.length!==1){start=null;return;}const t=e.changedTouches[0],dx=t.clientX-start.x,dy=t.clientY-start.y,duration=performance.now()-start.time;start=null;if(duration>900||Math.abs(dx)<48||Math.abs(dx)<=Math.abs(dy)*1.2)return;stepScenario(dx<0?1:-1);},{passive:true});preview.addEventListener('touchcancel',()=>{start=null;},{passive:true});}
-  cells.forEach(c=>{const id=c.dataset.scenarioId;c.addEventListener('pointerenter',e=>{if(touchPreviewMode||e.pointerType==='touch')return;schedulePreview(id);});c.addEventListener('pointerleave',()=>cancelScheduledPreview(id));c.addEventListener('focus',()=>{cancelScheduledPreview();show(id);});c.addEventListener('click',e=>{if(!touchPreviewMode)return;e.preventDefault();cancelScheduledPreview();show(id);preview?.scrollIntoView({behavior:reducedMotion.matches?'auto':'smooth',block:'start'});});});
-  search?.addEventListener('input',()=>{const q=search.value.trim().toLowerCase();let n=0;cells.forEach(c=>{const hit=!q||data[c.dataset.scenarioId].search.includes(q);c.classList.toggle('is-filtered-out',!hit);if(hit)n++;});if(count)count.textContent=`${n} ${n===1?tr.scenarioSingular:tr.scenarios}`;});
-  root.querySelector('[data-mosaic-surprise]')?.addEventListener('click',()=>{cancelScheduledPreview();const v=cells.filter(c=>!c.classList.contains('is-filtered-out'));if(v.length){const c=v[Math.floor(Math.random()*v.length)];show(c.dataset.scenarioId);c.focus();}});
-  root.querySelector('[data-mosaic-reset]')?.addEventListener('click',()=>{cancelScheduledPreview();if(search)search.value='';cells.forEach(c=>c.classList.remove('is-filtered-out','is-active'));if(canvas)delete canvas.dataset.activeTerritory;if(count)count.textContent=`${cells.length} ${tr.scenarios}`;});
 
-  if (!canvas || !matchMedia('(hover: hover) and (pointer: fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const lines=[...canvas.querySelectorAll('[data-territory-line]')];
-  const states=[];
-  for(const line of lines){
-    const text=line.textContent||'';line.textContent='';
-    for(const ch of [...text]){const span=document.createElement('span');span.className='territory-label__char';span.textContent=ch===' '?'\u00a0':ch;line.append(span);states.push({el:span,restX:0,restY:0,x:0,y:0,vx:0,vy:0,targetX:0,targetY:0});}
+  const txt=(q,v)=>{const e=root.querySelector(q);if(e){e.textContent=v;e.title=v}};
+  const list=(a,n=3)=>!a?.length?'—':a.length>n?`${a.slice(0,n).join(' · ')} +${a.length-n}`:a.join(' · ');
+  function systems(items=[]){
+    const box=root.querySelector('[data-preview-system-list]');
+    if(!box)return;
+    box.replaceChildren();
+    items.forEach(s=>{const e=document.createElement('span');e.className='system-route';e.innerHTML=`<strong>${s.label}</strong><small>${s.description}</small>`;box.append(e)});
   }
-  const cfg={radius:104,maxOffset:11,forceExponent:1.95,spring:.085,damping:.56,pointerSmoothing:.34,maxVelocity:1.35,settleDistance:.06,settleVelocity:.05};
-  const pointer={x:0,y:0,rawX:0,rawY:0,active:false,initialized:false};let raf=0,last=performance.now(),visible=true;
-  const measure=()=>{const cr=canvas.getBoundingClientRect();for(const s of states){const r=s.el.getBoundingClientRect();s.restX=r.left+r.width/2-cr.left-s.x;s.restY=r.top+r.height/2-cr.top-s.y;}};
-  const settled=()=>states.every(s=>Math.abs(s.x)<cfg.settleDistance&&Math.abs(s.y)<cfg.settleDistance&&Math.abs(s.vx)<cfg.settleVelocity&&Math.abs(s.vy)<cfg.settleVelocity);
-  const wake=()=>{if(!raf&&visible){last=performance.now();raf=requestAnimationFrame(tick);}};
-  function tick(now){raf=0;if(!visible)return;const factor=Math.min(2,Math.max(.5,(now-last)/16.667));last=now;const damp=Math.pow(cfg.damping,factor);if(pointer.active){if(!pointer.initialized){pointer.x=pointer.rawX;pointer.y=pointer.rawY;pointer.initialized=true;}else{const follow=1-Math.pow(1-cfg.pointerSmoothing,factor);pointer.x+=(pointer.rawX-pointer.x)*follow;pointer.y+=(pointer.rawY-pointer.y)*follow;}}for(const s of states){if(pointer.active){const dx=s.restX-pointer.x,dy=s.restY-pointer.y,d=Math.hypot(dx,dy);if(d>.001&&d<cfg.radius){const prox=Math.max(0,1-d/cfg.radius),force=Math.pow(prox,cfg.forceExponent),a=cfg.maxOffset*force;s.targetX=dx/d*a;s.targetY=dy/d*a;}else{s.targetX=s.targetY=0;}}else{s.targetX=s.targetY=0;}s.vx+=(s.targetX-s.x)*cfg.spring*factor;s.vy+=(s.targetY-s.y)*cfg.spring*factor;s.vx*=damp;s.vy*=damp;s.vx=Math.max(-cfg.maxVelocity,Math.min(cfg.maxVelocity,s.vx));s.vy=Math.max(-cfg.maxVelocity,Math.min(cfg.maxVelocity,s.vy));s.x+=s.vx*factor;s.y+=s.vy*factor;s.el.style.transform=`translate3d(${s.x}px,${s.y}px,0)`;}if(pointer.active||!settled())raf=requestAnimationFrame(tick);}
-  canvas.addEventListener('pointermove',e=>{const r=canvas.getBoundingClientRect();pointer.rawX=e.clientX-r.left;pointer.rawY=e.clientY-r.top;if(!pointer.active){pointer.x=pointer.rawX;pointer.y=pointer.rawY;pointer.initialized=true;}pointer.active=true;wake();},{passive:true});
-  canvas.addEventListener('pointerleave',()=>{pointer.active=false;wake();},{passive:true});
-  new ResizeObserver(()=>requestAnimationFrame(measure)).observe(canvas);
-  new IntersectionObserver(es=>{visible=!!es[0]?.isIntersecting;if(visible)requestAnimationFrame(measure);else{pointer.active=false;}},{threshold:.01}).observe(canvas);
-  (document.fonts?.ready||Promise.resolve()).then(()=>requestAnimationFrame(measure));
+  function mechanisms(items=[]){
+    const box=root.querySelector('[data-preview-mechanisms]');
+    if(!box)return;
+    box.replaceChildren();
+    items.slice(0,4).forEach(x=>{const e=document.createElement('span');e.textContent=x;box.append(e)});
+  }
+  function selectOnly(id){cells.forEach(c=>c.classList.toggle('is-active',c.dataset.scenarioId===id))}
+  function show(id){
+    const s=data[id];if(!s)return;
+    selectOnly(id);
+    if(canvas)canvas.dataset.activeTerritory=s.familyId;
+    if(preview)preview.dataset.previewSelected='true';
+    txt('[data-preview-id]',s.id);txt('[data-preview-category]',s.family);txt('[data-preview-title]',s.title);txt('[data-preview-summary]',s.hook);txt('[data-preview-koali]',s.summary);
+    const kw=root.querySelector('[data-preview-koali-wrap]');if(kw)kw.hidden=false;
+    txt('[data-preview-scale]',s.scale);txt('[data-preview-urgency]',s.urgency);txt('[data-preview-gap]',s.coordinationGap);txt('[data-preview-stakes]',list(s.stakes));
+    txt('[data-preview-mechanism-summary]',list(s.mechanisms));txt('[data-preview-scale-profile]',s.scalePath);
+    const urgency=root.querySelector('[data-preview-urgency-wrap]');if(urgency)urgency.dataset.urgency=s.urgencyKey;
+    const im=root.querySelector('[data-preview-image]');if(im){im.src=s.image.src;im.alt=s.title;im.dataset.imageState='scenario'}
+    const metrics=root.querySelector('[data-preview-metrics-row]');if(metrics)metrics.hidden=false;
+    mechanisms(s.mechanisms);systems(s.systems);
+    const link=root.querySelector('[data-preview-link]');if(link){link.href=s.href;link.hidden=false}
+    preview?.dispatchEvent(new CustomEvent('preview:contentchange'));
+  }
+
+  const available=()=>cells.filter(c=>!c.classList.contains('is-filtered-out')).sort((a,b)=>(a.dataset.scenarioId||'').localeCompare(b.dataset.scenarioId||'',undefined,{numeric:true}));
+  const step=dir=>{const items=available();if(!items.length)return;const active=cells.find(c=>c.classList.contains('is-active'))?.dataset.scenarioId;let ix=items.findIndex(c=>c.dataset.scenarioId===active);if(ix<0)ix=dir>0?-1:0;const next=items[(ix+dir+items.length)%items.length]?.dataset.scenarioId;if(next)show(next)};
+
+  let hoverTimer, pendingHoverId=null;
+  function cancelScheduledPreview(id){if(id&&pendingHoverId!==id)return;if(hoverTimer!==undefined)clearTimeout(hoverTimer);hoverTimer=undefined;pendingHoverId=null}
+  function schedulePreview(id){cancelScheduledPreview();pendingHoverId=id;hoverTimer=setTimeout(()=>{hoverTimer=undefined;pendingHoverId=null;show(id)},140)}
+
+  if(touchPreviewMode&&preview){
+    let start=null;
+    preview.addEventListener('touchstart',e=>{if(e.touches.length!==1){start=null;return}const t=e.touches[0];start={x:t.clientX,y:t.clientY,time:performance.now()}},{passive:true});
+    preview.addEventListener('touchend',e=>{if(!start||e.changedTouches.length!==1){start=null;return}const t=e.changedTouches[0],dx=t.clientX-start.x,dy=t.clientY-start.y,duration=performance.now()-start.time;start=null;if(duration>900||Math.abs(dx)<48||Math.abs(dx)<=Math.abs(dy)*1.2)return;step(dx<0?1:-1)},{passive:true});
+    preview.addEventListener('touchcancel',()=>{start=null},{passive:true});
+  }
+
+  cells.forEach(c=>{
+    const id=c.dataset.scenarioId;
+    c.addEventListener('pointerenter',e=>{if(touchPreviewMode||e.pointerType==='touch')return;schedulePreview(id)});
+    c.addEventListener('pointerleave',()=>cancelScheduledPreview(id));
+    c.addEventListener('focus',()=>{cancelScheduledPreview();show(id)});
+    c.addEventListener('click',e=>{if(!touchPreviewMode)return;e.preventDefault();cancelScheduledPreview();show(id);preview?.scrollIntoView({behavior:reducedMotion.matches?'auto':'smooth',block:'start'})});
+  });
+
+  function apply(){
+    const q=(search?.value||'').trim().toLowerCase();
+    const f=Object.fromEntries(filters.map(x=>[x.dataset.mosaicFilter,x.value]));
+    let n=0;
+    cells.forEach(c=>{const s=data[c.dataset.scenarioId],hit=(!q||s.search.includes(q))&&(!f.family||s.familyId===f.family)&&(!f.scale||s.scaleKey===f.scale)&&(!f.urgency||s.urgencyKey===f.urgency)&&(!f.stakes||s.stakesKeys.includes(f.stakes));c.classList.toggle('is-filtered-out',!hit);if(hit)n++});
+    if(count)count.value=`${n} ${n===1?i18n.scenarioSingular:i18n.scenarios}`;
+  }
+  search?.addEventListener('input',apply);filters.forEach(f=>f.addEventListener('change',apply));
+
+  root.querySelector('[data-mosaic-reset]')?.addEventListener('click',()=>{cancelScheduledPreview();if(search)search.value='';filters.forEach(f=>f.value='');cells.forEach(c=>c.classList.remove('is-filtered-out','is-active'));if(canvas)delete canvas.dataset.activeTerritory;if(count)count.value=`${cells.length} ${i18n.scenarios}`});
+  root.querySelector('[data-mosaic-surprise]')?.addEventListener('click',()=>{cancelScheduledPreview();const v=available();if(v.length){const c=v[Math.floor(Math.random()*v.length)];show(c.dataset.scenarioId);c.focus({preventScroll:true})}});
 })();
