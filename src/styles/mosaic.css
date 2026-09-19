@@ -1404,7 +1404,7 @@
    V2.4 visual metric indicators
    - urgency: segmented green→yellow→orange→red bar
    - scale: concentric radar rings
-   - coordination gap: network fragment indicator
+   - coordination gap: explicit 4-level segmented gauge
    ============================== */
 .preview-metrics-row{
   grid-template-columns:.88fr .88fr 1.08fr 1.26fr;
@@ -1501,42 +1501,70 @@
   background:rgba(111,208,206,.05);
 }
 
-/* Coordination gap network */
+/* Coordination gap — explicit 4-level segmented gauge.
+   The number of filled segments directly communicates the level:
+   1 low, 2 medium, 3 high, 4 extreme. */
 .preview-metric-visual--gap{
-  position:relative;
-  width:40px;
+  width:auto;
+  min-width:68px;
   height:24px;
-  --gap-node:#87cdc8;
-  --gap-link:#87cdc8;
-  --gap-off:#3b4758;
+  display:flex;
+  align-items:center;
+  gap:4px;
+  --gap-on:#87cdc8;
 }
-.preview-metric-visual--gap[data-level="2"]{--gap-node:#d9c36a;--gap-link:#d9c36a}
-.preview-metric-visual--gap[data-level="3"]{--gap-node:#e69a58;--gap-link:#e69a58}
-.preview-metric-visual--gap[data-level="4"]{--gap-node:#d96a6a;--gap-link:#d96a6a}
-.metric-gap-node,
-.metric-gap-link{position:absolute;display:block;box-sizing:border-box}
-.metric-gap-node{
-  width:6px;height:6px;border-radius:999px;
-  background:var(--gap-node);
-  box-shadow:0 0 0 1px rgba(255,255,255,.06);
+.preview-metric-visual--gap[data-level="2"]{--gap-on:#d9c36a}
+.preview-metric-visual--gap[data-level="3"]{--gap-on:#e69a58}
+.preview-metric-visual--gap[data-level="4"]{--gap-on:#d96a6a}
+.metric-gap-segment{
+  width:14px;
+  height:8px;
+  border-radius:3px;
+  box-sizing:border-box;
+  background:#263343;
+  border:1px solid #536174;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.025);
 }
-.metric-gap-node--tl{left:2px;top:2px}
-.metric-gap-node--tr{right:2px;top:2px}
-.metric-gap-node--bl{left:2px;bottom:2px}
-.metric-gap-node--br{right:2px;bottom:2px}
-.metric-gap-link{background:var(--gap-off)}
-.metric-gap-link--top{left:8px;right:8px;top:4px;height:2px}
-.metric-gap-link--bottom{left:8px;right:8px;bottom:4px;height:2px}
-.metric-gap-link--left{left:4px;top:8px;bottom:8px;width:2px}
-.metric-gap-link--right{right:4px;top:8px;bottom:8px;width:2px}
-.metric-gap-link--diag{left:8px;top:11px;width:23px;height:2px;transform:rotate(-34deg);transform-origin:left center}
-.preview-metric-visual--gap[data-level="1"] .metric-gap-link,
-.preview-metric-visual--gap[data-level="2"] .metric-gap-link--top,
-.preview-metric-visual--gap[data-level="2"] .metric-gap-link--left,
-.preview-metric-visual--gap[data-level="2"] .metric-gap-link--bottom,
-.preview-metric-visual--gap[data-level="3"] .metric-gap-link--diag{
-  background:var(--gap-link);
-  box-shadow:0 0 8px color-mix(in srgb,var(--gap-link) 34%, transparent);
+.preview-metric-visual--gap[data-level="1"] .metric-gap-segment--1,
+.preview-metric-visual--gap[data-level="2"] .metric-gap-segment--1,
+.preview-metric-visual--gap[data-level="2"] .metric-gap-segment--2,
+.preview-metric-visual--gap[data-level="3"] .metric-gap-segment--1,
+.preview-metric-visual--gap[data-level="3"] .metric-gap-segment--2,
+.preview-metric-visual--gap[data-level="3"] .metric-gap-segment--3,
+.preview-metric-visual--gap[data-level="4"] .metric-gap-segment--1,
+.preview-metric-visual--gap[data-level="4"] .metric-gap-segment--2,
+.preview-metric-visual--gap[data-level="4"] .metric-gap-segment--3,
+.preview-metric-visual--gap[data-level="4"] .metric-gap-segment--4{
+  background:var(--gap-on);
+  border-color:color-mix(in srgb,var(--gap-on) 72%,white 28%);
+  box-shadow:0 0 8px color-mix(in srgb,var(--gap-on) 30%,transparent);
+}
+.preview-metric-visual--gap[data-level="0"] .metric-gap-segment{opacity:.5}
+
+/* Backward compatibility for already-generated offline preview HTML that still
+   contains the former network-node markup. The old children are hidden and the
+   same four-segment gauge is painted with pseudo-elements until preview:offline
+   is regenerated. */
+.preview-metric-visual--gap:not(:has(.metric-gap-segment)){position:relative;--gap-fill:14px}
+.preview-metric-visual--gap:not(:has(.metric-gap-segment))[data-level="2"]{--gap-fill:32px}
+.preview-metric-visual--gap:not(:has(.metric-gap-segment))[data-level="3"]{--gap-fill:50px}
+.preview-metric-visual--gap:not(:has(.metric-gap-segment))[data-level="4"]{--gap-fill:68px}
+.preview-metric-visual--gap:not(:has(.metric-gap-segment))[data-level="0"]{--gap-fill:0px}
+.preview-metric-visual--gap:not(:has(.metric-gap-segment))>*{display:none!important}
+.preview-metric-visual--gap:not(:has(.metric-gap-segment))::before,
+.preview-metric-visual--gap:not(:has(.metric-gap-segment))::after{
+  content:"";
+  position:absolute;
+  left:0;
+  top:8px;
+  height:8px;
+  background:repeating-linear-gradient(to right,#263343 0 14px,transparent 14px 18px);
+}
+.preview-metric-visual--gap:not(:has(.metric-gap-segment))::before{width:68px}
+.preview-metric-visual--gap:not(:has(.metric-gap-segment))::after{
+  width:var(--gap-fill);
+  background:repeating-linear-gradient(to right,var(--gap-on) 0 14px,transparent 14px 18px);
+  filter:drop-shadow(0 0 4px color-mix(in srgb,var(--gap-on) 30%,transparent));
 }
 .preview-metric-gap strong{white-space:nowrap}
 

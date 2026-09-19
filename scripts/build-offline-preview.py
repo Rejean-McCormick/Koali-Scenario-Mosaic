@@ -34,9 +34,8 @@ def scale_visual(level):
 def urgency_visual(level):
     return '<div class="preview-metric-visual preview-metric-visual--urgency" data-preview-urgency-visual data-level="%s" aria-hidden="true">%s</div>'%(level,''.join(f'<span class="metric-segment metric-segment--{i}" data-step="{i}"></span>' for i in range(1,5)))
 def gap_visual(level):
-    links=''.join(f'<span class="metric-gap-link metric-gap-link--{name}" data-link="{name}"></span>' for name in ['top','right','bottom','left','diag'])
-    nodes=''.join(f'<span class="metric-gap-node metric-gap-node--{pos}"></span>' for pos in ['tl','tr','bl','br'])
-    return f'<div class="preview-metric-visual preview-metric-visual--gap" data-preview-gap-visual data-level="{level}" aria-hidden="true">{nodes}{links}</div>'
+    segments=''.join(f'<span class="metric-gap-segment metric-gap-segment--{i}" data-step="{i}"></span>' for i in range(1,5))
+    return f'<div class="preview-metric-visual preview-metric-visual--gap" data-preview-gap-visual data-level="{level}" aria-hidden="true">{segments}</div>'
 def split_file(p):
     t=p.read_text(encoding='utf-8');m=re.match(r'^---\r?\n(.*?)\r?\n---\r?\n([\s\S]*)$',t,re.S);return parse_frontmatter(m.group(1)),m.group(2)
 def sec(body,head):

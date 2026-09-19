@@ -19,7 +19,6 @@ const scaleLevel=selected?scaleVisualLevelFromKey(scaleExtent):0;
 const urgencyLevel=selected?urgencyVisualLevel(data.urgency):0;
 const gapLevel=selected?coordinationGapVisualLevel(data.coordination_gap):0;
 const steps=[1,2,3,4];
-const gapLinks=['top','right','bottom','left','diag'];
 ---
 <section class="scenario-preview" data-preview-swipe={!selected?'true':undefined} data-preview-selected={selected?'true':'false'}>
   <div class="preview-image-shell">
@@ -47,11 +46,7 @@ const gapLinks=['top','right','bottom','left','diag'];
       <div class="preview-metric preview-metric-gap" data-preview-gap-wrap>
         <span>{s.coordinationGap}</span>
         <div class="preview-metric-visual preview-metric-visual--gap" data-preview-gap-visual data-level={String(gapLevel)} aria-hidden="true">
-          <span class="metric-gap-node metric-gap-node--tl"></span>
-          <span class="metric-gap-node metric-gap-node--tr"></span>
-          <span class="metric-gap-node metric-gap-node--bl"></span>
-          <span class="metric-gap-node metric-gap-node--br"></span>
-          {gapLinks.map((name)=><span class={`metric-gap-link metric-gap-link--${name}`} data-link={name}></span>)}
+          {steps.map((step)=><span class={`metric-gap-segment metric-gap-segment--${step}`} data-step={String(step)}></span>)}
         </div>
         <strong data-preview-gap>{selected?localizeCoordinationGap(locale,data.coordination_gap):'—'}</strong>
       </div>
