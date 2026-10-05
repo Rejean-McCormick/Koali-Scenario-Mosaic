@@ -3,18 +3,36 @@ name: Validate and build
 on:
   push:
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
-          node-version: '24.20.0'
-      - uses: actions/setup-python@v5
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - run: npm install --no-audit --no-fund
-      - run: npm run validate
-      - run: npm run build
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Validate and build
+        run: npm run build
