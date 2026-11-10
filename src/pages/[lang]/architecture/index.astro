@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { locales, type Locale } from '../../../i18n/ui';
+import finalSystem from '../../../data/public-architecture.v1.json';
+import '../../../styles/architecture.css';
+
+export function getStaticPaths() { return locales.map(lang => ({ params: { lang } })); }
+const locale = Astro.params.lang as Locale;
+const french = locale === 'fr';
+const heading = french ? 'Architecture fonctionnelle cible' : 'Target functional architecture';
+const desc = french
+  ? 'Découvrez les 24 capacités envisagées de Koali et les propriétaires de leurs états. Cette présentation ne constitue pas une preuve de déploiement.'
+  : 'Explore Koali’s 24 intended capabilities and the owners of their state. This presentation is not deployment evidence.';
+---
+<BaseLayout locale={locale} title={`${heading} | Koali`} description={desc}>
+  <section class="architecture-page">
+    <nav aria-label={french ? 'Fil d’Ariane' : 'Breadcrumb'} class="architecture-breadcrumb">
+      <a href={`/${locale}/uses/`}>{french ? 'Scénarios' : 'Scenarios'}</a>
+      <span aria-hidden="true">/</span>
+      <span>{heading}</span>
+    </nav>
+    <p class="architecture-kicker">Koali · {french ? 'Système final envisagé' : 'Intended final system'}</p>
+    <h1>{heading}</h1>
+    <p class="architecture-intro">{desc}</p>
+    <p class="architecture-disclaimer">
+      <strong>{french ? 'Conception cible, non statut opérationnel.' : 'Target design, not operational status.'}</strong>{' '}
+      {french
+        ? 'Les contrats, les essais d’intégration et les autorisations de publication doivent être vérifiés séparément auprès des propriétaires.'
+        : 'Contracts, integration tests and publication permissions must be verified separately with the actual owners.'}
+    </p>
+    <dl class="architecture-stats">
+      <div><dt>{french ? 'Chaînes fonctionnelles' : 'Functional chains'}</dt><dd>{finalSystem.scope.chain_count}</dd></div>
+      <div><dt>{french ? 'Dépôts enregistrés' : 'Registered repositories'}</dt><dd>{finalSystem.scope.repository_count}</dd></div>
+      <div><dt>{french ? 'Frontières proposées' : 'Proposed boundaries'}</dt><dd>{finalSystem.scope.boundary_count}</dd></div>
+    </dl>
+    <div class="architecture-content">
+      <h2>{french ? 'Les fonctions du système' : 'System capabilities'}</h2>
+      <p>{french
+        ? 'Les noms officiels des chaînes demeurent en anglais. Chaque chaîne décrit un résultat recherché, ses propriétaires et les garde-fous nécessaires. Les chaînes peuvent fonctionner indépendamment.'
+        : 'A chain defines an intended result, responsible owners and safeguards. Chains remain independently usable where appropriate.'}</p>
+      <ol class="architecture-grid">
+        {finalSystem.chains.map((chain) => (
+          <li>
+            <span class="architecture-id">{chain.id}</span>
+            <h3>{chain.title}</h3>
+            <p>{chain.outcome}</p>
+            <details>
+              <summary>{french ? 'Responsabilités' : 'Responsible owners'}</summary>
+              <p>{chain.owners}</p>
+            </details>
+          </li>
+        ))}
+      </ol>
+    </div>
+    <div class="architecture-footer">
+      <p>{french
+        ? 'Les exemples de la mosaïque illustrent des situations possibles; leur présence ne prouve pas que Koali les exécute déjà.'
+        : 'Mosaic examples illustrate possible situations; their presence does not demonstrate that Koali already executes them.'}</p>
+      <a href="https://github.com/Rejean-McCormick/kOA-Digital-Ecosystem">{french ? 'Consulter la source architecturale' : 'View the architecture source'}</a>
+      <a href={`/${locale}/uses/`}>{french ? 'Retour aux scénarios' : 'Back to scenarios'}</a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,658 @@
+{
+  "format": "koa.public-architecture.v1",
+  "as_of": "2026-11-09",
+  "classification": "PUBLIC_DESIGN_METADATA_ONLY",
+  "status": "TARGET_DESIGN_NOT_DEPLOYMENT_EVIDENCE",
+  "source": "kOA-Digital-Ecosystem/docs/target",
+  "source_sha256": "d25789c3e10702e4a17902ae7f83da6a09648605033b5b4462248963520d83b4",
+  "scope": {
+    "chain_count": 24,
+    "repository_count": 53,
+    "boundary_count": 26
+  },
+  "chains": [
+    {
+      "id": "FC-01",
+      "title": "Bounded research and noncanonical acquisition",
+      "owners": "Skope / integrated EncyK",
+      "outcome": "A reviewed source/candidate batch with provenance and exact export digest",
+      "source_path": "docs/target/functional-chains/chains/FC-01-research-and-acquisition.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-02",
+      "title": "Durable source, snapshot and representation custody",
+      "owners": "Mediatheque / Mediatheque-blank",
+      "outcome": "Custody receipt and immutable source/snapshot/representation references under library ACL",
+      "source_path": "docs/target/functional-chains/chains/FC-02-source-custody.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-03",
+      "title": "Mapping, reviewed external alignment and lexicon",
+      "owners": "Daat / diK / Kristalizer / SenTient",
+      "outcome": "Versioned reversible mapping proposal, lexical catalog and explicit approval state",
+      "source_path": "docs/target/functional-chains/chains/FC-03-mapping-and-lexical-preparation.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-04",
+      "title": "Canonical Kristal authoring and conformance",
+      "owners": "Kristal-Framework / Kristal-Authoring-Kit / Arketype",
+      "outcome": "Validated local Kristal state and reproducible candidate build, not a public release",
+      "source_path": "docs/target/functional-chains/chains/FC-04-semantic-authoring.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-05",
+      "title": "Independent qualification and immutable knowledge publication",
+      "owners": "KristalDiag / Kristal-Manager / kristal-public / Konstellation-Publisher",
+      "outcome": "Immutable authorized release reference or an explicit denial, with qualification and publication receipts separate",
+      "source_path": "docs/target/functional-chains/chains/FC-05-knowledge-release.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-06",
+      "title": "Read-only knowledge consumers and context views",
+      "owners": "Kristal-Integration-Pack / Kompiler / EncyKlopedia / Konstellation / Konstellation-Light",
+      "outcome": "Provenance-preserving rebuildable read view, context pack or encyclopedia navigation without canonical write",
+      "source_path": "docs/target/functional-chains/chains/FC-06-knowledge-consumption.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-07",
+      "title": "Civic participation and finalized decisions",
+      "owners": "Konnaxion / Konnaxion-Worlds",
+      "outcome": "Finalized owner DecisionRecord with legitimacy and accountable follow-up reference",
+      "source_path": "docs/target/functional-chains/chains/FC-07-civic-deliberation.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-08",
+      "title": "Durable operational execution and accountability",
+      "owners": "Orgo / Konnaxion / Interaction-Kernel",
+      "outcome": "Receiver-owned Case/Task and reconciled terminal effects; optional civic accountability",
+      "source_path": "docs/target/functional-chains/chains/FC-08-governed-execution.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-09",
+      "title": "World and Universe context releases",
+      "owners": "Konnaxion-Worlds / Orgo-Worlds",
+      "outcome": "Approved owner WorldRelease with active context reference and safe rollback",
+      "source_path": "docs/target/functional-chains/chains/FC-09-world-contexts.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-10",
+      "title": "Pedagogical situations, plans and supervised missions",
+      "owners": "Kontexte / Kompose / Akor",
+      "outcome": "Reviewed learning plan, simulated capsule or separately approved real-work intent",
+      "source_path": "docs/target/functional-chains/chains/FC-10-education-design.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-11",
+      "title": "Neutral education engine and institutional projections",
+      "owners": "Ekole / Ekole-Pastorale / UCKK-Assets / UCKK-Ops-Console",
+      "outcome": "Rebuildable learning experience and permissioned Moodle/institution receipt",
+      "source_path": "docs/target/functional-chains/chains/FC-11-learning-delivery.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-12",
+      "title": "Faithful multilingual realization and grammar runtime",
+      "owners": "SemantiK-Architect / SemantiK_Runtime_Orchestrator / diK",
+      "outcome": "Faithful language realization with RuntimeSet/locale trace or an explicit missing-language verdict",
+      "source_path": "docs/target/functional-chains/chains/FC-12-language-runtime.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-13",
+      "title": "Editorial documents and reviewed multilingual publication",
+      "owners": "Spek / SemantiK-Architect / site publishers",
+      "outcome": "Reviewed accessible editorial artifact with version, provenance and publication approval",
+      "source_path": "docs/target/functional-chains/chains/FC-13-editorial-publishing.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-14",
+      "title": "Scoped identity, policy and actual enforcement",
+      "owners": "Konfid / Daat / each owner PEP",
+      "outcome": "Bound allow/deny decision and separate effect-point enforcement receipt",
+      "source_path": "docs/target/functional-chains/chains/FC-14-identity-and-policy.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-15",
+      "title": "Bounded agentic planning and approved owner effects",
+      "owners": "Konductor / owner adapters",
+      "outcome": "Inspectible plan, approved typed external request and terminal owner receipt when relevant",
+      "source_path": "docs/target/functional-chains/chains/FC-15-agentic-workflows.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-16",
+      "title": "Build, runtime admission, deploy and rollback",
+      "owners": "kOA-Linux-Koali / Koali-Control-Panel / Konnaxion-Capsule-Manager",
+      "outcome": "Measured host lifecycle and recovery receipt distinct from content publication and UI activation",
+      "source_path": "docs/target/functional-chains/chains/FC-16-platform-lifecycle.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-17",
+      "title": "Optional Koali Space app navigation",
+      "owners": "Koali-Spaces / product UI owners",
+      "outcome": "Admitted, accessible product surface with honest ready/degraded state",
+      "source_path": "docs/target/functional-chains/chains/FC-17-application-composition.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-18",
+      "title": "Independent diagnostics and time-scoped evidence",
+      "owners": "KristalDiag / KonnaxionDiag / LevelUpDiag tools / kOA C0",
+      "outcome": "Scoped diagnostic verdict and safe evidence metadata, not a release or deploy permission",
+      "source_path": "docs/target/functional-chains/chains/FC-18-diagnostics-and-audit.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-19",
+      "title": "Portable integrity packages and static reading",
+      "owners": "Kontainer / Konstellation-Light / authoring owners",
+      "outcome": "Verified offline package with manifest, read-only import and versioned rollback path",
+      "source_path": "docs/target/functional-chains/chains/FC-19-offline-portability.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-20",
+      "title": "Medical knowledge under separate safety governance",
+      "owners": "MediKristal / MediKristal-LevelUpDiag-",
+      "outcome": "Scoped informational or domain pathway feature subject to clinical/privacy policies",
+      "source_path": "docs/target/functional-chains/chains/FC-20-medical-domain.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-21",
+      "title": "Licensed characters, palettes and educational media",
+      "owners": "Karacter / Kolor / UCKK-Assets",
+      "outcome": "Versioned attributable media with reviewed rights and optional content-pack reference",
+      "source_path": "docs/target/functional-chains/chains/FC-21-creative-assets.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-22",
+      "title": "Public discovery, docs portal and explanatory scenarios",
+      "owners": "HomePage-initkoa.org / initkoa-docs / Koali-Scenario-Mosaic / C0",
+      "outcome": "Accessible dated public page linking to canonical owner and accurately classified functional requirements",
+      "source_path": "docs/target/functional-chains/chains/FC-22-public-presence.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-23",
+      "title": "Typed owner-to-owner and third-party exchange",
+      "owners": "Interaction-Kernel / Daat / two actual owner products",
+      "outcome": "Receiver-owned admission and terminal effect receipt, or an explicit rejection",
+      "source_path": "docs/target/functional-chains/chains/FC-23-external-interop.md",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "FC-24",
+      "title": "Observability, incident containment and owner recovery",
+      "owners": "Every product owner / platform host / independent diagnostics",
+      "outcome": "Owner-scoped incident trace, recovered or openly degraded state and accurate public-safe status",
+      "source_path": "docs/target/functional-chains/chains/FC-24-operations-and-recovery.md",
+      "state": "target_design_not_qualified"
+    }
+  ],
+  "repositories": [
+    {
+      "repository": "Rejean-McCormick/Akor",
+      "family": "education",
+      "role": "Collaborative educational missions and role-based learning experiences; real operational Tasks remain owned by Orgo."
+    },
+    {
+      "repository": "Rejean-McCormick/Arketype",
+      "family": "knowledge_design",
+      "role": "Non-normative modeling and template material for Kristal authoring; cannot define canonical identity."
+    },
+    {
+      "repository": "Rejean-McCormick/Daat",
+      "family": "interoperability",
+      "role": "Versioned external semantic mapping, identity and policy-boundary adapters with owner-injected security gates."
+    },
+    {
+      "repository": "Rejean-McCormick/diK",
+      "family": "lexical",
+      "role": "Multilingual lexical dictionaries and reviewed semantic language bindings, separate from KQ/KP identity."
+    },
+    {
+      "repository": "Rejean-McCormick/Ekole",
+      "family": "education",
+      "role": "Curriculum-neutral learning engine and student/teacher experience; institution and Moodle data stay separate."
+    },
+    {
+      "repository": "Rejean-McCormick/Ekole-Pastorale",
+      "family": "education",
+      "role": "Independent pastoral content pack and learning material consumed by the neutral Ekole engine."
+    },
+    {
+      "repository": "Rejean-McCormick/EncyKlopedia",
+      "family": "knowledge_delivery",
+      "role": "Read-only multilingual encyclopedia and public derived knowledge exploration; not a source acquirer."
+    },
+    {
+      "repository": "Rejean-McCormick/HomePage-initkoa.org",
+      "family": "public_presence",
+      "role": "Public initiative website and editorial discovery routes; no normative authority over product software."
+    },
+    {
+      "repository": "Rejean-McCormick/initkoa-docs",
+      "family": "public_presence",
+      "role": "MkDocs documentation portal aggregating approved owner wiki and final-system read-only documentation."
+    },
+    {
+      "repository": "Rejean-McCormick/Interaction-Kernel",
+      "family": "interoperability",
+      "role": "Opt-in typed envelope and cross-owner contract profiles; no ownership of participant business state."
+    },
+    {
+      "repository": "Rejean-McCormick/Karacter",
+      "family": "creative_tooling",
+      "role": "Author-controlled fictional character design and narrative creative studio, not clinical or semantic canon."
+    },
+    {
+      "repository": "Rejean-McCormick/kOA-Digital-Ecosystem",
+      "family": "coordination",
+      "role": "C0 coordination, final-system design, evidence and contract traceability; no product state authority."
+    },
+    {
+      "repository": "Rejean-McCormick/kOA-Linux-Koali",
+      "family": "platform",
+      "role": "Platform profiles, release admission, runtime policies and host-specific deployment authorization."
+    },
+    {
+      "repository": "Rejean-McCormick/Koali-Control-Panel",
+      "family": "platform",
+      "role": "Operator and developer workflow UI for safe local build and platform admission preparation."
+    },
+    {
+      "repository": "Rejean-McCormick/Koali-Scenario-Mosaic",
+      "family": "presentation",
+      "role": "Bilingual scenario mosaic and explanatory public interface; does not own real workflow effects."
+    },
+    {
+      "repository": "Rejean-McCormick/Koali-Spaces",
+      "family": "presentation",
+      "role": "Optional product presentation shell, navigation and Space lifecycle, separate from business state."
+    },
+    {
+      "repository": "Rejean-McCormick/Kolor",
+      "family": "creative_tooling",
+      "role": "Character-sheet, palette and visual studio with reviewed media exports for educational content."
+    },
+    {
+      "repository": "Rejean-McCormick/Kompiler",
+      "family": "knowledge_consumption",
+      "role": "Local context-pack compiler from pinned derived, permitted knowledge views."
+    },
+    {
+      "repository": "Rejean-McCormick/Kompose",
+      "family": "education",
+      "role": "Educational scenario composition, lesson-plan preview and simulation; no direct Orgo Tasks."
+    },
+    {
+      "repository": "Rejean-McCormick/Konductor",
+      "family": "agentic_runtime",
+      "role": "Bounded agent jobs, checkpoints, operator review and mediated external action requests."
+    },
+    {
+      "repository": "Rejean-McCormick/Konfid",
+      "family": "security",
+      "role": "Scoped identity/policy decisions requiring verification at each product effect-point enforcement port."
+    },
+    {
+      "repository": "Rejean-McCormick/Konnaxion",
+      "family": "civic",
+      "role": "Civic decisions, participation, finalization and accountability state, never Orgo Case/Task ownership."
+    },
+    {
+      "repository": "Rejean-McCormick/Konnaxion-Capsule-Manager",
+      "family": "civic_operations",
+      "role": "Scoped capsule deployment orchestration, platform admission and privileged agent handoff."
+    },
+    {
+      "repository": "Rejean-McCormick/Konnaxion-Worlds",
+      "family": "civic",
+      "role": "World and Universe release/context authority for the Konnaxion civic domain."
+    },
+    {
+      "repository": "Rejean-McCormick/KonnaxionDiag",
+      "family": "diagnostics",
+      "role": "Independent diagnostics over pinned Konnaxion and capsule/deployment revisions."
+    },
+    {
+      "repository": "Rejean-McCormick/Konstellation",
+      "family": "knowledge_consumption",
+      "role": "Navigation and read-only exploration of approved semantic collections and source views."
+    },
+    {
+      "repository": "Rejean-McCormick/Konstellation-Light",
+      "family": "knowledge_consumption",
+      "role": "Lightweight static or offline read-only exploration of pinned knowledge artifacts."
+    },
+    {
+      "repository": "Rejean-McCormick/Konstellation-Publisher",
+      "family": "release_tooling",
+      "role": "Publication transaction rehearsal and safe packaging; not implicit live deployment permission."
+    },
+    {
+      "repository": "Rejean-McCormick/Kontainer",
+      "family": "knowledge_packaging",
+      "role": "Integrity-checked, optionally encrypted portable knowledge and artifact containers."
+    },
+    {
+      "repository": "Rejean-McCormick/Kontexte",
+      "family": "education",
+      "role": "Reusable culturally scoped pedagogical situations for composition and supervised simulations."
+    },
+    {
+      "repository": "Rejean-McCormick/Kristal-Authoring-Kit",
+      "family": "knowledge_authoring",
+      "role": "Local semantic authoring workspace, profile-bound validation and deterministic Kristal build tooling."
+    },
+    {
+      "repository": "Rejean-McCormick/Kristal-Framework",
+      "family": "knowledge_core",
+      "role": "Canonical Kristal semantic identity, KQ/KP/KA/KS rules and versioned conformance profile."
+    },
+    {
+      "repository": "Rejean-McCormick/Kristal-Integration-Pack",
+      "family": "interoperability",
+      "role": "Versioned derived read views and consumer adapters without canonical state ownership."
+    },
+    {
+      "repository": "Rejean-McCormick/Kristal-Manager",
+      "family": "knowledge_operations",
+      "role": "Local instance inventory, coordination and eligible synchronization scope; not an implicit publisher."
+    },
+    {
+      "repository": "Rejean-McCormick/kristal-public",
+      "family": "knowledge_publication",
+      "role": "Authorized immutable public knowledge collection and read release hosting."
+    },
+    {
+      "repository": "Rejean-McCormick/KristalDiag",
+      "family": "diagnostics",
+      "role": "Independent semantic build/release diagnostics on exact pinned source and verifier revisions."
+    },
+    {
+      "repository": "Rejean-McCormick/Kristalizer",
+      "family": "knowledge_authoring",
+      "role": "Reviewed mapping, identity candidate reconciliation and staged authoring import proposals."
+    },
+    {
+      "repository": "Rejean-McCormick/LevelUpDiag-kOA-Linux",
+      "family": "diagnostics",
+      "role": "Independent platform profile and release-readiness diagnostics; no permission to deploy."
+    },
+    {
+      "repository": "Rejean-McCormick/LevelUpDiag-Orgo",
+      "family": "diagnostics",
+      "role": "Independent tests and diagnostics of Orgo operational effects and task lifecycles."
+    },
+    {
+      "repository": "Rejean-McCormick/LevelUpDiag_SemantiK-Architect",
+      "family": "diagnostics",
+      "role": "Independent tests and language-runtime qualification for SemantiK Architect profiles."
+    },
+    {
+      "repository": "Rejean-McCormick/Mediatheque",
+      "family": "source_custody",
+      "role": "Durable source, snapshot, representation and file custody with instance-scoped source receipts."
+    },
+    {
+      "repository": "Rejean-McCormick/Mediatheque-blank",
+      "family": "source_custody",
+      "role": "Isolated source library instance template using the shared Mediatheque custody engine."
+    },
+    {
+      "repository": "Rejean-McCormick/MediKristal",
+      "family": "domain_application",
+      "role": "Medical-domain knowledge/pathways and local domain decisions; requires independent clinical authorization."
+    },
+    {
+      "repository": "Rejean-McCormick/MediKristal-LevelUpDiag-",
+      "family": "diagnostics",
+      "role": "Engineering verification of MediKristal domain software, not medical certification."
+    },
+    {
+      "repository": "Rejean-McCormick/Orgo",
+      "family": "operations",
+      "role": "Durable operational Signals, Workflows, Cases, Tasks, outbox, real effects and terminal reconciliation."
+    },
+    {
+      "repository": "Rejean-McCormick/Orgo-Worlds",
+      "family": "operations",
+      "role": "Operational World context and release definitions under the Orgo domain owner."
+    },
+    {
+      "repository": "Rejean-McCormick/SemantiK-Architect",
+      "family": "language",
+      "role": "Typed semantic-to-language planning and faithful grammatical realization under pinned runtime sets."
+    },
+    {
+      "repository": "Rejean-McCormick/SemantiK_Runtime_Orchestrator",
+      "family": "language",
+      "role": "Versioned linguistic RuntimeSet qualification sequencing, promotion and rollback without source truth ownership."
+    },
+    {
+      "repository": "Rejean-McCormick/SenTient",
+      "family": "research",
+      "role": "Experimental extraction and evidence-derived semantic candidates subject to explicit review."
+    },
+    {
+      "repository": "Rejean-McCormick/Skope",
+      "family": "research",
+      "role": "Research scope selection and integrated EncyK source acquisition for noncanonical candidate/evidence packages."
+    },
+    {
+      "repository": "Rejean-McCormick/Spek",
+      "family": "publication",
+      "role": "Reviewed editorial and semantic publishing layout, distinct from canonical source authorization."
+    },
+    {
+      "repository": "Rejean-McCormick/UCKK-Assets",
+      "family": "education",
+      "role": "Independent institutional educational media and asset packs with provenance and usage rights."
+    },
+    {
+      "repository": "Rejean-McCormick/UCKK-Ops-Console",
+      "family": "education",
+      "role": "Institutional learning/Moodle operations and approval console, not a canonical semantic owner."
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "B-KNOW-01",
+      "journey": "knowledge",
+      "producer": "Rejean-McCormick/Skope",
+      "consumer": "Rejean-McCormick/Mediatheque",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-KNOW-02",
+      "journey": "knowledge",
+      "producer": "Rejean-McCormick/Mediatheque",
+      "consumer": "Rejean-McCormick/Daat",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-KNOW-03",
+      "journey": "knowledge",
+      "producer": "Rejean-McCormick/Daat",
+      "consumer": "Rejean-McCormick/Kristal-Authoring-Kit",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-KNOW-04",
+      "journey": "knowledge",
+      "producer": "Rejean-McCormick/diK",
+      "consumer": "Rejean-McCormick/Kristal-Authoring-Kit",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-KNOW-05",
+      "journey": "knowledge",
+      "producer": "Rejean-McCormick/Kristalizer",
+      "consumer": "Rejean-McCormick/Kristal-Authoring-Kit",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-KNOW-06",
+      "journey": "knowledge",
+      "producer": "Rejean-McCormick/Kristal-Framework",
+      "consumer": "Rejean-McCormick/Kristal-Authoring-Kit",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-KNOW-07",
+      "journey": "knowledge",
+      "producer": "Rejean-McCormick/Kristal-Authoring-Kit",
+      "consumer": "Rejean-McCormick/KristalDiag",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-KNOW-08",
+      "journey": "knowledge",
+      "producer": "Rejean-McCormick/Kristal-Authoring-Kit",
+      "consumer": "Rejean-McCormick/Kristal-Manager",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-KNOW-09",
+      "journey": "knowledge",
+      "producer": "Rejean-McCormick/Kristal-Manager",
+      "consumer": "Rejean-McCormick/kristal-public",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-KNOW-10",
+      "journey": "knowledge",
+      "producer": "Rejean-McCormick/Kristal-Framework",
+      "consumer": "Rejean-McCormick/Kristal-Integration-Pack",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-KNOW-11",
+      "journey": "knowledge",
+      "producer": "Rejean-McCormick/Kristal-Integration-Pack",
+      "consumer": "Rejean-McCormick/Kompiler",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-KNOW-12",
+      "journey": "knowledge",
+      "producer": "Rejean-McCormick/Kristal-Integration-Pack",
+      "consumer": "Rejean-McCormick/EncyKlopedia",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-KNOW-13",
+      "journey": "knowledge",
+      "producer": "Rejean-McCormick/kristal-public",
+      "consumer": "Rejean-McCormick/Konstellation",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-KNOW-14",
+      "journey": "knowledge",
+      "producer": "Rejean-McCormick/Skope",
+      "consumer": "Rejean-McCormick/Kristalizer",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-CIVIC-01",
+      "journey": "civic",
+      "producer": "Rejean-McCormick/Konnaxion",
+      "consumer": "Rejean-McCormick/Orgo",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-CIVIC-02",
+      "journey": "civic",
+      "producer": "Rejean-McCormick/Orgo",
+      "consumer": "Rejean-McCormick/Konnaxion",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-CIVIC-03",
+      "journey": "civic",
+      "producer": "Rejean-McCormick/Konnaxion-Worlds",
+      "consumer": "Rejean-McCormick/Konnaxion",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-EDU-01",
+      "journey": "education",
+      "producer": "Rejean-McCormick/Kontexte",
+      "consumer": "Rejean-McCormick/Kompose",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-EDU-02",
+      "journey": "education",
+      "producer": "Rejean-McCormick/Kompose",
+      "consumer": "Rejean-McCormick/Orgo",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-EDU-03",
+      "journey": "education",
+      "producer": "Rejean-McCormick/Akor",
+      "consumer": "Rejean-McCormick/Orgo",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-EDU-04",
+      "journey": "education",
+      "producer": "Rejean-McCormick/Ekole",
+      "consumer": "Rejean-McCormick/UCKK-Ops-Console",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-PLAT-01",
+      "journey": "platform",
+      "producer": "Rejean-McCormick/Koali-Control-Panel",
+      "consumer": "Rejean-McCormick/kOA-Linux-Koali",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-PLAT-02",
+      "journey": "platform",
+      "producer": "Rejean-McCormick/kOA-Linux-Koali",
+      "consumer": "Rejean-McCormick/Koali-Spaces",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-SEC-01",
+      "journey": "security",
+      "producer": "Rejean-McCormick/Konfid",
+      "consumer": "Rejean-McCormick/Daat",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-LANG-01",
+      "journey": "language",
+      "producer": "Rejean-McCormick/SemantiK-Architect",
+      "consumer": "Rejean-McCormick/SemantiK_Runtime_Orchestrator",
+      "state": "target_design_not_qualified"
+    },
+    {
+      "id": "B-LANG-02",
+      "journey": "language",
+      "producer": "Rejean-McCormick/SemantiK-Architect",
+      "consumer": "Rejean-McCormick/Spek",
+      "state": "target_design_not_qualified"
+    }
+  ]
+}

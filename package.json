@@ -6,11 +6,13 @@
   "scripts": {
     "dev": "npm run images:build && astro dev",
     "build": "npm run images:build && npm run validate && npm run images:validate && astro build",
-    "validate": "python scripts/validate-v2.py",
-    "preview:offline": "npm run images:build && python scripts/build-offline-preview.py",
+    "validate": "npm run assets:fallback && python scripts/validate-v2.py && npm run architecture:validate",
+    "preview:offline": "npm run assets:fallback && npm run images:build && python scripts/build-offline-preview.py",
     "check": "astro check",
     "images:build": "node scripts/build-scenario-images.mjs",
-    "images:validate": "python scripts/validate-images.py"
+    "images:validate": "python scripts/validate-images.py",
+    "architecture:validate": "node scripts/validate-final-system.mjs",
+    "assets:fallback": "python scripts/prepare-fallback-assets.py"
   },
   "dependencies": {
     "astro": "7.2.9",

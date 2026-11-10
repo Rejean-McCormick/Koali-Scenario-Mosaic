@@ -7,6 +7,8 @@
 
 The brand name is always written **Koali** in public and editorial prose. The primary Koali brand color is **`#1e6864`**. **Koali Scenario Mosaic** is the name of this public scenario-discovery interface.
 
+> **Final-system connection:** see [the public functional architecture bridge](61_FINAL_SYSTEM_ARCHITECTURE_BRIDGE.md). The 24 C0 target chains are a different catalog from the 36 current bilingual scenario examples and the older 120-item design corpus.
+
 ## Purpose
 
 This corpus explains **what Koali is useful for** without reducing it to a single profession, sector, workflow, or software category.

@@ -1,0 +1,22 @@
+.architecture-page{max-width:1120px;margin:0 auto;padding:2rem 1.25rem 4rem;line-height:1.6}
+.architecture-breadcrumb{display:flex;gap:.6rem;align-items:center;font-size:.86rem;color:#b7c6d5}
+.architecture-breadcrumb a:hover,.architecture-breadcrumb a:focus-visible{color:#7ee1d5}
+.architecture-kicker{margin:2rem 0 .5rem;color:#80c7be;text-transform:uppercase;letter-spacing:.11em;font-size:.76rem;font-weight:700}
+.architecture-page h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.15;margin:0;max-width:25ch}
+.architecture-intro{max-width:70ch;color:#d8e3ee;font-size:1.1rem;margin-top:1rem}
+.architecture-disclaimer{margin:1.4rem 0 2rem;padding:.9rem 1.2rem;border-left:3px solid #4a9690;background:#17252d;color:#e2eef2;max-width:85ch}
+.architecture-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin:2rem 0 3rem}
+.architecture-stats div{border:1px solid #405168;border-radius:.9rem;padding:1rem;background:#0e151e}
+.architecture-stats dt{color:#bfceda;font-size:.85rem}.architecture-stats dd{font-size:2rem;font-weight:750;margin:.25rem 0 0;color:#86d5cc}
+.architecture-content h2{font-size:1.7rem}.architecture-content>p{color:#c5d0de;max-width:78ch}
+.architecture-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:.9rem;list-style:none;padding:0;margin:1.6rem 0}
+.architecture-grid li{border:1px solid #3d5364;border-radius:.8rem;padding:1.15rem;background:#101a24;min-width:0}
+.architecture-id{color:#83d6ca;font-size:.85rem;font-weight:750;font-family:ui-monospace,monospace}
+.architecture-grid h3{font-size:1.12rem;line-height:1.35;margin:.4rem 0 .6rem;color:#f1f6f9}
+.architecture-grid p{font-size:.9rem;color:#cedbe4;margin:.3rem 0 0}
+.architecture-grid details{margin-top:1rem;color:#add8ce;font-size:.85rem}
+.architecture-grid summary{cursor:pointer}.architecture-grid details p{color:#e5edf2}
+.architecture-footer{display:flex;flex-wrap:wrap;gap:1rem 1.5rem;border-top:1px solid #334357;padding-top:1.6rem;margin-top:3rem;color:#d6e2ed}
+.architecture-footer p{width:100%;margin:0}.architecture-footer a{color:#95e2d6;text-decoration:underline}
+.architecture-nav-link{color:#aeddd8;white-space:nowrap;padding:.28rem .48rem!important;border:1px solid #405168;text-decoration:none;border-radius:6px}
+@media(max-width:620px){.architecture-page{padding:1.3rem .9rem 3rem}.architecture-stats{grid-template-columns:1fr}.architecture-stats div{padding:.75rem}.architecture-stats dd{font-size:1.5rem}}

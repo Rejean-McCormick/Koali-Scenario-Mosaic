@@ -36,6 +36,7 @@ if (alternateHref === pathname) alternateHref = `/${alternate}/uses/`;
         </span>
       </a>
       <nav class="language-switcher" aria-label={locale === 'fr' ? 'Langue' : 'Language'}>
+        <a class="architecture-nav-link" href={`/${locale}/architecture/`} aria-current={pathname.startsWith(`/${locale}/architecture/`) ? 'page' : undefined}>{locale === 'fr' ? 'Architecture' : 'Architecture'}</a>
         <a class:list={[{active: locale === 'en'}]} href={locale === 'en' ? pathname : alternateHref} lang="en" hreflang="en">EN</a>
         <span aria-hidden="true">/</span>
         <a class:list={[{active: locale === 'fr'}]} href={locale === 'fr' ? pathname : alternateHref} lang="fr" hreflang="fr">FR</a>

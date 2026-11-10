@@ -68,3 +68,8 @@ body{color:var(--ui-text-primary)}
   .brand-product span{font-size:.9rem}
   .language-switcher{font-size:.82rem}
 }
+
+/* Optional final-system public architecture discovery */
+.architecture-nav-link{color:#a5dcd2;border:1px solid #35575a!important;padding:.28rem .48rem!important;border-radius:6px;text-decoration:none;white-space:nowrap}
+.architecture-nav-link[aria-current="page"]{background:#1e6864;color:#fff}
+@media(max-width:440px){.brand-product span{font-size:.76rem}.site-header{gap:.5rem}.language-switcher{gap:.2rem}.architecture-nav-link{font-size:.72rem}}

@@ -1,7 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 72" role="img" aria-label="Koali">
-  <g fill="none" stroke="#4a9690" stroke-width="5" stroke-linejoin="round">
-    <path d="M34 8 58 22v28L34 64 10 50V22z"/>
-    <path d="M34 8v56M10 22l48 28M58 22 10 50" opacity=".6"/>
-  </g>
-  <text x="72" y="47" fill="#eef3f9" font-family="system-ui,sans-serif" font-size="34" font-weight="750">Koali</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 42" aria-label="Koali — temporary fallback mark"><rect width="84" height="42" rx="9" fill="#1e6864"/><text x="42" y="28" text-anchor="middle" font-size="18" fill="white" font-family="sans-serif" font-weight="bold">Koali</text></svg>

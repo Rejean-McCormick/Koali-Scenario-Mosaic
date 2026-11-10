@@ -40,7 +40,7 @@
     lvl('[data-preview-scale-visual]',s.scaleLevel ?? 0);lvl('[data-preview-urgency-visual]',s.urgencyLevel ?? 0);lvl('[data-preview-gap-visual]',s.gapLevel ?? 0);
     txt('[data-preview-mechanism-summary]',list(s.mechanisms));txt('[data-preview-scale-profile]',s.scalePath);
     const urgency=root.querySelector('[data-preview-urgency-wrap]');if(urgency)urgency.dataset.urgency=s.urgencyKey;
-    const im=root.querySelector('[data-preview-image]');if(im){im.src=s.image.src;im.alt=s.title;im.dataset.imageState='scenario'}
+    const im=root.querySelector('[data-preview-image]');if(im){im.src=s.image.src;im.srcset=s.image.srcset||'';im.sizes=s.image.sizes||'';im.alt=s.title;im.dataset.imageState='scenario'}
     const metrics=root.querySelector('[data-preview-metrics-row]');if(metrics)metrics.hidden=false;
     mechanisms(s.mechanisms);systems(s.systems);
     const link=root.querySelector('[data-preview-link]');if(link){link.href=s.href;link.hidden=false}

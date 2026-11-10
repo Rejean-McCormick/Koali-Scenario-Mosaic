@@ -106,7 +106,7 @@ def load(lang):
     return result
 
 def header(lang):
-    u=UI[lang];return f'<header class="site-header"><a class="brand" href="./index.html"><img class="brand-mark" src="../assets/brand/koali-mark.svg" alt=""><span class="brand-copy"><span class="brand-product"><strong>Koali</strong><span>{u["title"]}</span></span><small>the Sociotechnical Operating System</small></span></a><nav class="language-switcher"><a class="{"active" if lang=="en" else ""}" href="../en/index.html">EN</a><span>/</span><a class="{"active" if lang=="fr" else ""}" href="../fr/index.html">FR</a></nav></header>'
+    u=UI[lang];return f'<header class="site-header"><a class="brand" href="./index.html"><img class="brand-mark" src="../assets/brand/koali-mark.svg" alt=""><span class="brand-copy"><span class="brand-product"><strong>Koali</strong><span>{u["title"]}</span></span><small>the Sociotechnical Operating System</small></span></a><nav class="language-switcher"><a class="architecture-nav-link" href="./architecture/index.html">Architecture</a><a class="{"active" if lang=="en" else ""}" href="../en/index.html">EN</a><span>/</span><a class="{"active" if lang=="fr" else ""}" href="../fr/index.html">FR</a></nav></header>'
 def metric_row(lang,d=None):
     u=UI[lang]
     if not d:
@@ -135,12 +135,23 @@ def detail_html(lang,d):
     u=UI[lang];mech=' · '.join(loc('mechanisms',lang,x) for x in d['failure_mechanisms'][:4]);holders=' • '.join(d['_holders'][:3]);success=' • '.join(d['_success'][:2]);cases=d['_cases'][:3]
     case_list=''.join(f'<li>{esc(x)}</li>' for x in cases)
     info=f'''<section class="scenario-info-mosaic" data-family="{d['problem_family']}"><article class="detail-hex detail-hex--trigger"><div class="detail-hex-inner"><span>{u['whatbreaks']}</span><strong>{esc(mech)}</strong></div></article><article class="detail-hex detail-hex--mechanism"><div class="detail-hex-inner"><span>{u['whoknows']}</span><p>{esc(holders)}</p></div></article><article class="detail-hex detail-hex--flow"><div class="detail-hex-inner"><span>{u['response']}</span><p>{esc(d['_koali'])}</p></div></article><article class="detail-hex detail-hex--systems"><div class="detail-hex-inner"><span>{u['cases']}</span><ul class="detail-case-list">{case_list}</ul></div></article><article class="detail-hex detail-hex--transfer"><div class="detail-hex-inner"><span>{u['success']}</span><p>{esc(success)}</p></div></article></section><p class="evidence-note">{u['evidence']}</p>'''
-    return f'''<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../../../assets/styles.css"><title>{esc(d['title'])} | {u['title']}</title></head><body><header class="site-header"><a class="brand" href="../../index.html"><img class="brand-mark" src="../../../assets/brand/koali-mark.svg" alt=""><span class="brand-copy"><span class="brand-product"><strong>Koali</strong><span>{u['title']}</span></span><small>the Sociotechnical Operating System</small></span></a><nav class="language-switcher"><a class="{'active' if lang=='en' else ''}" href="{'index.html' if lang=='en' else '../../../en/uses/'+d['id']+'/index.html'}">EN</a><span>/</span><a class="{'active' if lang=='fr' else ''}" href="{'index.html' if lang=='fr' else '../../../fr/uses/'+d['id']+'/index.html'}">FR</a></nav></header><main><div class="mosaic-experience scenario-detail-experience">{selected_preview(lang,d)}{info}<article class="scenario-article">{markdown_basic(d['_body'])}</article></div></main><script src="../../../assets/preview-layout.js"></script></body></html>'''
+    return f'''<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="../../../assets/styles.css"><title>{esc(d['title'])} | {u['title']}</title></head><body><header class="site-header"><a class="brand" href="../../index.html"><img class="brand-mark" src="../../../assets/brand/koali-mark.svg" alt=""><span class="brand-copy"><span class="brand-product"><strong>Koali</strong><span>{u['title']}</span></span><small>the Sociotechnical Operating System</small></span></a><nav class="language-switcher"><a class="architecture-nav-link" href="../../architecture/index.html">Architecture</a><a class="{'active' if lang=='en' else ''}" href="{'index.html' if lang=='en' else '../../../en/uses/'+d['id']+'/index.html'}">EN</a><span>/</span><a class="{'active' if lang=='fr' else ''}" href="{'index.html' if lang=='fr' else '../../../fr/uses/'+d['id']+'/index.html'}">FR</a></nav></header><main><div class="mosaic-experience scenario-detail-experience">{selected_preview(lang,d)}{info}<article class="scenario-article">{markdown_basic(d['_body'])}</article></div></main><script src="../../../assets/preview-layout.js"></script></body></html>'''
+def architecture_html(lang):
+    public=json.loads((ROOT/'src/data/public-architecture.v1.json').read_text(encoding='utf8'))
+    fr=lang=='fr'
+    heading='Architecture fonctionnelle cible' if fr else 'Target functional architecture'
+    note=('Conception cible, non statut opérationnel. Les interfaces nécessitent une validation indépendante.' if fr else
+          'Target design, not operational status. Interfaces require independent verification.')
+    cards=''.join('<li><span class="architecture-id">{}</span><h3>{}</h3><p>{}</p><details><summary>{}</summary><p>{}</p></details></li>'.format(
+       esc(c['id']),esc(c['title']),esc(c['outcome']),
+       'Responsabilités' if fr else 'Responsible owners',esc(c['owners'])) for c in public['chains'])
+    return f'''<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>{esc(heading)} | Koali</title><link rel="stylesheet" href="../../assets/styles.css"></head><body><header class="site-header"><a class="brand" href="../index.html"><strong>Koali</strong></a><nav class="language-switcher"><a class="architecture-nav-link" href="../index.html">{'Scénarios' if fr else 'Scenarios'}</a><a href="../../en/architecture/index.html" lang="en">EN</a><span>/</span><a href="../../fr/architecture/index.html" lang="fr">FR</a></nav></header><main><section class="architecture-page"><p class="architecture-kicker">Koali · {'Système final envisagé' if fr else 'Intended final system'}</p><h1>{esc(heading)}</h1><p class="architecture-disclaimer">{esc(note)}</p><dl class="architecture-stats"><div><dt>{'Chaînes' if fr else 'Chains'}</dt><dd>{public['scope']['chain_count']}</dd></div><div><dt>{'Dépôts' if fr else 'Repositories'}</dt><dd>{public['scope']['repository_count']}</dd></div><div><dt>{'Frontières proposées' if fr else 'Proposed boundaries'}</dt><dd>{public['scope']['boundary_count']}</dd></div></dl><ol class="architecture-grid">{cards}</ol><div class="architecture-footer"><a href="https://github.com/Rejean-McCormick/kOA-Digital-Ecosystem">{'Source architecturale' if fr else 'Architecture source'}</a></div></section></main></body></html>'''
+
 def write():
     if PREVIEW.exists():shutil.rmtree(PREVIEW)
     (PREVIEW/'assets/brand').mkdir(parents=True);shutil.copy2(ROOT/'public/brand/koali-mark.svg',PREVIEW/'assets/brand/koali-mark.svg')
     if (ROOT/'public/scenarios').exists():shutil.copytree(ROOT/'public/scenarios',PREVIEW/'assets/scenarios')
-    css='\n'.join((ROOT/x).read_text(encoding='utf-8') for x in ['src/styles/global.css','src/styles/mosaic.css','src/styles/scenario.css']);(PREVIEW/'assets/styles.css').write_text(css,encoding='utf-8')
+    css='\n'.join((ROOT/x).read_text(encoding='utf-8') for x in ['src/styles/global.css','src/styles/mosaic.css','src/styles/scenario.css','src/styles/architecture.css']);(PREVIEW/'assets/styles.css').write_text(css,encoding='utf-8')
     shutil.copy2(ROOT/'src/scripts/preview-layout.ts',PREVIEW/'assets/preview-layout.js')
     app=r'''(() => {
   const root=document.querySelector('[data-mosaic-root]');
@@ -231,5 +242,9 @@ def write():
         items=load(lang);(PREVIEW/lang/'uses').mkdir(parents=True,exist_ok=True);(PREVIEW/lang/'index.html').write_text(main_html(lang,items),encoding='utf-8')
         for d in items:
             out=PREVIEW/lang/'uses'/d['id'];out.mkdir(parents=True,exist_ok=True);(out/'index.html').write_text(detail_html(lang,d),encoding='utf-8')
-    print('Offline preview generated: 2 mosaic pages + 72 scenario pages.')
+    for lang in ['en','fr']:
+        path=PREVIEW/lang/'architecture'/'index.html'
+        path.parent.mkdir(parents=True,exist_ok=True)
+        path.write_text(architecture_html(lang),encoding='utf-8')
+    print('Offline preview generated: 2 mosaic pages + 72 scenario pages + 2 target architecture pages.')
 if __name__=='__main__':write()
