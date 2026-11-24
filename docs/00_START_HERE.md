@@ -1,75 +1,23 @@
-# START HERE — Koali Scenario Mosaic
+# START HERE — Koali Scenario Mosaic V2
 
+**Active source:** 36 canonical bilingual sociotechnical problems (`SCN-001`…`SCN-036`). This is the actual corpus in the 23 November 2026 code snapshot, not the older 120-scenario V1/v4.x presentation model.
 
 ## Canonical Koali identity
 
-**Koali, the Sociotechnical Operating System**
+**Koali, the Sociotechnical Operating System**. The public brand spelling is **Koali** and the principal brand color is `#1e6864`. Koali Scenario Mosaic names the standalone public scenario-discovery interface.
 
-The brand name is always written **Koali** in public and editorial prose. The primary Koali brand color is **`#1e6864`**. **Koali Scenario Mosaic** is the name of this public scenario-discovery interface.
+> **C0 scope:** [24 functional target chains](61_FINAL_SYSTEM_ARCHITECTURE_BRIDGE.md) and these 36 public examples are different catalogs. C0 design is not proof of deployment.
 
-> **Final-system connection:** see [the public functional architecture bridge](61_FINAL_SYSTEM_ARCHITECTURE_BRIDGE.md). The 24 C0 target chains are a different catalog from the 36 current bilingual scenario examples and the older 120-item design corpus.
+## Current visitor flow
 
-## Purpose
+1. Begin with a recognizable **human problem**, not a software-module list.
+2. Explore **failure mechanisms, scale, urgency and stakes** that make the problem difficult.
+3. Review **real-world parallels and evidence limits**, then the proposed Koali response path.
+4. Switch between **English and French**; both point to the same canonical 36 scenario IDs.
+5. Keep cross-application capabilities qualified separately: a public scenario is neither an operational product nor a release authorization.
 
-This corpus explains **what Koali is useful for** without reducing it to a single profession, sector, workflow, or software category.
+Read the [current bilingual scenario index](15_MASTER_INDEX.md), [V2 project README](../README.md) and [documentation index](README.md).
 
-The presentation strategy is deliberately progressive:
+## Historical editorial baselines (not current)
 
-1. **One promise** — understand Koali in seconds.
-2. **Eight usage families** — see the full palette without feature overload.
-3. **Twelve hero scenarios** — feel the range immediately.
-4. **Twenty-four recurring patterns** — see what different sectors have in common.
-5. **Component lenses** — understand how Kristal, Konnaxion, Orgo, and UCKK contribute.
-6. **120 scenarios** — prove breadth without claiming 120 separate products.
-7. **Cross-cutting properties** — offline, multilingual, local-first, AI-optional, sensitive-data, public-facing.
-8. **Evidence discipline** — separate architectural possibility from runtime proof.
-
-## The central message
-
-> **Koali connects knowledge, people, choices, work, and memory.**
-
-Koali should not be introduced as “software that does everything.” It should be introduced as a system that preserves continuity through transitions that are usually fragmented across documents, messaging, meetings, project tools, learning systems, media, and human memory.
-
-## Recommended reading order
-
-1. [Koali in one page](02_Koali_ONE_PAGE.md)
-2. [Master presentation architecture](01_MASTER_ARCHITECTURE.md)
-3. [Usage palette](03_USAGE_PALETTE.md)
-4. [12 hero scenarios](08_HERO_12.md)
-5. [24 pattern families](16_PATTERN_LIBRARY.md)
-6. [Component lenses](04_COMPONENT_LENSES.md)
-7. [120-scenario master index](15_MASTER_INDEX.md)
-8. [Cross-cutting properties](09_CROSS_CUTTING_PROPERTIES.md)
-9. [Claims and evidence](11_CLAIMS_AND_EVIDENCE.md)
-
-## Editorial rule
-
-**Human problem first. Architecture second.**
-
-A reader should recognize the situation before seeing module names. Kristal, Konnaxion, Orgo, UCKK, EkoH, Smart Vote, SemantiK, and AI-assisted capabilities explain *how* continuity is achieved; they are not the first explanation of *why Koali matters*.
-
-## Scenario images — introduced in v3.5, current in v3.6
-
-See [`34_PNG_SCENARIO_IMAGE_LOADING.md`](34_PNG_SCENARIO_IMAGE_LOADING.md) for automatic `scenario_###.png` loading with SVG fallback.
-
-## Preview copy — v3.8
-
-See [`37_PREVIEW_COPY_DEDUPLICATION.md`](37_PREVIEW_COPY_DEDUPLICATION.md). Scenario titles state the situation; `preview_summary` now continues the thought instead of repeating the title. All 120 canonical scenarios are validated against title duplication.
-
-## Profile metadata alignment — v3.9
-
-See [`38_PROFILE_CONTEXT_BASELINE_ALIGNMENT.md`](38_PROFILE_CONTEXT_BASELINE_ALIGNMENT.md) for the bottom-aligned profile metadata rows.
-
-## Brand identity — v3.10
-
-See [`39_Koali_BRAND_IDENTITY.md`](39_Koali_BRAND_IDENTITY.md) for canonical capitalization, positioning, color, and logo usage.
-
-## Bilingual architecture — v4.0
-
-The public interface is now available in English and French using one shared 120-scenario identity layer and one shared Mosaic geography. See [`40_BILINGUAL_ARCHITECTURE.md`](40_BILINGUAL_ARCHITECTURE.md).
-
-Public routes: `/en/uses/` and `/fr/uses/`. The language switch preserves the current scenario.
-
-## Current public scenario-page model
-
-See [`42_PUBLIC_SCENARIO_SELECTED_STATE.md`](42_PUBLIC_SCENARIO_SELECTED_STATE.md). In v4.2, a public scenario page reuses the main Mosaic preview and replaces the 120-cell panorama with five supplemental public information hexagons. Internal/editorial Markdown remains in source but is not rendered on the general-public route.
+V1 and v4.x used eight categories, 24 patterns, 12 hero examples and a 120-item editorial model. Their presentation, image and preview architecture documents remain useful as **history**, not current requirements. See the [unlinked V1 title archive](archive/15_MASTER_INDEX_120_V1.md), [presentation architecture](01_MASTER_ARCHITECTURE.md), [patterns](16_PATTERN_LIBRARY.md) and [old public route notes](40_BILINGUAL_ARCHITECTURE.md). Do not use the old 120-item index to verify V2 content.

@@ -1,23 +1,22 @@
-# Koali Scenario Mosaic — documentation
+# Koali Scenario Mosaic — documentation index (V2)
 
-A structured editorial and implementation corpus for **Koali, the Sociotechnical Operating System**, and its public **Koali Scenario Mosaic** interface.
+**Current code snapshot (2026-11-23):** the public, static-first bilingual Mosaic has **36 canonical scenarios** (`SCN-001` to `SCN-036`) in both English and French. This is a deliberate V2 reduction from the earlier **120-scenario V1/v4.x editorial model**; the withdrawn scenarios are not current content.
 
-The pack contains:
+## Start here — current state
 
-- 8 primary usage categories;
-- 24 recurring pattern families;
-- 120 scenario cards;
-- component, property, scale, domain, signature, and entry-trigger maps;
-- presentation architecture and message hierarchy;
-- evidence and claims discipline;
-- site information architecture;
-- visual and editorial guidelines.
+1. [Project README and V2 execution / verification](../README.md)
+2. [V2 reading guide](00_START_HERE.md)
+3. [Current 36-scenario English/French index](15_MASTER_INDEX.md)
+4. [Public C0 architectural bridge](61_FINAL_SYSTEM_ARCHITECTURE_BRIDGE.md) — target architecture, **not runtime qualification**
 
-Start with [`00_START_HERE.md`](00_START_HERE.md). For the current Mosaic interaction implementation, see [`44_MAGNETIC_TERRITORY_LABELS_IMPLEMENTATION.md`](44_MAGNETIC_TERRITORY_LABELS_IMPLEMENTATION.md). For the refreshed v4.3.1 scenario corpus and its integration into the magnetic interface, see [`45_SCENARIO_EDITORIAL_REFRESH.md`](45_SCENARIO_EDITORIAL_REFRESH.md) and [`46_REFRESHED_SCENARIOS_MAGNETIC_INTEGRATION.md`](46_REFRESHED_SCENARIOS_MAGNETIC_INTEGRATION.md).
+## Historical documents
 
+The earlier eight-category / 24-pattern / 120-card presentation model is retained for design history and comparison, **not as active V2 navigation**:
 
-For the capability-first v4.4.12 public model—120 specific Koali action titles grouped into 24 recurring patterns, plus explicit system entry paths—see [`50_CAPABILITY_FIRST_SYSTEM_PORTAL.md`](50_CAPABILITY_FIRST_SYSTEM_PORTAL.md).
+- [V1/v4.x 120-scenario title archive](archive/15_MASTER_INDEX_120_V1.md) — plain titles, no dangling links
+- [Master presentation architecture](01_MASTER_ARCHITECTURE.md)
+- [24 historical patterns](16_PATTERN_LIBRARY.md)
+- [Former capability-first V4.4.12 portal](50_CAPABILITY_FIRST_SYSTEM_PORTAL.md)
+- [Former v4.3.1 editorial refresh](45_SCENARIO_EDITORIAL_REFRESH.md)
 
-## Final-system capability context
-
-See [the C0 public architecture bridge](61_FINAL_SYSTEM_ARCHITECTURE_BRIDGE.md) for the 24 target functional chains and their relation to this standalone scenario interface. The target design must not be described as a deployed feature.
+Those historical pages may mention 120 cards, territories and old preview geometry. For current data, public routes, validations, image behavior and implementation limits, use the V2 root README. Documentation does not itself authorize publishing or claim end-to-end ecosystem integration.
